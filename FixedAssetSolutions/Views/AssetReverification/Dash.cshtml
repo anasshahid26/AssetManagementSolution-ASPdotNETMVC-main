@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Dash";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-8">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Monthly Usage</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="chart">
+                <canvas id="areaChart" style="height: 250px; width: 510px;" width="510" height="250"></canvas>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Weekly Electric Usage</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="chart-responsive">
+                        <canvas id="pieChart" height="160" width="205" style="width: 205px; height: 160px;"></canvas>
+                    </div>
+                    <!-- ./chart-responsive -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-4">
+                    <ul class="chart-legend clearfix">
+                        <li><i class="fa fa-circle-o text-red"></i> Monday</li>
+                        <li><i class="fa fa-circle-o text-green"></i> Tuesday</li>
+                        <li><i class="fa fa-circle-o text-yellow"></i> Wednessday</li>
+                        <li><i class="fa fa-circle-o text-aqua"></i> Thursday</li>
+                        <li><i class="fa fa-circle-o text-light-blue"></i> Friday</li>
+                        <li><i class="fa fa-circle-o text-gray"></i> Saturday</li>
+                        <li><i class="fa fa-circle-o text-maroon"></i> Sunday</li>
+                    </ul>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+    </div>   
+</div>
+
+

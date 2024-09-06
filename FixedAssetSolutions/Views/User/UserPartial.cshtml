@@ -1,0 +1,177 @@
+﻿@using FAS.SharedModel
+@model FAS.SharedModel.UserViewModel
+
+@using (Html.BeginForm("CreateUser", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="col-md-6" style="margin-top:12px;">
+                <h4 class="modal-title">Add User</h4>
+            </div>
+            <div class="col-md-6" style="width:40%">
+                <img src="~/Content/img/Logo.png" style="width: 220px; float: right; margin-right: 60px;">
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="modal-title">Corporate Location</h4>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Select Company</label>
+                                    <select class="form-control">
+                                        <option>Matrix AMS Fixed Asset Solution</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Select Location</label>
+                                    <select class="form-control">
+                                        <option>AL Habtoor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                    <label for="exampleInputEmail1">Select Section</label>
+                                    <select class="form-control">
+                                        <option>Section 1</option>
+                                        <option>Section 2</option>
+                                        <option>Section 3</option>
+                                    </select>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="col-md-12">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">First Name</label>
+                                        @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">*@
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Last Name</label>
+                                        @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">*@
+                                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Username</label>
+                                        @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">*@
+                                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email</label>
+                                        @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">*@
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Password</label>
+                                        @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">*@
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Confirm Password</label>
+                                        @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">*@
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                @*<div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Language</label>
+                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">
+                                            @Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>*@
+                                <div class="col-md-2">
+                                    <div class="checkbox" style="margin-top: 30px;">
+                                        <label>
+                                            <input type="checkbox"> Inactive
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Notes</label>
+                                        <textarea rows="4" cols="50" class="form-control" placeholder="Enter Name"></textarea>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-6">
+                                        <div class="box">
+                                            <div class="box-header">
+                                                <h4 class="modal-title">Roles</h4>
+                                            </div>
+                                            <div class="box-body">
+                                                <table class="table table-bordered" style="margin-bottom: 30px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th style="width: 10px"></th>
+                                                            <th>Names</th>
+                                                            <th>Description</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><input type="checkbox"></td>
+                                                            <td>Role 1</td>
+                                                            <td>
+                                                                Matrix Asset Management Solutions Admin Role
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><input type="checkbox"></td>
+                                                            <td>Role 2</td>
+                                                            <td>
+                                                                Matrix Asset Management Solutions Admin Role
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><input type="checkbox"></td>
+                                                            <td>Role 3</td>
+                                                            <td>
+                                                                Matrix Asset Management Solutions Admin Role
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><input type="checkbox"></td>
+                                                            <td>Role 4</td>
+                                                            <td>
+                                                                Matrix Asset Management Solutions Admin Role
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" value="create" class="btn btn-primary"><i class="fa fa-save"></i></button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+}

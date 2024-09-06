@@ -1,0 +1,1026 @@
+﻿
+@{
+    ViewBag.Title = "Bulk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">Disposal</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <div class="box">
+        <div class="box-body with-border">
+            <div class="col-md-12 text-center" style="border-bottom: 1px solid #46c7ba;">
+                <div class="col-md-7">
+                    <div class="col-md-12">
+                        <h3 class="box-title box-title-main pull-left">Asset Disposal Validation</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small-box bg-b3">
+                            <div class="inner text-center">
+                                <h3 id="total" style="font-size:60px;">0</h3>
+                            </div>
+                            <div class="small-box-footer" style="font-size:17px; color:black; font-weight:700;">
+                                Total Assets for Validate
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="col-md-12" style="padding:0px;">
+                            <div class="col-md-4" style="padding:0px;">
+                                <h4 class="pull-left" style="font-size:17px; color:black; font-weight:700;">Disposal Number :</h4>
+                            </div>
+                            <div class="col-md-8" id="DNumber"></div>
+                        </div>
+                        <div class="col-md-12" style="padding:0px;">
+                            <div class="col-md-4" style="padding:0px;">
+                                <h4 class="pull-left" style="font-size:17px; color:black; font-weight:700;">Date Of Disposal :</h4>
+                            </div>
+                            <div class="col-md-8" id="Dodisposal"></div>
+                        </div>
+                        <div class="col-md-12" style="padding:0px;">
+                            <div class="col-md-4" style="padding:0px;">
+                                <h4 class="pull-left" style="font-size:17px; color:black; font-weight:700;">Depreciated :</h4>
+                            </div>
+                            <div class="col-md-2" id="depreciated"></div>
+                            <div class="col-md-4" style="padding:0px;">
+                                <h4 class="pull-left" style="font-size:17px; color:black; font-weight:700;">Not Depreciated :</h4>
+                            </div>
+                            <div class="col-md-2" id="notdepreciated"></div>
+                        </div>
+                        <div class="col-md-12" style="padding:0px;">
+                            <div class="col-md-4" style="padding:0px;">
+                                <h4 class="pull-left" style="font-size:17px; color:black; font-weight:700;">Netbook Value:</h4>
+                            </div>
+                            <div class="col-md-2" id="nbookValue"></div>
+                        </div>
+                        <div class="col-md-12" style="padding:0px;">
+                            <div class="col-md-6" style="padding:0px;">
+                                <h4 class="pull-left" style="font-size:17px; color:black; font-weight:700;">Total Disposal Sale Value:</h4>
+                            </div>
+                            <div class="col-md-2" id="tdsv"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-6 pull-right" style="margin-top: 10px; margin-bottom: 10px;">
+                            <label for="exampleInputEmail1">Select Location Name</label>
+                            <select name="L1LocCode" class="form-control Location borderfas" id="Loc" required="required">
+                                <option id="defl">Location Name</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 pull-right" style="margin-top: 10px; margin-bottom: 10px;">
+                            <label for="exampleInputEmail1">Select Company Name</label>
+                            <select name="CompanyID" id="c" class="form-control Company borderfas" required="required">
+                                <option id="defc">Company Name</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 pull-right barcode" style="margin-top: 35px;">
+                        <button type="button" class="btn btn-default pull-right" id="BarcodeButton" style="margin: 0px; color: #fff; border: 1px solid #46c7ba; background-color: #46c7ba;"><i class="fa fa-plus"></i></button>
+                        <p class="pull-right">Select</p>
+                    </div>
+                    <div class="col-md-6 pull-right barcode" style="margin-top: 10px; margin-bottom: 10px;">
+                        <label>Disposal Number</label><br />
+                        <select class="form-control borderfas" id="DisposedNumber" style="background-color: #ffffff;">
+                            <option value="">Disposal Number</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box-body">
+                        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:50px;" id="gs">
+                                    <div class="box" id="error">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title"><strong style="color:red;" id="messageTop">Remarks</strong></h3>
+                                        </div>
+                                        <div class="box-body" id="errorbox" style="overflow: auto; height: 150px;"></div>
+                                    </div>
+                                    <div class="box">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Assets to be Disposed</h3>
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body" style="overflow: auto; height: 293px;">
+                                            <table class="table table-bordered" id="display">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px"><input @*class="chk"*@ type="checkbox" name="select-all" id="select-all" /></th>
+                                                        <th>Asset Depreciated</th>
+                                                        <th>Purchase Price</th>
+                                                        <th>Date of Purchase</th>
+                                                        <th>Netbook Value</th>
+                                                        <th>Barcode ID</th>
+                                                        <th>Description</th>
+                                                        <th>Group</th>
+                                                        <th>Category</th>
+                                                        <th>Section</th>
+                                                        <th>Current Room</th>
+                                                        <th>Image</th>
+                                                        <th style="width: 20px">Details</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bulkAsset"></tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                        <div class="box-footer">
+                                            <form id="moveAssetSingle" method="post">
+                                                <div class="col-md-9">
+                                                    <div class="col-md-4">
+                                                        <label>Date of Validation</label><br />
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon borderfas">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <input type="text" class="form-control pull-right borderfas datepicker" style="width:230px;" name="DateOfValidation" id="DateOfValidation" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="reproccom">Select Reviewer</label><br />
+                                                        <select name="ValidatorEmail" id="ValidEmail" class="form-control borderfas" style="width:100%;" required="required">
+                                                            <option value="">Reviewer Email</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="reproccom">Remarks</label>
+                                                        <input type="text" class="form-control borderfas reproccom" name="ValidationRemarks" id="ValidRemarks" style="width:100%" required>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-3">
+                                                    <div class="col-md-6" style="padding:10px;">
+                                                        <button type="submit" id="moveAsset" class="btn btn-block btn-success btn-lg select1">Okay</button>
+                                                    </div>
+                                                    <div class="col-md-6" style="padding:10px;">
+                                                        <button type="submit" id="decline" class="btn btn-block btn-danger btn-lg select1">Decline</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mModal" class="modal modal text-center">
+
+        <img class="modal-content modal-content" id="img01" style="min-height:0%; top:100px; border: 10px solid #a2a4a3; border-radius: 30px; width:500px;">
+
+        <div id="caption"></div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="OkayModal" class="modal modal text-center">
+
+        <!-- Modal Content (The Image) -->
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <form id="pModal">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 style="color:red;" id="dmsg">Do you want to proceed with disposal</h5>
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" id="Okay" class="btn btn-default">OK</button>
+                        <button type="button" id="Cancel" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal text-center">
+
+        <!-- Modal Content (The Image) -->
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <form id="formModal">
+                <div class="box">
+                    <div class="box-header">
+                        <button type="button" class="close" id="pm" data-dismiss="modal" style="position:initial; color:black;">&times;</button>
+                        <h5>Confirm your password</h5>
+                    </div>
+                    <div class="box-body">
+                        <input type="password" name="Password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" id="confirm" class="btn btn-block btn-primary">Confirm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- Modal Caption (Image Text) -->
+        <div id="caption"></div>
+    </div>
+
+    <div id="alertsuccessModal" class="modal modal text-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <div class="callout callout-success lead text-center" style="border-color: #00a65a;">
+                <h4>Alert !</h4>
+                <p>Asset Disposal Successful !</p>
+                <a href="/AssetDisposal/Validate" style="text-decoration: none;" class="btn btn-block btn-success">OK !</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertfailedModal" class="modal modal text-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <div class="callout callout-danger lead text-center" style="border-color: #dd4b39;">
+                <h4>Alert !</h4>
+                <p>Incorrect Password</p>
+                <p>Asset Disposal Failed</p>
+                <button type="button" id="Dismiss" class="btn btn-block btn-danger">OK</button>
+                @*<a href="/AssetDisposal/Review" style="text-decoration: none;" class="btn btn-block btn-danger">OK !</a>*@
+            </div>
+        </div>
+    </div>
+
+    <div id="commonError" class="modal modal text-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <div class="callout callout-danger lead text-center" style="border-color: #dd4b39;">
+                <h4>Alert !</h4>
+                <p id="errorMessage"></p>
+                <a href="/AssetDisposal/Validate" style="text-decoration: none;" class="btn btn-block btn-danger">OK !</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="comment" class="modal modal text-center">
+
+    <!-- Modal Content (The Image) -->
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="padding:200px;">
+        <form id="formModalC">
+            <div class="box">
+                <div class="box-header">
+                    <button type="button" class="close" id="cm" data-dismiss="modal" style="position:initial; color:black;">&times;</button>
+                    <h5>Reason for Decline</h5>
+                </div>
+                <div class="box-body">
+                    <textarea name="DeniedReason" rows="4" cols="35"></textarea>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" id="confirmCo" class="btn btn-block btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+</div>
+
+<div id="DataModal" class="modal modal">
+    <div class="box" style="top:100px; width:90%; margin-left: 70px;" id="#lb2">
+        <div class="box-header with-border text-center">
+            <a href="#" id="print" class="btn btn-primary pull-left" style="background-color:orange; border-color: #ffa500;"><i class="fa fa-print"></i>  Print</a>
+            <h3 class="box-title">Asset Detail</h3>
+            <button type="button" class="close pull-right" data-dismiss="modal" style="color: #00b3a1;">×</button>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="col-md-4 col-sm-4 col-xs-4">
+                <table class="table">
+                    <thead><tr><th style="color:orange; border-bottom: 2px solid #ffa51f;">Purchase Details</th></tr></thead>
+                    <tbody>
+                        <tr><th>Supplier Name</th> <td id="sn">--</td></tr>
+                        <tr><th>Invoice Number</th><td id="in">--</td></tr>
+                        <tr><th>Date of Purchase</th><td id="dop">--</td></tr>
+                        <tr><th>Currency</th><td id="cu">--</td></tr>
+                        <tr><th>Unit Price</th><td id="up">--</td></tr>
+                        <tr><th>PO Number</th><td id="pn">--</td></tr>
+                        <tr><th>Date of PO</th><td id="dpo">--</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+                <table class="table">
+                    <thead><tr><th style="color:orange; border-bottom: 2px solid #ffa51f;">Product Detail</th></tr></thead>
+                    <tbody>
+                        <tr><th>Barcode ID</th> <td id="bc">--</td></tr>
+                        <tr><th>Description</th><td id="ds">--</td></tr>
+                    </tbody>
+
+                    <thead><tr><th style="color:orange; border-bottom: 2px solid #ffa51f;">Asset Value</th></tr></thead>
+                    <tbody>
+                        <tr><th>Depreciated</th> <td id="dci">--</td></tr>
+                        <tr><th>NetBook Value</th><td id="nbv">--</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4 text-center">
+                <img src="~/Content/img/notavailable.png" id="imgid" style="width:70%" />
+                <h1 style="color:green;" id="h3"></h1>
+                <h4 id="dds"></h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+    $('#error').hide();
+    $('#decline').attr("disabled", "disabled");
+    $('#moveAsset').attr("disabled", "disabled");
+    $('.datepicker').datepicker().datepicker("setDate", new Date());
+    $('.barcode').hide();
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    $('#currentRoom').attr("disabled", "disabled");
+
+    var userid = $('#userid').val();
+    var role = $('#role').val();
+    if (role === "USER" || role === "UADMIN") {
+        $(".Company").attr('disabled', true);
+        var form = { "UserID": userid };
+        var formData = { type: "POST", data: form };
+        getCompanyUser(formData, function (response) {
+            $('#defc').remove();
+            $(".Company").append($("<option></option>").val(response.data.Active + "*" + response.data.CompanyID).html(response.data.CompanyName));
+        });
+        GetUserLocation(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+            });
+
+            if (response.data.length === 1) {
+                //$("#AN").select2();
+                //$('#defl').remove();
+                $('.barcode').show();
+                setTimeout(function () {
+                    
+                    $('#ValidEmail').find('option').remove().end().append('<option value="null">Reviewer Email</option>');
+
+                    var CompanyID = $("#c").val();
+                    Companyvalues = CompanyID.split("*");
+                    SelectedCompanyID = Companyvalues[0];
+                    
+                    var Location = $("#Loc").val();
+                    values = Location.split("*");
+                    L1Location = values[0];
+
+                    if (L1Location != "") {
+
+                        var form = { "L1LocCode": L1Location, "L2LocCode": SelectedCompanyID, "CODELEVEL": "39" };
+                        var formData = {
+                            type: "POST",
+                            data: form
+                        };
+
+                        ListofReveiwer(formData, function (response) {
+                            $.each(response.data, function (key, value) {
+                                $("#ValidEmail").append($("<option></option>").val(value.Email).html(value.Email));
+                            });
+                        });
+
+                        DisposalNumberList(formData, function (response) {
+                            console.log(response);
+                            $.each(response.data, function (key, value) {
+                                if (value.Status == "PROCESS" || value.Status == "REPROCESS") {
+                                    $("#DisposedNumber").append($("<option></option>").val(value.DisposalNumber).html(value.DisposalNumber));
+                                }
+                            });
+                        });
+
+                    }
+                }, 2000);
+            } else {
+                $('.Location').unbind().change(function () {
+                    //$('#AN').select2();
+                    $('.barcode').show();
+
+                    $('#ValidEmail').find('option').remove().end().append('<option value="null">Reviewer Email</option>');
+
+                    var CompanyID = $("#c").val();
+                    Companyvalues = CompanyID.split("*");
+                    SelectedCompanyID = Companyvalues[0];
+                    
+                    var Location = $("#Loc").val();
+                    values = Location.split("*");
+                    ActiveLocation = values[1];
+                    L1Location = values[0];
+                    if (L1Location != "") {
+                        var form = { "L1LocCode": L1Location, "L2LocCode": SelectedCompanyID, "CODELEVEL": "39" };
+                        var formData = {
+                            type: "POST",
+                            data: form
+                        };
+                        ListofReveiwer(formData, function (response) {
+                            $.each(response.data, function (key, value) {
+                                $("#ValidEmail").append($("<option></option>").val(value.Email).html(value.Email));
+                            });
+                        });
+                        
+
+                        DisposalNumberList(formData, function (response) {
+                            console.log(response);
+                            $.each(response.data, function (key, value) {
+                                if (value.Status == "PROCESS" || value.Status == "REPROCESS") {
+                                    $("#DisposedNumber").append($("<option></option>").val(value.DisposalNumber).html(value.DisposalNumber));
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+        Permissions(formData, function (response) {
+            console.log(response.data);
+            if (response.data[29]['Permission'] === 'False') {
+                //$('.select1').attr("disabled", true);
+                $(".barcode").hide();
+            }
+        });
+    }
+    else {
+        getCompany(function (response) {
+            $.each(response.data, function (key, value) {
+                $(".Company").append($("<option></option>").val(value.CompanyID + "*" + value.Active).html(value.CompanyName));
+            });
+        });
+    }
+    $(".Company").change(function () {
+        $('.alert').remove();
+        $('#moveAssetSingle').show();
+        $("#Barcode").show();
+        $('.select1').attr("disabled", "disabled");
+        $('#currentRoom').val("");
+        $('#Loc').find('option').remove().end().append('<option value="">Select Locations</option>');
+        var id = $(this).val();
+        if (id != 0) {
+            values = id.split('*');
+            Active = values[1];
+            CompanyID = values[0];
+            if (Active === "true") {
+                $("#example2").show();
+                $('#ADU').show();
+                $('.com').remove();
+                $('.result').remove();
+                var formData = {
+                    type: 'POST',
+                    data: { 'CompanyID': CompanyID }
+                };
+
+                var formData = {
+                    type: 'POST',
+                    data: { 'CompanyID': CompanyID }
+                };
+                getLocations(formData, function (response) {
+                    if (response.data.length > 0) {
+                        $.each(response.data, function (key, value) {
+                            $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+                        });
+                    } else {
+                        $(".barcode").hide();
+                    }
+                });
+                $('.Location').unbind().change(function () {
+                    $('.alert').remove();
+                    $('.odd').remove();
+                    $(".barcode").show();
+                    $('#moveAssetSingle').show();
+
+                    var CompanyID = $("#c").val();
+
+                    Companyvalues = CompanyID.split("*");
+                    SelectedCompanyID = Companyvalues[0];
+                    
+                    var location = $(".Location").val();
+                    value1 = location.split('*');
+                    Active = value1[1];
+
+                    if (Active === "false") {
+                        $(".barcode").hide();
+                        $('#moveAssetSingle').hide();
+                        divItems =
+                            " <div class='alert alert-danger alert-dismissible'>" +
+                            "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                            "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Location Inactive ! Please Contact Administator." +
+                            "</div>";
+
+                        $('#noData').append(divItems);
+                    } else {
+
+                        $('#ValidEmail').find('option').remove().end().append('<option value="null">Reviewer Email</option>');
+
+
+                        var L1Location = $('#Loc').val();
+                        values = L1Location.split('*');
+                        L1Location = values[0];
+                        if (L1Location != "") {
+
+                            var form = { "L1LocCode": L1Location, "L2LocCode": SelectedCompanyID, "CODELEVEL": "39" };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+
+                            ListofReveiwer(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#ValidEmail").append($("<option></option>").val(value.Email).html(value.Email));
+                                });
+                            });
+
+                            DisposalNumberList(formData, function (response) {
+                                console.log(response);
+                                $.each(response.data, function (key, value) {
+                                    if (value.Status == "PROCESS" || value.Status == "REPROCESS") {
+                                        $("#DisposedNumber").append($("<option></option>").val(value.DisposalNumber).html(value.DisposalNumber));
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            } else {
+                $('#moveAssetSingle').hide();
+                divItems =
+
+                    " <div class='alert alert-danger alert-dismissible'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                    "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Company Inactive ! Please Contact Administator." +
+                    "</div>";
+
+                $('#noData').append(divItems);
+            }
+        }
+    });
+
+    $('#BarcodeButton').unbind().click(function () {
+        $('#error').show();
+        $('#decline').attr("disabled", false);
+        $('#moveAsset').attr("disabled", false);
+        $('.assetlist').remove();
+        var barcode = $("#DisposedNumber").val();
+        var form = { "DisposalNumber": barcode };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+        DisposalTransaction(formData, function (response) {
+            $('#total').text(response.data['Assets'].length);
+            var L1Location = $('#Loc').val();
+            values = L1Location.split('*');
+            L1Location = values[0];
+
+
+            var Number = response.data['DisposalNumber'];
+            var DateOfProcessing = response.data['DateOfProcessing'];
+            var DateOfDisposal = response.data['DateOfDisposal'];
+            var Yes = count(response.data['Assets'], "Yes");
+            var No = count(response.data['Assets'], "No");
+            var NetBookValue = countValue(response.data['Assets']);
+            var TotalDisposalSaleValue = response.data['DisposalSaleValue'];
+
+            var DNumber = " <h4 class='pull-left infoD assetlist' style='font-size:17px; color:black; font-weight:700;'>" + Number + "</h4>"
+            var Dodisposal = " <h4 class='pull-left infoD assetlist' style='font-size:17px; color:black; font-weight:700;'>" + DateOfDisposal + "</h4>"
+            var depreciated = " <h4 class='pull-left infoD assetlist' style='font-size:17px; color:red; font-weight:700;'>" + Yes + "</h4>"
+            var notdepreciated = " <h4 class='pull-left infoD assetlist' style='font-size:17px; color:blue; font-weight:700;'>" + No + "</h4>"
+            var nbookValue = " <h4 class='pull-left infoD assetlist' style='font-size:17px; color:black; font-weight:700;'>" + NetBookValue + "</h4>"
+            var tdsv = " <h4 class='pull-left infoD assetlist' style='font-size:17px; color:black; font-weight:700;'>" + TotalDisposalSaleValue + "</h4>"
+
+            $('#depreciated').append(depreciated);
+            $('#notdepreciated').append(notdepreciated);
+            $('#DNumber').append(DNumber);
+            $('#Dodisposal').append(Dodisposal);
+            $('#nbookValue').append(nbookValue);
+            $('#tdsv').append(tdsv);
+
+            if (response.data['ReprocessingRemarks'] != null) {
+                var Remarks =
+                                              "<div class='col-md-6 assetlist'>" +
+                                           "<div class='col-md-12' style='border: 1px solid black; margin:5px;'>" +
+                                           "<div class='col-md-12'>" +
+                                           "<div class='col-md-6'>" +
+                                           "   <h4 class='pull-left' style='font-size:17px; color:black; font-weight:700;'>Date Of Preparation :<span style='color:blue;'> " + response.data['DateOfProcessing'] + "</span></h4>" +
+                                           "</div>"
+                "<div class='col-md-6'>" +
+                                  "   <h4 class='pull-left' style='font-size:17px; color:black; font-weight:700;'>Preparation Remarks :  " + response.data['ProcessingRemarks'] + "</h4>" +
+                "</div>" +
+                                           "</div>" +
+                                            "</div>" +
+                                           "</div>" +
+                                            "<div class='col-md-6 assetlist'>" +
+                                              "<div class='col-md-12' style='border: 1px solid black; margin:5px;'>" +
+                                              "<div class='col-md-6'>" +
+                                              "   <h4 class='pull-left' style='font-size:17px; color:black; font-weight:700;'>Date Of Reprocessing :<span style='color:blue;'> " + response.data['DateOfReProcessing'] + "</span></h4>" +
+                                              "</div>" +
+                                              "<div class='col-md-6'>" +
+                                              "   <h4 class='pull-left' style='font-size:17px; color:black; font-weight:700;'>Reason for Denial :<span style='color:blue;'> " + response.data['DeniedReason'] + "</span></h4>" +
+                                              "</div>" +
+                                              "<div class='col-md-12'>" +
+                                              "   <h4 class='pull-left' style='font-size:17px; color:black; font-weight:700;'>Reprocessing Remarks :<span style='color:blue;'> " + response.data['ReprocessingRemarks'] + "</span></h4>" +
+                                              "</div>" +
+                                               "</div>" +
+                                              "</div>"
+
+                $('#errorbox').append(Remarks);
+            }
+            else {
+                var Remarks1 =
+                                            "<div class='col-md-6 assetlist'>" +
+
+                                            "<div class='col-md-12' style='border:1px solid black'>" +
+                                           "<div class='col-md-6'>" +
+                                           "   <h4 class='pull-left' style='font-size:17px; color:black; font-weight:700;'>Date Of Preparation :<span style='color:blue;'> " + response.data['DateOfProcessing'] + "</span></h4>" +
+                                           "</div>" +
+                "<div class='col-md-6'>" +
+                                  "   <h4 class='pull-left' style='font-size:17px; color:black; font-weight:700;'>Preparation Remarks :  " + response.data['ProcessingRemarks'] + "</h4>" +
+                "</div>" +
+                                           "</div>" +
+
+                                            "</div>"
+
+                $('#errorbox').append(Remarks1);
+            }
+
+
+
+            $.each(response.data['Assets'], function (key, value) {
+                if (L1Location != "") {
+                    var form = { "AssetNumber": value.AssetNumber, "L1LocCode": L1Location };
+                    var formData = {
+                        type: "POST",
+                        data: form
+                    };
+                    var table = $('#display');
+                    if ($('#' + value.AssetNumber).length == 0 && value.AssetNumber != "") {
+
+                        GetAssetBC(formData, function (response) {
+                            console.log(response);
+                            if (response.data.length > 0) {
+                                $('#gs').show();
+                                $('#moveAssetSingle').show();
+                                $('.alert').remove();
+                                var Depreciated = response.data[0]['Depreciated'];
+                                var NetBookValue = response.data[0]['NetbookValue'];
+                                var AssetNumber = response.data[0]['AssetNumber'];
+                                var AssetDescription = response.data[0]['AssetDescription'];
+                                var L1CatName = response.data[0]['Group'];
+                                var L2CatName = response.data[0]['Category'];
+                                var L3CatCode = response.data[0]['Image'];
+                                var L2LocName = response.data[0]['Section'];
+                                var L3LocName = response.data[0]['Room_No'];
+                                var L4LocName = response.data[0]['Room_Type'];
+                                var L5LocName = response.data[0]['Floor'];
+                                var UnitPrice = response.data[0]['UnitPrice'];
+                                var DateOfPurchase = response.data[0]['DateOfPurchase'];
+                                var UniqueID = response.data[0]['UniqueID'];
+                                $('#currentRoom').val(L3LocName);
+                                var divItems1 =
+
+                                //    "<tr id='" + AssetNumber + "' class='assetlist'>" +
+                                //    "<td hidden ><input class='chk' name='asset[]' type='checkbox' value='" + UniqueID + "' checked></td>" +
+                                //    "<td>" + Depreciated + "</td>" +
+                                //    "<td>" + NetBookValue + "</td>" +
+                                //    "<td>" + AssetNumber + "</td>" +
+                                //    "<td>" + AssetDescription + "</td>" +
+                                //    "<td>" + L1CatName + "</td>" +
+                                //    "<td>" + L2CatName + "</td>" +
+                                //    "<td>" + L2LocName + "</td>" +
+                                //    "<td>" + L3LocName + "</td>" +
+                                //    "<td class='text-center'><img src='" + baseUrl.appServer + "Content/img/" + L3CatCode + ".jpg' data-toggle='modal' data-target='#mModal' class='images' style = 'width:50px; height:50px;'/></td>" +
+                                //    "<td class='details-control'></td>"
+                                //"</tr>"
+
+
+
+                                "<tr id='" + UniqueID + "' class='assetlist " + AssetNumber + "'>" +
+                                "<td><input class='chk' name='asset[]' type='checkbox' value='" + UniqueID + "' checked></td>" +
+                                 "<td><select id='d" + UniqueID + "' class='form-control borderfas dv'><option value='Yes'>YES</option><option value='No'>NO</option></select></td>" +
+                                 "<td id=" + AssetNumber + "price" + ">" + UnitPrice + "</td>" +
+                                 "<td>" + DateOfPurchase + "</td>" +
+                                 "<td><input class='form-control borderfas " + UniqueID + "' style='width:90px;' name='netbookvalue' value='" + NetBookValue + "' type='text'></td>" +
+                                "<td>" + AssetNumber + "</td>" +
+                                "<td>" + AssetDescription + "</td>" +
+                                "<td>" + L1CatName + "</td>" +
+                                "<td>" + L2CatName + "</td>" +
+                                "<td>" + L2LocName + "</td>" +
+                                "<td>" + L3LocName + "</td>" +
+                                "<td class='text-center'><img src='" + baseUrl.appServer + "Content/img/" + L3CatCode + ".jpg' data-toggle='modal' data-target='#myModal' class='images' style = 'width:50px; height:50px;'/></td>" +
+                                "<td class='details-control'></td>"
+                                "</tr>"
+
+
+                                $('#display > tbody:last-child').append(divItems1);
+
+                                $("#d" + UniqueID).val(Depreciated);
+                                if (Depreciated === "Yes") {
+                                    $('.' + UniqueID).attr('disabled', 'disabled');
+                                }
+                                //$(".chk").unbind().change(function () {
+                                //    var assetchk = $('#bulkAsset').find('.chk:checked').length;
+                                //    $('#total').text(assetchk);
+                                //});
+                                var role = $('#role').val();
+                                if (role == "USER") {
+                                    var userId = $('#userid').val();
+                                    var formData = {
+                                        type: "post",
+                                        data: { 'UserID': userId }
+                                    };
+                                    Permissions(formData, function (response) {
+                                        if (response.data[17]['Permission'] == 'True') {
+                                            $('.select1').attr("disabled", false);
+                                        }
+                                    });
+                                }
+                                else {
+                                    $('.select1').attr("disabled", false);
+                                }
+                            }
+                            else {
+                                $('.alert').remove();
+                                $('#moveAssetSingle').hide();
+                                $('#gs').hide();
+                                divItems =
+
+                                    " <div class='alert alert-danger alert-dismissible'>" +
+                                    "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                                    "<h4><i class='icon fa fa-ban'></i> Alert!</h4>No Assets Found" +
+                                    "</div>"
+
+                                $('#noData').append(divItems);
+                            }
+                        });
+                    } else {
+                        //Verify blank value
+                        if (value == "") {
+                            $('#errorMessage').text('Barcode Id is empty');
+                            $('#commonError').toggle();
+                        } else {
+
+                        }
+                    }
+                } else {
+                    $('.alert').remove();
+                    $('#moveAssetSingle').hide();
+                    divItems =
+
+                        " <div class='alert alert-danger alert-dismissible'>" +
+                        "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                        "<h4><i class='icon fa fa-ban'></i> Alert!</h4>No Location Selected!" +
+                        "</div>"
+
+                    $('#noData').append(divItems);
+                }
+            });
+            setTimeout(function () {
+                $('.dv').unbind().change(function () {
+                    if ($(this).val() == 'Yes') {
+                        var id = ($(this).attr('id')).substring(1);
+                        $('.' + id).val('0').attr('disabled', 'disabled');
+                    } else {
+                        var id = ($(this).attr('id')).substring(1);
+                        $('.' + id).val('').attr('disabled', false);
+                    }
+                });
+            }, 2000);
+        });
+    });
+
+
+    $(document).on('click', '.images', function (e) {
+        var image = $(this).attr('src');
+        $('#myModal').on('show.bs.modal', function () {
+            $("#img01").attr("src", image);
+        });
+    });
+
+    $('#decline').unbind().click(function (event) {
+        var AssetInfo = [];
+        var DisposalNumber = $('#DisposedNumber').val();
+        var userId = $('#userid').val();
+        $('#moveAssetSingle').unbind().submit(function (event) {
+
+
+
+            $('.chk:checked').each(function () {
+                AssetInfo.push({
+                    AssetNumber: '' + $(this).val() + '',
+                    Depreciated: '' + $('#d' + $(this).val()).val() + '',
+                    NetbookValue: '' + $('.' + $(this).val()).val() + ''
+                });
+            });
+
+            event.preventDefault();
+            var realForm = $(this);
+            var realformData = {
+                type: realForm.attr('method'),
+                data: realForm.serialize() + "&DisposalNumber=" + DisposalNumber + "&UserID=" + userId
+            };
+            $('#OkayModal').toggle();
+            $('#dmsg').replaceWith("<h5 style='color:red;' id='dmsg'>Are you sure you want to Decline the Disposal</h5>");
+            $('#Cancel').unbind().click(function () {
+                $('#OkayModal').hide();
+            });
+            $('#Okay').unbind().click(function () {
+                $('#OkayModal').hide();
+                $('#comment').toggle();
+            });
+            $('#formModalC').submit(function (event) {
+                event.preventDefault();
+                $('#comment').toggle();
+                var newForm = $(this);
+                var newformData = {
+                    type: newForm.attr('method'),
+                    data: newForm.serialize()
+                };
+                $('#myModal').toggle();
+                $('#formModal').submit(function (event) {
+                    event.preventDefault(event);
+                    var L1Location = $('.Location').val();
+                    values = L1Location.split('*');
+                    L1Location = values[0];
+
+                    var postData = {
+                        DisposalNumber: DisposalNumber,
+                        UserID: userId,
+                        L1LocCode: L1Location,
+                        Assets: AssetInfo,
+                        DateOfValidation: $('#DateOfValidation').val(),
+                        Password: $('#password').val(),
+                        ValidatedBy: userid,
+                        ValidationRemarks: $('#ValidRemarks').val(),
+                        ValidEmail: $('#ValidEmail').val()
+                    };
+
+                    var form = $(this);
+                    var formData = {
+                        type: 'post',
+                        data: postData
+                        //data: form.serialize() + '&' + newformData.data + '&' + realformData.data + '&ValidatedBy=' + userId + '&L1LocCode=' + L1Location + "&Assets=" + AssetInfo
+                    };
+                    DisposalDenied(formData, function (response) {
+                        if (response.message == "Success") {
+                            $('#commonError').toggle();
+                            $('#errorMessage').text('Asset Disposal Declined');
+                        } else {
+                            $('#commonError').toggle();
+                            $('#errorMessage').text('Disposal Can not be Declined');
+                        }
+                    });
+                });
+            });
+        });
+    });
+
+    $('#moveAsset').unbind().click(function (event) {
+        var userId = $('#userid').val();
+        var DisposalNumber = $('#DisposedNumber').val();
+        $('#moveAssetSingle').unbind().submit(function (event) {
+            event.preventDefault();
+
+            var AssetInfo = [];
+
+            $('.chk:checked').each(function () {
+                AssetInfo.push({
+                    AssetNumber: '' + $(this).val() + '',
+                    Depreciated: '' + $('#d' + $(this).val()).val() + '',
+                    NetbookValue: '' + $('.' + $(this).val()).val() + ''
+                });
+            });
+
+            var newForm = $(this);
+            var newformData = {
+                type: newForm.attr('method'),
+                data: newForm.serialize() + "&Assets=" + AssetInfo + "&DisposalNumber=" + DisposalNumber
+            };
+
+            $('#OkayModal').toggle();
+            $('#dmsg').replaceWith("<h5 style='color:red;' id='dmsg'>Do you want to proceed with disposal</h5>");
+            $('#Cancel').unbind().click(function () {
+                $('#OkayModal').hide();
+            });
+            $('#Okay').unbind().click(function () {
+                $('#OkayModal').hide();
+                $('#myModal').toggle();
+            });
+
+
+            $('#formModal').unbind().submit(function (event) {
+
+                var L1Location = $('#Loc').val();
+                values = L1Location.split('*');
+                L1Location = values[0];
+                var postData = {
+                    UserID: userid,
+                    L1LocCode: L1Location,
+                    Assets: AssetInfo,
+                    DateOfValidation: $('#DateOfValidation').val(),
+                    Password: $('#password').val(),
+                    ValidatedBy: userid,
+                    ValidationRemarks: $('#ValidRemarks').val(),
+                    DisposalNumber: $('#DisposedNumber').val(),
+                    ValidEmail: $('#ValidEmail').val()
+                };
+                var formData = {
+                    type: 'post',
+                    data: postData
+                };
+                console.log(formData);
+
+                //event.preventDefault();
+                //var L1Location = $('#Loc').val();
+                //values = L1Location.split('*');
+                //L1Location = values[0];
+                //var form = $(this);
+                //var formData = {
+                //    type: 'post',
+                //    data: form.serialize() + '&' + newformData.data + '&ValidatedBy=' + userId + '&L1LocCode=' + L1Location
+                //};
+                console.log(formData);
+                DisposalValidation(formData, function (response) {
+                    console.log(response);
+                    if (response.message == "Incorrect Password") {
+                        $('#alertfailedModal').toggle();
+                    } else {
+                        $('#alertsuccessModal').toggle();
+                    }
+                });
+            });
+        });
+    });
+
+    $('#Dismiss').unbind().click(function () {
+        //event.preventDefault();
+        $('#alertfailedModal').toggle();
+    });
+
+
+    $(document).on('click', '.images', function (e) {
+        var image = $(this).attr('src');
+        $('#mModal').on('show.bs.modal', function () {
+            $("#img01").attr("src", image);
+        });
+    });
+
+    $('#pm').unbind().click(function () {
+        $('#myModal').toggle();
+    });
+
+    $('#cm').unbind().click(function () {
+        $('#comment').toggle();
+    });
+
+    $('#display tbody').on('click', 'td.details-control', function () {
+        $('#DataModal').modal('toggle');
+        var tr = $(this).closest('tr');
+        var L1Location = $('#Loc').val();
+        values = L1Location.split('*');
+        L1Location = values[0];
+        var form = { "AssetNumber": tr[0]['classList'][1], "L1LocCode": L1Location };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+        console.log(formData);
+        GetAssetBC(formData, function (response) {
+            console.log(response);
+            $('#bc').html(response.data[0]['AssetNumber']);
+            $('#ds').html(response.data[0]['AssetDescription']);
+            $('#imgid').attr('src', '' + baseUrl.appServer + 'Content/img/' + response.data[0]['Image'] + '.jpg');
+            $('#dci').html(response.data[0]['Depreciated']);
+            $('#nbv').html(response.data[0]['NetbookValue']);
+        });
+
+        var form = { "UniqueID": tr[0]['id'] };
+        var formData = { type: "POST", data: form };
+        PurchaseDetail(formData, function (response) {
+            console.log(response);
+            $('#sn').html(response.data.SupplierName);
+            $('#in').html(response.data.InvoiceNumber);
+            $('#dop').html(response.data.DateofPurchase);
+            $('#cu').html(response.data.iso);
+            $('#up').html(response.data.UnitPrice);
+            $('#pn').html(response.data.PONumber);
+            $('#dpo').html(response.data.DateOfPO);
+            $('#sel').html(response.data.SupplierEmail);
+        });
+    });
+
+</script>

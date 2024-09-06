@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3363BB0B-6686-4958-BE5A-00AE1B391679}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FAS.Services</RootNamespace>
+    <AssemblyName>FAS.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssetReconciliationService.cs" />
+    <Compile Include="AssetReverificationService.cs" />
+    <Compile Include="AssetService.cs" />
+    <Compile Include="AssetTaggingService.cs" />
+    <Compile Include="CompanyService.cs" />
+    <Compile Include="Helper\ExtensionHelper.cs" />
+    <Compile Include="Helper\DataContextHelper.cs" />
+    <Compile Include="DataModel\MatrixFAS.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MatrixFAS.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="DisposalService.cs" />
+    <Compile Include="GatePassService.cs" />
+    <Compile Include="L1CategoryService.cs" />
+    <Compile Include="L2CategoryService.cs" />
+    <Compile Include="L3CategoryService.cs" />
+    <Compile Include="LocationService.cs" />
+    <Compile Include="LoginService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SectionService.cs" />
+    <Compile Include="SupplierService.cs" />
+    <Compile Include="UserService.cs" />
+    <Compile Include="V2\AndroidAPIServices.cs" />
+    <Compile Include="V2\AssetService.cs" />
+    <Compile Include="V2\PurchaseServices.cs" />
+    <Compile Include="V2\SupplierServices.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FAS.Adapter\FAS.Adapter.csproj">
+      <Project>{a75fdf5b-eead-4467-a9df-acaa84d32297}</Project>
+      <Name>FAS.Adapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FAS.Data\FAS.Data.csproj">
+      <Project>{a75cdbf6-4da8-4458-9f23-dd08e25d5058}</Project>
+      <Name>FAS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FAS.SharedModel\FAS.SharedModel.csproj">
+      <Project>{1a70a213-8565-457e-91d7-211572b1ad83}</Project>
+      <Name>FAS.SharedModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DataModel\MatrixFAS.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>MatrixFAS.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataModel\MatrixFAS.dbml.layout">
+      <DependentUpon>MatrixFAS.dbml</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

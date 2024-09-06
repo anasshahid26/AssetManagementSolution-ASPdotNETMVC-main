@@ -1,0 +1,91 @@
+﻿@using FAS.SharedModel
+@model FAS.SharedModel.CompanyViewModel
+
+<div class="box">
+    <div class="box-header with-border">
+        <div class="col-md-12">
+            <h3 class="box-title box-title-main">Manage Location</h3>
+        </div>
+        <a class="btn btn-app pull-right" data-toggle="modal" data-target="#addLocation">
+            <i class="fa fa-plus"></i> Add Location
+        </a>
+        <div class="col-md-3" style="margin-top: 10px;">
+            <label for="exampleInputEmail1">Company Name</label>
+            @Html.DropDownListFor(m => m.CompanyID, new SelectList(ViewBag.Company, "CompanyID", "CompanyName"), new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="box-body">
+        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                        <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" >Location</th>
+                                <th class="sorting" >Location Code</th>
+                                <th class="sorting">Location Name</th>
+                                <th class="sorting">Location Address</th>
+                                <th class="sorting">Location City</th>
+                                <th class="sorting">Location Country</th>
+                                <th class="sorting" style="width:20%" ></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in ViewBag.Location) { 
+                            <tr role="row" class="odd">
+                                <td class="sorting_1">1</td>
+                                <td class="">LLCCVV</td>
+                                <td class="">Location 1</td>
+                                <td class="">Dubai</td>
+                                <td class="">Dubai</td>
+                                <td class="">Dubai</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary">Add</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Edit</i></button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Active</button>
+                                </td>
+                            </tr>
+                            }*@
+                            @foreach (var item in ViewBag.Location)
+                            {
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">@item.LocationID</td>
+                                    <td class="">@item.LocationCode</td>
+                                    <td class="">@item.LocationName</td>
+                                    <td class="">@item.Address</td>
+                                    <td class="">@item.City</td>
+                                    <td class="">@item.Country</td>
+                                    <td class="text-center">
+                                        @Html.ActionLink("Edit", "Edit", new { LocationID = item.LocationID}, new { @class = "btn btn-primary" })
+                                        @Html.ActionLink("Delete", "Delete", new { LocationID = item.LocationID}, new { @class = "btn btn-danger" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-7 pull-right">
+                    <div class="dataTables_paginate paging_simple_numbers pull-right" id="example2_paginate">
+                        <ul class="pagination">
+                            <li class="paginate_button previous disabled" id="example2_previous">
+                                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+                            </li>
+                            <li class="paginate_button active">
+                                <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+                            </li>
+                            <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a></li>
+                            <li class="paginate_button next" id="example2_next"><a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

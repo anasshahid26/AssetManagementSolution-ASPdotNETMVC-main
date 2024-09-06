@@ -1,0 +1,1117 @@
+﻿@{
+    //ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .duplicate {
+        font-weight: bold;
+        color: red;
+        border: 1px solid red;
+        background: rgb(255, 206, 206);
+    }
+
+    td.sorting_1 {
+        width: 25%;
+    }
+</style>
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">Reports</h3>
+    <div class="box">
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <h3 class="box-title box-title-main">Asset Tagging Entry</h3>
+                <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+                <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+            </div>
+            <div class="col-md-12" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <label for="exampleInputEmail1">Location</label>
+                    <select class="form-control borderfas" id="Location" style="background-color: #ffffff;">
+                        <option id="def">Select Location</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <label>Section Name</label>
+                    <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetSection">
+                        <option value="null">Asset Section</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="col-md-12" style="margin-top: 10px;">
+                 <div class="col-md-12">
+                     <label>Room Type</label>
+                     <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetRoomType">
+                         <option value="null">Asset Room Type</option>
+                     </select>
+                 </div>
+                 </div> -->
+            <div class="col-md-12" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <label>Room No</label>
+                    <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetRoomNo">
+                        <option value="null">Asset Room No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12" style="padding: 0px; top: 20px;">
+                <div class="col-md-12" style="margin-left:15px">
+                    <button type="button" class="btn btn-app" style="margin: 0px; color: #000000; border: 1px solid rgb(177, 231, 224); background-color: rgb(177, 231, 224); margin-bottom: 40px;" id="DescriptionButton"><i class="fa fa-search"></i>Search</button>
+                    <button type="button" class="btn btn-app" style="margin: 0px; color: #ffffff; border: 1px solid #dd4b39; background-color: #dd4b39; margin-bottom: 40px;" id="clear"><i class="fa fa-ban"></i>Clear</button>
+                </div>
+            </div>
+
+
+
+
+
+            @*<div class="col-md-1 pull-right" style="margin-top: 35px;">
+                    <button type="button" class="btn btn-default" id="BarcodeButton" style="margin: 0px; color: #fff; border: 1px solid #46c7ba; background-color: #46c7ba;"><i class="fa fa-search"></i></button>
+                </div>
+
+                <div class="col-md-3 pull-right" style="margin-top: 10px;">
+                    <label for="exampleInputEmail1">Barcode ID</label>
+                    <input type="number" class="form-control" style="border: 2px solid #46c7ba;" id="Barcode">
+                </div>*@
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row">
+                            <div class="col-sm-12">
+                                <form method="post" id="assettaggingform">
+                                    <table id="table2excel" data-tablename="Test Table 1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="border: 1px solid #999;">Barcode ID</th>
+                                                <th style="border: 1px solid #999;">Asset Description</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody id="assets"></tbody>
+                                    </table>
+                                    <div class="box-footer locb text-center">
+                                        <button type="button" id="itemtagging" onclick="AddAssetTagging()" class="btn btn-lg btn-primary">Submit</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal text-center">
+
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content modal-content" id="img01" style="min-height:0%; top:100px; border: 10px solid #a2a4a3; border-radius: 30px; width:500px;">
+
+        <!-- Modal Caption (Image Text) -->
+        <div id="caption"></div>
+    </div>
+
+    <div id="addLocation" class="modal fade" role="dialog" style="">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Location</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="col-md-12">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Name</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Site</label>
+                                                <select class="form-control">
+                                                    <option>101</option>
+                                                    <option>102</option>
+                                                    <option>103</option>
+                                                    <option>104</option>
+                                                    <option>105</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Description</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Parent Location</label>
+                                                <select class="form-control">
+                                                    <option>101</option>
+                                                    <option>102</option>
+                                                    <option>103</option>
+                                                    <option>104</option>
+                                                    <option>105</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="checkbox" style="margin-top: 30px;">
+                                                <label>
+                                                    <input type="checkbox"> Inactive
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/jszip.min.js"></script>
+<script src="~/Scripts/buttons.html5.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+<script>
+
+
+
+
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    $('#loader').hide();
+    Table = $("#table2excel").DataTable({
+        "paging": false,
+        data: [],
+        columns: [
+             {
+
+                 data: 'AssetNumber',
+                 "render": function (data, type, row, meta) { // render event defines the markup of the cell text
+                     var a = '<input class="input_number" type="number" style="font-weight: bold;color: #4f7698;" id="' + row.TID + '"  value="' + row.AssetNumber + '"/>'; // row object contains the row data
+                     return a;
+                 }
+
+             },
+             { data: 'AssetDescription' },
+
+
+        ],
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'excelHtml5',
+            text: 'Export to Excel',
+            exportOptions: {
+                columns: ':visible:not(.not-export-col)'
+            },
+            customize: function (xlsx) {
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                var downrows = 3;
+                var clRow = $('row', sheet);
+                //update Row
+                clRow.each(function () {
+                    var attr = $(this).attr('r');
+                    var ind = parseInt(attr);
+                    ind = ind + downrows;
+                    $(this).attr("r", ind);
+                });
+
+                // Update  row > c
+                $('row c ', sheet).each(function () {
+                    var attr = $(this).attr('r');
+                    var pre = attr.substring(0, 1);
+                    var ind = parseInt(attr.substring(1, attr.length));
+                    ind = ind + downrows;
+                    $(this).attr("r", pre + ind);
+                });
+
+                function Addrow(index, data) {
+                    msg = '<row r="' + index + '">'
+                    for (i = 0; i < data.length; i++) {
+                        var key = data[i].k;
+                        var value = data[i].v;
+                        msg += '<c t="inlineStr" r="' + key + index + '" s="42">';
+                        msg += '<is>';
+                        msg += '<t>' + value + '</t>';
+                        msg += '</is>';
+                        msg += '</c>';
+                    }
+                    msg += '</row>';
+                    return msg;
+                }
+                var locat = $("#Location option:selected").text();
+                //insert
+                var r1 = Addrow(1, [{ k: 'A', v: 'Matrix Fixed Asset Solution' }]);
+                var r2 = Addrow(2, [{ k: 'A', v: 'Report Name' }, { k: 'B', v: 'Asset Search Report' }]);
+                var r3 = Addrow(3, [{ k: 'A', v: 'Location Name' }, { k: 'B', v: locat }]);
+
+
+                sheet.childNodes[0].childNodes[1].innerHTML = r1 + r2 + r3 + sheet.childNodes[0].childNodes[1].innerHTML;
+            }
+        }],
+        rowCallback: function (row, data) {
+            var imgLink = data['Image'];
+            var assetNumber = data['AssetNumber'];
+            var imgTag = '<img src="' + baseUrl.appServer + 'Content/img/' + imgLink + '.jpg" id="' + assetNumber + '" data-toggle="modal" data-target="#myModal" class="images" style = "width:25px; height:25px;"/>';
+            $('td:eq(8)', row).html(imgTag);
+
+            return row;
+        },
+    });
+
+
+    var role = $('#role').val();
+    if (role == "USER" || role == "UADMIN") {
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+
+        Permissions(formData, function (response) {
+            if (response.data[14]['Permission'] == 'False') {
+                //$('#excel').prop("disabled", true);
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        setTimeout(function () {
+            var Location1 = $('#Location').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+            getL1Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                });
+                $("#AssetGroup").unbind().change(function () {
+                    var gid = $(this).val();
+                    if (gid != "null") {
+                        $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+                        $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+
+                        var form = { "L1CatCode": gid };
+                        var formData = { type: "POST", data: form };
+                        getL2Category(formData, function (response) {
+                            $.each(response.data, function (key, value) {
+                                $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                            });
+                            $("#AssetCategory").unbind().change(function () {
+                                $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                                $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                                $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                var cid = $(this).val();
+                                var form = {
+                                    "L1CatCode": gid,
+                                    "L2CatCode": cid
+                                };
+                                var formData = {
+                                    type: "POST",
+                                    data: form
+                                };
+                                getL2Location(formData, function (response) {
+                                    $.each(response.data, function (key, value) {
+                                        $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                                    });
+                                    $("#AssetSection").unbind().change(function () {
+                                        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                                        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                        var sid = $(this).val();
+                                        var form = {
+                                            "L1CatCode": gid,
+                                            "L2CatCode": cid,
+                                            "L2LocCode": sid
+                                        };
+                                        var formData = {
+                                            type: "POST",
+                                            data: form
+                                        };
+                                        getL3Location(formData, function (response) {
+                                            $.each(response.data, function (key, value) {
+                                                $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                                            });
+                                            $("#AssetRoomNo").unbind().change(function () {
+                                                $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                                $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                                var rid = $(this).val();
+                                                var form = {
+                                                    "L1CatCode": gid,
+                                                    "L2CatCode": cid,
+                                                    "L2LocCode": sid,
+                                                    "L3LocCode": rid,
+                                                };
+                                                var formData = {
+                                                    type: "POST",
+                                                    data: form
+                                                };
+                                                getL4Location(formData, function (response) {
+                                                    $.each(response.data, function (key, value) {
+                                                        $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                                                    });
+                                                    $("#AssetRoomType").unbind().change(function () {
+                                                        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                                        var tid = $(this).val();
+                                                        var form = {
+                                                            "L1CatCode": gid,
+                                                            "L2CatCode": cid,
+                                                            "L2LocCode": sid,
+                                                            "L3LocCode": rid,
+                                                            "L4LocCode": tid
+                                                        };
+                                                        var formData = {
+                                                            type: "POST",
+                                                            data: form
+                                                        };
+                                                        getL5Location(formData, function (response) {
+                                                            $.each(response.data, function (key, value) {
+                                                                $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    }
+
+                    else {
+                        $('#AssetCategory').find('option').remove().end().append('<option>Asset Category</option>');
+                        $('#AssetSection').find('option').remove().end().append('<option>Asset Section</option>');
+                        $('#AssetRoomNo').find('option').remove().end().append('<option>Asset Room No</option>');
+                        $('#AssetRoomType').find('option').remove().end().append('<option>Asset Room Type</option>');
+                        $('#AssetFloor').find('option').remove().end().append('<option>Asset Floor</option>');
+                        location.reload();
+                    }
+                });
+            });
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+            getL2Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                });
+            });
+            getL2Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                });
+            });
+            getL3Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                });
+            });
+            getL4Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                });
+            });
+            getL5Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                });
+                //$("#AssetFloor").change(function () {
+
+                //});
+            });
+        }, 2000);
+    } else {
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        $('#Location').unbind().change(function () {
+            $('#AssetGroup').find('option').remove().end().append('<option value="null">Asset Group</option>');
+            $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+            $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+            $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+            $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+            $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+            getL1Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                });
+                $("#AssetGroup").unbind().change(function () {
+                    var gid = $(this).val();
+                    if (gid != "null") {
+                        $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+                        $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+
+                        var form = { "L1CatCode": gid, "L1LocCode": Location1 };
+                        var formData = { type: "POST", data: form };
+                        getL2Category(formData, function (response) {
+                            $.each(response.data, function (key, value) {
+                                $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                            });
+                            $("#AssetCategory").unbind().change(function () {
+                                $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                                $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                                $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                var cid = $(this).val();
+                                var form = {
+                                    "L1CatCode": gid,
+                                    "L2CatCode": cid,
+                                    "L1LocCode": Location1
+                                };
+                                var formData = {
+                                    type: "POST",
+                                    data: form
+                                };
+                                getL2Location(formData, function (response) {
+                                    $.each(response.data, function (key, value) {
+                                        $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                                    });
+                                    $("#AssetSection").unbind().change(function () {
+                                        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                                        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                        var sid = $(this).val();
+                                        var form = {
+                                            "L1CatCode": gid,
+                                            "L2CatCode": cid,
+                                            "L2LocCode": sid,
+                                            "L1LocCode": Location1
+                                        };
+                                        var formData = {
+                                            type: "POST",
+                                            data: form
+                                        };
+                                        getL3Location(formData, function (response) {
+                                            $.each(response.data, function (key, value) {
+                                                $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                                            });
+                                            $("#AssetRoomNo").unbind().change(function () {
+                                                $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                                $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                                var rid = $(this).val();
+                                                var form = {
+                                                    "L1CatCode": gid,
+                                                    "L2CatCode": cid,
+                                                    "L2LocCode": sid,
+                                                    "L3LocCode": rid,
+                                                    "L1LocCode": Location1
+                                                };
+                                                var formData = {
+                                                    type: "POST",
+                                                    data: form
+                                                };
+                                                getL4Location(formData, function (response) {
+                                                    $.each(response.data, function (key, value) {
+                                                        $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                                                    });
+                                                    $("#AssetRoomType").unbind().change(function () {
+                                                        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                                        var tid = $(this).val();
+                                                        var form = {
+                                                            "L1CatCode": gid,
+                                                            "L2CatCode": cid,
+                                                            "L2LocCode": sid,
+                                                            "L3LocCode": rid,
+                                                            "L4LocCode": tid,
+                                                            "L1LocCode": Location1
+                                                        };
+                                                        var formData = {
+                                                            type: "POST",
+                                                            data: form
+                                                        };
+                                                        getL5Location(formData, function (response) {
+                                                            $.each(response.data, function (key, value) {
+                                                                $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    }
+
+                    else {
+                        $('#AssetCategory').find('option').remove().end().append('<option>Asset Category</option>');
+                        $('#AssetSection').find('option').remove().end().append('<option>Asset Section</option>');
+                        $('#AssetRoomNo').find('option').remove().end().append('<option>Asset Room No</option>');
+                        $('#AssetRoomType').find('option').remove().end().append('<option>Asset Room Type</option>');
+                        $('#AssetFloor').find('option').remove().end().append('<option>Asset Floor</option>');
+                        location.reload();
+                    }
+                });
+            });
+
+            $('#AssetGroup').find('option').remove().end().append('<option value="null">Asset Group</option>');
+            $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+            $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+            $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+            $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+            $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+
+            getL2Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                });
+            });
+            getL2Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                });
+            });
+            getL3Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                });
+            });
+            getL4Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                });
+            });
+            getL5Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                });
+            });
+        });
+    }
+
+    $('#DescriptionButton').unbind().click(function () {
+        $('#total').hide();
+        $('#loader').show();
+        $('.odd').remove();
+        var Location = $("#Location").find(':selected').val();
+        var Description = $("#Description").val();
+        var AssetGroup = $("#AssetGroup").find(':selected').text();
+        var AssetCategory = $("#AssetCategory").find(':selected').text();
+        var AssetSection = $("#AssetSection").find(':selected').val();
+        var AssetRoomNo = $("#AssetRoomNo").find(':selected').val();
+        var AssetRoomType = $("#AssetRoomType").find(':selected').text();
+        var AssetFloor = $("#AssetFloor").find(':selected').text();
+
+        var form = { "location_code": Location, "AssetDescription": Description, "AssetNumber": null, "L1CatName": AssetGroup, "L2CatName": AssetCategory, "section_code": AssetSection, "room_code": AssetRoomNo, "L4LocName": AssetRoomType, "CODELEVEL": AssetFloor };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+        getAssetTagging(formData, function (response) {
+            $('#excel').unbind().click(function () {
+                JSONToCSVConvertor(response.data, "Asset", true);
+
+            });
+            console.log(response);
+            var total = response.data.length;
+            $('#total').text(total);
+            $('#loader').hide();
+            $('#total').show();
+            Table.clear().draw();
+
+            // for (var a = 0; a <= total; a++) {
+            Table.rows.add(response.data).draw();
+            // }
+            /*            for (var a = 0; a <= total;a++){
+                            $('#assets').append("<tr><td><input type='text' value='" + response.data[a].assetnumber + "'/></td><td>" + response.data[a].assetdescription + "</td>");
+                        } */
+        });
+    });
+
+    $('#clear').unbind().click(function () {
+        $('#AssetGroup').find('option').remove().end().append('<option value="null">Asset Group</option>');
+        $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+        $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+
+        var Location1 = $("#Location").find(':selected').val();
+        var formData = {
+            type: "POST",
+            data: { 'L1LocCode': Location1 }
+        };
+        getL1Category(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+            });
+            $("#AssetGroup").change(function () {
+                var gid = $(this).val();
+                if (gid != "null") {
+                    $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+                    $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                    $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+
+                    var form = { "L1CatCode": gid, "L1LocCode": Location1 };
+                    var formData = { type: "POST", data: form };
+                    getL2Category(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                        });
+                        $("#AssetCategory").change(function () {
+                            $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                            $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                            $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                            $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                            var cid = $(this).val();
+                            var form = {
+                                "L1CatCode": gid,
+                                "L2CatCode": cid,
+                                "L1LocCode": Location1
+                            };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+                            getL2Location(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                                });
+                                $("#AssetSection").change(function () {
+                                    $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                                    $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                    $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                    var sid = $(this).val();
+                                    var form = {
+                                        "L1CatCode": gid,
+                                        "L2CatCode": cid,
+                                        "L2LocCode": sid,
+                                        "L1LocCode": Location1
+                                    };
+                                    var formData = {
+                                        type: "POST",
+                                        data: form
+                                    };
+                                    getL3Location(formData, function (response) {
+                                        $.each(response.data, function (key, value) {
+                                            $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                                        });
+                                        $("#AssetRoomNo").change(function () {
+                                            $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                            $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                            var rid = $(this).val();
+                                            var form = {
+                                                "L1CatCode": gid,
+                                                "L2CatCode": cid,
+                                                "L2LocCode": sid,
+                                                "L3LocCode": rid,
+                                                "L1LocCode": Location1
+                                            };
+                                            var formData = {
+                                                type: "POST",
+                                                data: form
+                                            };
+                                            getL4Location(formData, function (response) {
+                                                $.each(response.data, function (key, value) {
+                                                    $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                                                });
+                                                $("#AssetRoomType").change(function () {
+                                                    $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                                    var tid = $(this).val();
+                                                    var form = {
+                                                        "L1CatCode": gid,
+                                                        "L2CatCode": cid,
+                                                        "L2LocCode": sid,
+                                                        "L3LocCode": rid,
+                                                        "L4LocCode": tid,
+                                                        "L1LocCode": Location1
+                                                    };
+                                                    var formData = {
+                                                        type: "POST",
+                                                        data: form
+                                                    };
+                                                    getL5Location(formData, function (response) {
+                                                        $.each(response.data, function (key, value) {
+                                                            $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+
+                else {
+                    $('#AssetCategory').find('option').remove().end().append('<option>Asset Category</option>');
+                    $('#AssetSection').find('option').remove().end().append('<option>Asset Section</option>');
+                    $('#AssetRoomNo').find('option').remove().end().append('<option>Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option>Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option>Asset Floor</option>');
+                    location.reload();
+                }
+            });
+        });
+        getL2Category(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+            });
+        });
+        getL2Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+            });
+        });
+        getL3Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+            });
+        });
+        getL4Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+            });
+        });
+        getL5Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+            });
+        });
+    });
+
+    $('#Location').unbind().change(function () {
+        Table.clear().draw();
+        var total = 0;
+        $('#total').text(total);
+        $('#AssetGroup').find('option').remove().end().append('<option value="null">Asset Group</option>');
+        $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+        $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+        var Location1 = $("#Location").find(':selected').val();
+        var formData = {
+            type: "POST",
+            data: { 'L1LocCode': Location1 }
+        };
+        getL1Category(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+            });
+            $("#AssetGroup").unbind().change(function () {
+                var gid = $(this).val();
+                if (gid != "null") {
+                    $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+                    $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                    $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+
+                    var form = { "L1CatCode": gid, "L1LocCode": Location1 };
+                    var formData = { type: "POST", data: form };
+                    getL2Category(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                        });
+                        $("#AssetCategory").unbind().change(function () {
+                            $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                            $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                            $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                            $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                            var cid = $(this).val();
+                            var form = {
+                                "L1CatCode": gid,
+                                "L2CatCode": cid,
+                                "L1LocCode": Location1
+                            };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+                            getL2Location(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                                });
+                                $("#AssetSection").unbind().change(function () {
+                                    $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                                    $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                    $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                    var sid = $(this).val();
+                                    var form = {
+                                        "L1CatCode": gid,
+                                        "L2CatCode": cid,
+                                        "L2LocCode": sid,
+                                        "L1LocCode": Location1
+                                    };
+                                    var formData = {
+                                        type: "POST",
+                                        data: form
+                                    };
+                                    getL3Location(formData, function (response) {
+                                        $.each(response.data, function (key, value) {
+                                            $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                                        });
+                                        $("#AssetRoomNo").unbind().change(function () {
+                                            $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                                            $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                            var rid = $(this).val();
+                                            var form = {
+                                                "L1CatCode": gid,
+                                                "L2CatCode": cid,
+                                                "L2LocCode": sid,
+                                                "L3LocCode": rid,
+                                                "L1LocCode": Location1
+                                            };
+                                            var formData = {
+                                                type: "POST",
+                                                data: form
+                                            };
+                                            getL4Location(formData, function (response) {
+                                                $.each(response.data, function (key, value) {
+                                                    $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                                                });
+                                                $("#AssetRoomType").unbind().change(function () {
+                                                    $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                                                    var tid = $(this).val();
+                                                    var form = {
+                                                        "L1CatCode": gid,
+                                                        "L2CatCode": cid,
+                                                        "L2LocCode": sid,
+                                                        "L3LocCode": rid,
+                                                        "L4LocCode": tid,
+                                                        "L1LocCode": Location1
+                                                    };
+                                                    var formData = {
+                                                        type: "POST",
+                                                        data: form
+                                                    };
+                                                    getL5Location(formData, function (response) {
+                                                        $.each(response.data, function (key, value) {
+                                                            $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+
+                else {
+                    $('#AssetCategory').find('option').remove().end().append('<option>Asset Category</option>');
+                    $('#AssetSection').find('option').remove().end().append('<option>Asset Section</option>');
+                    $('#AssetRoomNo').find('option').remove().end().append('<option>Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option>Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option>Asset Floor</option>');
+                    location.reload();
+                }
+            });
+        });
+
+        $('#AssetGroup').find('option').remove().end().append('<option value="null">Asset Group</option>');
+        $('#AssetCategory').find('option').remove().end().append('<option value="null">Asset Category</option>');
+        $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+
+        var formData = {
+            type: "POST",
+            data: { 'L1LocCode': Location1 }
+        };
+
+        getL2Category(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+            });
+        });
+        getL2Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+            });
+        });
+        getL3Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+            });
+        });
+        getL4Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+            });
+        });
+        getL5Location(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+            });
+        });
+    });
+
+    $(document).on('click', '.images', function (e) {
+        var image = $(this).attr('src');
+        $('#myModal').on('show.bs.modal', function () {
+            $("#img01").attr("src", image);
+        });
+    });
+
+
+    // add asset taging //
+
+    function AddAssetTagging() {
+
+        var arr = [];
+        var $inputs = $('.input_number');
+
+        var Location_code = $("#Location option:selected").val();
+        var isValid = true;
+        $inputs.each(function () {
+            var valuedup = $(this).val();
+            if (arr.indexOf(valuedup) == -1) {
+                arr.push(valuedup);
+            }
+            else {
+
+                if ($(this).val() != 0) {
+                    console.log(arr.indexOf(valuedup));
+                    $(this).addClass("duplicate");
+                    isValid = false;
+                }
+            }
+
+            //if ($.trim($(this).val()) == '') {
+            //    isValid = false;
+            //    $(this).css({
+            //        "border": "1px solid red",
+            //        "background": "#FFCECE"
+            //    });
+            //}
+            //else {
+            //    $(this).css({
+            //        "border": "",
+            //        "background": ""
+            //    });
+            //}
+        });
+        if (isValid == false) {
+            // e.preventDefault();
+            alert("Duplicate Entry");
+        }
+        else {
+            $('#assettaggingform').unbind().submit(function (event) {
+                event.preventDefault();
+                var USERID = $('#userid').val();
+                var newForm = $(this);
+
+                var values = [];
+
+                $inputs.each(function () {
+                    values.push({ "barcode": $(this).val(), "AssetNumber": $(this).attr("id") });
+
+                });
+
+                console.log($inputs);
+                console.log(values);
+                var valll = ""
+                var formData = {
+                    type: "POST",
+                    data: newForm.serialize() + "&bcode=" + JSON.stringify(values) + "&L1LocCode=" + Location_code,
+                    bacode: values,
+                    test: "anas"
+                };
+                console.log(formData);
+                AssetTagging(formData, function (response) {
+                    alert(response.message);
+                    if (response.message == "An error occurred while updating the entries. See the inner exception for details.") {
+                        $('#commonError').toggle();
+                        $('#errorMessage').text(response.message);
+                        $('#EOkay').unbind().click(function () {
+                            $('#NoImagePopUp').hide();
+                            $('#ConfirmationAlert').hide();
+                            $('#commonError').toggle();
+                        });
+                    } else {
+                        $('#NoImagePopUp').hide();
+                        $('#ConfirmationAlert').hide();
+                        $('#successAlert').toggle();
+                    }
+                });
+            });
+
+            $('#assettaggingform').submit();
+        }
+    }
+
+
+    /*
+         $(function () {
+             $('input').on('input', function () {
+                 this.value = this.value
+                   .replace(/[^\d.]/g, '')             // numbers and decimals only
+                   .replace(/(^[\d]{5})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                   .replace(/(\..*)\./g, '$1')         // decimal can't exist more than once
+                   .replace(/(\.[\d]{4})./g, '$1');    // not more than 4 digits after decimal
+                 alert(this.value);
+             });
+         });
+
+   */
+
+
+
+
+
+</script>

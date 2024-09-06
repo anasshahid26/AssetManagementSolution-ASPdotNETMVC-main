@@ -1,0 +1,296 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">Reports</h3>
+    <div class="box">
+        <div class="box-header with-border">
+            <div class="col-md-12">
+                <h3 class="box-title box-title-main">Select Location</h3>
+                <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+                <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+            </div>
+            <div class="col-md-3" style="margin-top: 10px;">
+
+                <label for="exampleInputEmail1">Location</label>
+                <select class="form-control borderfas" id="Location" style="background-color: #ffffff;">
+                    <option id="def">Select Location</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="box-body with-border">
+            <div class="col-md-12 text-center" style="border-bottom: 1px solid #46c7ba;">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-5 text-center" style="margin-top: 10px;">
+                    <h3 class="box-title box-title-main">Asset Reconciliation By Description</h3>
+                    <div class="col-md-12" style="padding: 0px; top: 20px;">
+                        <button type="button" class="btn btn-app" style="margin: 0px; color: #000000; border: 1px solid rgb(177, 231, 224); background-color: rgb(177, 231, 224); margin-bottom: 40px;" id="DescriptionButton"><i class="fa fa-search"></i>Search</button>
+                        <button type="button" class="btn btn-app" style="margin: 0px; color: #ffffff; border: 1px solid #dd4b39; background-color: #dd4b39; margin-bottom: 40px;" id="clear"><i class="fa fa-ban"></i>Clear</button>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3" style="float: right; margin-top: 13px;">
+                    <!-- small box -->
+                    @*<div class="small-box bg-b3">
+                            <div class="inner text-center">
+                                <div>
+                                    <h3 id="total">0</h3>
+                                    <img id="loader" src="~/Content/img/loading.gif" style="width:30px; height:30px; margin:10px;" />
+                                    <p>Total Assets</p>
+                                </div>
+                            </div>
+                            <div class="icon">
+                            </div>
+                        </div>*@
+                    <div class="small-box bg-b3">
+                        <div class="inner">
+                            <h3 id="total" style="font-size:60px;">0</h3>
+                            @*<img id="loader" src="~/Content/img/loading.gif" style="width:56px; height:56px; margin:10px;" />*@
+                        </div>
+                        <div class="small-box-footer" style="font-size:17px; color:black; font-weight:700;">
+                            Total Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @*<div class="col-md-12">
+                        <div class="col-md-12" style="border-bottom: 1px solid #46c7ba;">
+                            <div class="col-md-11" style="margin-bottom:20px">
+                                <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                    <label>Asset Category</label>
+                                    <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetCategory">
+                                        <option value="null">Asset Category</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-body">
+                            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-sm-8">
+                                        <div class="col-sm-12">
+                                            <span class="col-sm-2"></span>
+                                            <span class="col-sm-3" style="border: 1px solid #999;"><b>Total Previous Data  :  <span id="D1" type="text"></span></b></span>
+                                            <span class="col-sm-4" style="border: 1px solid #999;"><b>Total Reverification Data  :  <span id="D2" type="text"></span></b></span>
+                                            <span class="col-sm-3" style="border: 1px solid #999;"><b>Total Variance  :  <span id="D3" type="text"></span></b></span>
+                                        </div>
+                                        <table id="table2excel" data-tableName="Test Table 1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="text-center" style="border: 1px solid #999;">Description</th>
+                                                    <th class="text-center" style="border: 1px solid #999;">Previous Data</th>
+                                                    <th class="text-center" style="border: 1px solid #999;">Reverification Data</th>
+                                                    <th class="text-center" style="border: 1px solid #999;">Variance</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="assets"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal modal text-center">
+
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content modal-content" id="img01" style="min-height:0%; top:100px; border: 10px solid #a2a4a3; border-radius: 30px; width:500px;">
+
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/jszip.min.js"></script>
+<script src="~/Scripts/buttons.html5.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+<script>
+
+
+    Table = $("#table2excel").DataTable({
+        data: [],
+        columns: [
+             { data: 'Description', className: 'text-center' },
+             { data: 'DescriptionCountOld', className: 'text-center' },
+             { data: 'DescriptionCountNew', className: 'text-center' },
+             { data: 'DescriptionCount', className: 'text-center' }
+        ],
+        dom: 'Bfrtip',
+        "pageLength": 100,
+        buttons: [{
+            extend: 'excelHtml5',
+            text: 'Export to Excel',
+            exportOptions: {
+                columns: ':visible:not(.not-export-col)'
+            },
+            //customize: function (xlsx) {
+            //    var sheet = xlsx.xl.worksheets['sheet16.xml'];
+            //    // jQuery selector to add a border
+            //    $('row c[r*="10"]', sheet).attr('s', '25');
+            //}
+            customize: function (xlsx) {
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                var downrows = 3;
+                var clRow = $('row', sheet);
+                //update Row
+                clRow.each(function () {
+                    var attr = $(this).attr('r');
+                    var ind = parseInt(attr);
+                    ind = ind + downrows;
+                    $(this).attr("r", ind);
+                });
+
+                // Update  row > c
+                $('row c ', sheet).each(function () {
+                    var attr = $(this).attr('r');
+                    var pre = attr.substring(0, 1);
+                    var ind = parseInt(attr.substring(1, attr.length));
+                    ind = ind + downrows;
+                    $(this).attr("r", pre + ind);
+                });
+
+                function Addrow(index, data) {
+                    msg = '<row r="' + index + '">'
+                    for (i = 0; i < data.length; i++) {
+                        var key = data[i].k;
+                        var value = data[i].v;
+                        msg += '<c t="inlineStr" r="' + key + index + '" s="42">';
+                        msg += '<is>';
+                        msg += '<t>' + value + '</t>';
+                        msg += '</is>';
+                        msg += '</c>';
+                    }
+                    msg += '</row>';
+                    return msg;
+                }
+                var locat = $("#Location option:selected").text();
+                //insert
+
+                var D = new Date();
+                //  D.format('dd/MM/yyyy hh:mm TT');
+
+                //insert
+                var r1 = Addrow(1, [{ k: 'A', v: 'Location Name' }, { k: 'B', v: locat }, { k: 'C', v: 'Generated by Matrix FAS' }]);  //Addrow(1, [{ k: 'A', v: 'Matrix Fixed Asset Solution' }]);
+                var r2 = Addrow(2, [{ k: 'A', v: 'Report Name' }, { k: 'B', v: 'Reconcilation Report by Description' }, { k: 'C', v: D }]);
+                //var r3 = Addrow(3, [{ k: 'A', v: 'Location Name' }, { k: 'B', v: locat }]);
+                sheet.childNodes[0].childNodes[1].innerHTML = r1 + r2 + sheet.childNodes[0].childNodes[1].innerHTML;
+
+                //var r1 = Addrow(1, [{ k: 'A', v: 'Matrix Fixed Asset Solution' }]);
+                //var r2 = Addrow(2, [{ k: 'A', v: 'Report Name' }, { k: 'B', v: 'Asset Search Report' }]);
+                //var r3 = Addrow(3, [{ k: 'A', v: 'Location Name' }, { k: 'B', v: locat }]);
+                //sheet.childNodes[0].childNodes[1].innerHTML = r1 + r2 + r3 + sheet.childNodes[0].childNodes[1].innerHTML;
+            }
+        }],
+        rowCallback: function (row, data) {
+            if (data.Status == "DISPOSED") {
+                $('td', row).remove();
+            }
+
+            var imgLink = data['Image'];
+            var assetNumber = data['AssetNumber'];
+            var imgTag = '<img src="' + baseUrl.appServer + 'Content/img/' + imgLink + '.jpg" id="' + assetNumber + '" data-toggle="modal" data-target="#myModal" class="images" style = "width:25px; height:25px;"/>';
+            $('td:eq(11)', row).html(imgTag);
+            return row;
+        }
+
+    });
+
+
+    var role = $('#role').val();
+    if (role == "USER" || role == "UADMIN") {
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+
+        Permissions(formData, function (response) {
+            if (response.data[4]['Permission'] == 'False') {
+                //$('#excel').prop("disabled", true);
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        setTimeout(function () {
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+            $('#DescriptionButton').unbind().click(function () {
+                var L3Category = $('#AssetCategory').find(':selected').val();
+                var formData = {
+                    type: "POST",
+                    data: { 'L1LocCode': Location1 }
+                };
+                console.log(formData);
+                ReconciliationByDescription(formData, function (response) {
+                    console.log(response);
+                    $('#total').html(response.data.TotalDescription.length);
+                    Table.clear().draw();
+                    Table.rows.add(response.data.TotalDescription).draw();
+                });
+            });
+        }, 2000);
+    } else {
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        $('#Location').unbind().change(function () {
+            var total = 0;
+            $('#total').text(total);
+            $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+            $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+            $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+            $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+            $('#DescriptionButton').unbind().click(function () {
+                var L3Category = $('#AssetCategory').find(':selected').val();
+                var formData = {
+                    type: "POST",
+                    data: { 'L1LocCode': Location1 }
+                };
+                console.log(formData);
+                ReconciliationByDescription(formData, function (response) {
+                    console.log(response);
+                    $('#total').html(response.data.TotalDescription.length);
+                    $('#D1').html(response.data.AssetCount);
+                    $('#D2').html(response.data.AssetCountR);
+                    $('#D3').html(response.data.AssetVaraince);
+                    Table.clear().draw();
+                    Table.rows.add(response.data.TotalDescription).draw();
+                });
+            });
+        });
+    }
+</script>

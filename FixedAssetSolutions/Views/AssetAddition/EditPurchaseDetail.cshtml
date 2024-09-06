@@ -1,0 +1,422 @@
+﻿@model FAS.SharedModel.PurchaseViewModel
+@{
+    ViewBag.Title = "EditPurchaseDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">InventoryManagement</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <input type="text" id="CID" value="@Session["CompanyID"]" hidden="hidden" />
+    <input id="purchaseID" type="hidden" value="@Model.PurchaseID" />
+    <input id="Location" type="hidden" value="@Model.L1LocCode" />
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title box-title-main">Purchase Detail Edit</h3>
+        </div>
+        <div class="box-body">
+            <section class="content">
+                <div class="nav-tabs-custom">
+                    <div class="tab-content" style="border: 1px solid grey;">
+                        <div class="tab-pane active" id="PurchaseDetailtab">
+                            <form method="post" id="purchaseEdit">
+                                <div class="box-body">
+                                    <div class="col-md-10">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Location:</label>
+                                                <text>@Model.LocationName</text>
+                                                @*<select class="form-control borderfas" id="Location" name="L1LocCode" style="background-color: #ffffff;" required>
+                                                        <option id="def" value="">Select Location</option>
+                                                    </select>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="padding:0px 15px 0px 0px;">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Barcode ID:</label>
+                                                    <text id="AssetNumber">@Model.AssetNumber</text>
+                                                </div>
+                                            </div>
+                                            @*<div class="col-md-1">
+                                                    <button type="button" class="btn btn-default" id="BarcodeButton" style="display:none; margin: 45px 0px 0px 0px; color: #fff; border: 1px solid #46c7ba; background-color: #46c7ba;"><i class="fa fa-plus"></i></button>
+                                                </div>*@
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Supplier Name</label>
+                                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="SupplierID" id="supplier" required>
+                                                    <option value="@Model.SupplierID">@Model.SupplierName</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 locb">
+                                            <div class="form-group">
+                                                <label style="font-weight: 500;">(If Supplier is not listed add new supplier below)</label><br />
+                                                <a href="#" id="newSupplier" class="btn btn-primary" style="background-color:orange; border-color: #ffa500;"><i class="fa fa-plus"></i>  Add New Supplier</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Invoice Number</label>
+                                                <input type="number" value="@Model.InvoiceNumber" class="form-control borderfas" id="InvoiceNumber" name="InvoiceNumber" placeholder="Enter Invoice Number" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">PO Number</label>
+                                                <input type="number" value="@Model.PONumber" class="form-control borderfas" id="PONumber" name="PONumber" placeholder="Enter PO Number" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Invoice Date</label>
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon borderfas">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <input type="text" value="@Model.DateofPurchase" class="form-control pull-right borderfas datepicker" id="DateofPurchase" name="DateofPurchase" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">PO Date</label>
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon borderfas">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    @{
+                                                        string dateOfPO = "";
+                                                        if (Model.DateofPO.HasValue)
+                                                        {
+                                                            dateOfPO = Model.DateofPO.Value.ToString("MM/dd/yyyy");
+                                                        }
+                                                    }
+                                                    <input type="text" value="@dateOfPO" class="form-control pull-right borderfas datepicker" id="DateofPO" name="DateofPO" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label>Currency</label><br />
+                                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="iso" id="iso" required>
+                                                    <option value="@Model.iso">@Model.CurrencyName</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Unit Price</label>
+                                                <input type="number" value="@Model.UnitPrice" class="form-control borderfas" id="UnitPrice" placeholder="Enter Price" name="UnitPrice" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label>Invoice Image</label>
+                                                <img src="@Model.InvoiceImage" style="width: 500px; height: 500px; margin: 10px;" />
+                                                <input type="file" id="InvoiceImage">
+                                                <button type="button" id="InvoiceImageButton" onclick="UploadPurchaseDetailImages(this, 'InvoiceImage', 'invoiceImages')" data-img-url="">
+                                                    Change invoice image
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label>Purchase Order Image</label>
+                                                <img src="@Model.PurchaseOrderImage" style="width: 500px; height: 500px; margin: 10px;" />
+                                                <input type="file" id="PurchaseOrderImage">
+                                                <button type="button" id="PurchaseOrderImageButton" onclick="UploadPurchaseDetailImages(this, 'PurchaseOrderImage', 'PurchaseOrderImages')" data-img-url="">
+                                                    Change purchase order image
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <section class="container">
+                                    <div class="box-footer text-right locb">
+                                        <button type="submit" id="purchase" class="btn btn-lg btn-primary">Update Purchase Detail</button>
+
+                                        <button type="reset" id="Cancel" class="btn btn-lg btn-danger">Cancel</button>
+                                    </div>
+                                </section>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div id="commonError" class="modal modal text-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="padding:200px;">
+        <div class="callout callout-danger lead text-center" style="border-color: #dd4b39;">
+            <h4>Alert !</h4>
+            <p id="errorMessage"></p>
+            <button type="button" id="EOkay" class="btn btn-block btn-danger">OK</button>
+        </div>
+    </div>
+</div>
+
+<div id="SupplierModal" class="modal modal text-center">
+    <div class="box" style="top:10px; width:50%; margin-left: 352px;">
+        <div class="box-header with-border">
+            <h3 class="box-title">Add Supplier</h3>
+        </div>
+        <form id="NewSupplierForm" method="POST">
+            <div class="box-body" style="padding:50px;">
+                <div class="form-group">
+                    <label class="pull-left">Supplier Name</label>
+                    <input type="text" class="form-control borderfas" name="SupplierName" placeholder="Supplier Name">
+                </div>
+                <div class="form-group">
+                    <label class="pull-left">Address</label>
+                    <input type="text" class="form-control borderfas" name="SupplierAddress" placeholder="Address">
+                </div>
+                <div class="form-group">
+                    <label class="pull-left">Phone Number</label>
+                    <input type="text" class="form-control borderfas" name="SupplierTelephone" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <label class="pull-left">Email</label>
+                    <input type="email" class="form-control borderfas" name="SupplierEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label class="pull-left">Country</label>
+                    <select name="CountryID" id="Country" class="form-control borderfas" required="required">
+                        <option></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="pull-left">Company</label>
+                    <select name="CompanyID" class="form-control Company borderfas" required="required">
+                        <option value="" id="defc">Company Name</option>
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" id="NewSupplier" class="btn btn-primary pull-right">Add Supplier</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script>
+
+    //$('.locb').hide();
+    $('.bcc').hide();
+
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+
+    $(".select2").css("width", "100%");
+
+    $("#upload").hide();
+
+    $('#newSupplier').unbind().click(function () {
+        $('#SupplierModal').modal('toggle');
+    });
+
+    getAllCountries(function (response) {
+        $.each(response.data, function (key, value) {
+            $("#Country").append($("<option></option>").val(value.CountryID).html(value.Name));
+        });
+    });
+
+    $('.datepicker').datepicker({
+        autoclose: true
+    });
+
+    getCurrency(function (response) {
+        $.each(response.data, function (key, value) {
+            $("#iso").append($("<option></option>").val(value.iso).html(value.iso + " - " + value.name));
+        });
+        $("#iso").select2();
+
+    });
+
+    var role = $('#role').val();
+    if (role == "USER") {
+
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+        Permissions(formData, function (response) {
+            console.log(response.data);
+            if (response.data[5]['Permission'] == 'False') {
+                $('#purchase').hide();
+                $('#item').hide();
+
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        getCompanyUser(formData, function (response) {
+            $('#defc').remove();
+            $(".Company").append($("<option></option>").val(response.data['CompanyID']).html(response.data['CompanyName']));
+        });
+
+        setTimeout(function () {
+            var Location1 = $('#Location').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+        }, 2000);
+
+        var Company = $('#CID').val();
+        console.log(Company);
+        var formData = {
+            type: 'post',
+            data: { 'CompanyID': Company }
+        };
+        getSupplier(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#supplier").append($("<option></option>").val(value.SupplierID).html(value.SupplierName));
+            });
+        });
+        $("#supplier").select2();
+
+        $('#NewSupplier').unbind().click(function (e) {
+            $('#NewSupplierForm').unbind().submit(function (e) {
+                e.preventDefault();
+
+                var Company = $('#CID').val();
+                var form = $(this);
+                var USERID = $('#userid').val();
+                var formData = {
+                    type: form.attr('method'),
+                    data: form.serialize() + "&UserID=" + USERID
+                };
+                SupplierAddition(formData, function (response) {
+                    location.reload(true);
+                });
+
+            });
+        });
+
+    } else {
+
+        var formData = {
+            type: 'post'
+        };
+
+        getSupplier(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#supplier").append($("<option></option>").val(value.SupplierID).html(value.SupplierName));
+            });
+        });
+
+        getCompany(function (response) {
+            $.each(response.data, function (key, value) {
+                $(".Company").append($("<option></option>").val(value.CompanyID).html(value.CompanyName));
+            });
+        });
+
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+    }
+
+    $('#purchase').unbind().click(function (event) {
+
+        $('#purchaseEdit').unbind().submit(function (event) {
+            event.preventDefault();
+            var formData = {
+                type: 'post',
+                data: {
+                    PurchaseID: $('#purchaseID').val(),
+                    L1LocCode: $("#Location").val(),
+                    SupplierID: $("#supplier").find(':selected').val(),
+                    InvoiceNumber: $("#InvoiceNumber").val(),
+                    PONumber: $("#PONumber").val(),
+                    DateofPO: $("#DateofPO").val(),
+                    AssetNumber: $("#AssetNumber").val(),
+                    DateofPurchase: $("#DateofPurchase").val(),
+                    iso: $("#iso").find(':selected').val(),
+                    UnitPrice: $("#UnitPrice").val(),
+                    InvoiceImage: $('#InvoiceImageButton').attr('data-img-url'),
+                    PurchaseOrderImage: $('#PurchaseOrderImageButton').attr('data-img-url')
+                }
+            };
+
+            $.post("/update-purchase-detail", formData.data,
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                    location.reload(true);
+                }
+            );
+        });
+    });
+
+    $("Cancel").click(function () {
+        location.reload(true);
+    });
+
+    $('#NewSupplier').unbind().click(function (e) {
+        $('#NewSupplierForm').unbind().submit(function (e) {
+            e.preventDefault();
+            debugger;
+            var Company = $('#CID').val();
+            var form = $(this);
+            var USERID = $('#userid').val();
+            var formData = {
+                type: form.attr('method'),
+                data: form.serialize() + "&UserID=" + USERID + "&CompanyID=" + Company
+            };
+            SupplierAddition(formData, function (response) {
+                location.reload(true);
+            });
+
+        });
+    });
+
+
+    function UploadPurchaseDetailImages(element, id, destination) {
+        //var currObj = $(this);
+        var fileUpload = $("#" + id).get(0);
+        if (fileUpload.files.length != 0) {
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            var filename = "";
+            debugger;
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                filename = files[i].name;
+                fileData.append(files[i].name, files[i], destination);
+            }
+
+            $.ajax({
+                url: '/AssetAddition/FileUploadWithDestination?filename=' + filename + '&extendedDestinationURL=' + destination,
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    $(element).attr('data-img-url', result);
+                    alert("Image uploaded successfully.");
+                },
+                error: function (err) {
+                    alert("An error occured, try again later.");
+                }
+            });
+        }
+    }
+
+</script>
+

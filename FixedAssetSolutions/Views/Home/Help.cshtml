@@ -1,0 +1,68 @@
+﻿@model FAS.SharedModel.QueryViewModel
+@{
+    ViewBag.Title = "Help";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="invoice" style="margin-bottom:100px; background-color:whitesmoke;">
+    <h3 class="box-title" id="title" hidden="hidden">Help</h3>
+    <div class="row invoice-info">
+        
+        <div class="col-md-8">
+            <div class="col-md-10" style="background-color:#d2d6de; border-radius: 10px;">
+               @using (Html.BeginForm(new { @class = "form-signin" }))
+               {
+                <h1>Write in your Queries</h1>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @*<label for="exampleInputEmail1">Name</label>*@
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name", @type = "text", @required = "required" })
+                            @*<input class="form-control" type="email" placeholder="Name">*@
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @*<label for="exampleInputEmail1">Email Address</label>*@
+                            @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control", @placeholder = "Email Address", @type = "email", @required = "required" })
+                            @*<input class="form-control" type="email" placeholder="Email Address">*@
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @*<label for="exampleInputEmail1">Email Address</label>*@
+                            @Html.TextBoxFor(model => model.LocationName, new { @class = "form-control", @placeholder = "Location Name", @type = "text", @required = "required" })
+                            @*<input class="form-control" type="text" placeholder="Location Name">*@
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @*<label for="exampleInputEmail1">Subject</label>*@
+                            @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", @placeholder = "Subject", @type = "text", @required = "required" })
+                            @*<input class="form-control" type="email" placeholder="Subject">*@
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-bottom:20px;">
+                        <div class="form-group">
+                            @*<label for="exampleInputEmail1">Notes</label>*@
+                            @Html.TextArea("Queries",null, new { @class = "form-control", @placeholder = "Quries.....", @required = "required" })
+                            @*<textarea rows="4" cols="50" class="form-control" name="Note" placeholder="Quries....."></textarea>*@
+                        </div>
+                    </div><div class="col-md-12" style="margin-bottom:20px;">
+                        <button type="submit" class="btn btn-warning pull-right" style="background-color: #46c7ba; border-color: #46c7ba;"><i class="fa fa-send"></i> Send</button>
+                    </div>
+               }
+            </div>
+        </div>
+    </div>
+    @*<div class="row no-print">
+        <div class="col-xs-12">
+            
+        </div>
+    </div>*@
+</section>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+</script>

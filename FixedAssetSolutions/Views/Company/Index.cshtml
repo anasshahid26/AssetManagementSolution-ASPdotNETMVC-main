@@ -1,0 +1,446 @@
+﻿@using FAS.SharedModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">Admin</h3>
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title box-title-main">Manage Company</h3>
+        </div>
+        <div class="box-body">
+            <a class="btn btn-app" data-toggle="modal" data-target="#addCompany">
+                <i class="fa fa-plus"></i> Add Company
+            </a>
+            <a class="btn btn-app" href="~/Location">
+                <i class="fa fa-plus"></i> Add Location
+            </a>
+        </div>
+        <!-- /.box-body -->
+        <div class="row" style="padding: 20px;">
+            <div class="col-md-6">
+                <div class="box box1">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Company</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <ul id="list" style="padding: 0px;">
+                            <div id="Company"></div>
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addCompany" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="company" method="POST">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" style="color: #00b3a1;">&times;</button>
+                        <div class="col-md-6" style="margin-top:12px;"><h4 class="modal-title">Setup / Add Company</h4></div>
+                        <div class="col-md-6" style="width:40%">
+                            <img src="~/Content/img/Logo.png" style="width: 220px; float: right; margin-right: 60px;">
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="nav-tabs-custom">
+                            <div class="tab-content" style="background: #f4f4f4;">
+                                <div class="tab-pane active" id="location">
+                                    <!-- /.tab-pane start -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box">
+                                                <div class="box-body">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group ">
+                                                                <label for="CompanyName">Company Name <span style="color:red;">*</span></label>
+                                                                <input type="text" class="form-control" name="CompanyName" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                                <label for="CompanyCode">Company Code<span style="color:red;">*</span></label>
+                                                                <input type="text" class="form-control" pattern="[a-zA-Z0-9\s]{1,}" title="No Special Characters" maxlength="6" id="CCode" name="CompanyCode" required="required">
+                                                                <span style="font-size:14px; margin-left:35px;" id='length'></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="checkbox" style="margin-top: 30px;">
+                                                                <label>
+                                                                    <input type="checkbox" value="On" id="md" required="required"> Multiple Location
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3" id="mdn">
+                                                            <div class="form-group">
+                                                                <label for="MultipleDivision">Number of Location<span style="color:red;">*</span></label>
+                                                                <select name="MultipleDivision" id="mdv" class="form-control" required="required">
+                                                                    <option value="">0</option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                    <option value="11">11</option>
+                                                                    <option value="12">12</option>
+                                                                    <option value="13">13</option>
+                                                                    <option value="14">14</option>
+                                                                    <option value="15">15</option>
+                                                                    <option value="16">16</option>
+                                                                    <option value="17">17</option>
+                                                                    <option value="18">18</option>
+                                                                    <option value="19">19</option>
+                                                                    <option value="20">20</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="exampleInputEmail1">Active/Inactive<span style="color:red;">*</span></label>
+                                                            <div for="Active"><input type='radio' name='Active' id='true' value='true' required="required"> Active</div>
+                                                            <div for="Active"><input type='radio' name='Active' id='false' value='false' required="required"> Inactive</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="box">
+                                                <div class="box-header" style="border-bottom: 1px solid #e5e5e5;">
+                                                    <h3 class="box-title">Address</h3>
+                                                </div>
+                                                <div class="box-body">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="Address">Address<span style="color:red;">*</span></label>
+                                                                <input type="text" class="form-control" name="Address" required="required">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="Address2">Address 2</label>
+                                                                <input type="text" class="form-control" name="Address2">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="Address3">Address 3</label>
+                                                                <input type="text" class="form-control" name="Address3">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="City">City<span style="color:red;">*</span></label>
+                                                                <input type="text" class="form-control" name="City" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="State_Province">State/Province</label>
+                                                                <input type="text" class="form-control" name="State_Province">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="Zip_PostalCode">Zip/Postal Code</label>
+                                                                <input type="text" class="form-control" name="Zip_PostalCode">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="CountryID">Country<span style="color:red;">*</span></label>
+                                                                <select name="CountryID" id="Country" class=form-control required="required">
+                                                                    <option></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="box">
+                                                <div class="box-header" style="border-bottom: 1px solid #e5e5e5;">
+                                                    <h3 class="box-title">Contact Info</h3>
+                                                </div>
+                                                <div class="box-body">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="ContactName">Contact Name</label>
+                                                                <input type="text" class="form-control" name="ContactName">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="ContactPhone">Contact Phone</label>
+                                                                <input type="text" class="form-control" name="ContactPhone">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="ContactFax">Contact Fax</label>
+                                                                <input type="text" class="form-control" name="ContactFax">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="ContactEmail">Contact Email<span style="color:red;">*</span><span style="margin-left:10px;" id='messagemail'></span></label>
+                                                                <input type="email" id="confirmEmail" class="form-control" name="ContactEmail" required="required">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="box">
+                                                <div class="box-header" style="border-bottom: 1px solid #e5e5e5;">
+                                                    <h3 class="box-title">Logo</h3>
+                                                </div>
+                                                <div class="box-body">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12">
+                                                            <img id="blah" src="#" alt="your image" style="height: 74px;" />
+                                                            <img class="img-responsive pad" id="blah1" style="height: 74px;" src="~/Content/img/Matrix-AMS-Logo.png" alt="Photo">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group margin">
+                                                                <input type="file" name="Logo" id="imgInp">
+                                                                <input type="text" class="form-control" name="CompanyID" style="display:none;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane end -->
+                                </div>
+                            </div>
+                            <!-- /.tab-content -->
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="addCompany1" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                        <button type="submit" id="editCompany" class="btn btn-success"><i class="fa fa-save"></i></button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var title = $('#title').html();
+        $('#' + title).css('background-color', '#A2EEE6');
+        $('#editCompany').hide();
+        $("#mdn").hide();
+        $(".modal").on("hidden.bs.modal", function () {
+            $("[name='CompanyName']").val("");
+            $("[name='CompanyCode']").val("");
+            $("[name='Address']").val("");
+            $("[name='Address2']").val("");
+            $("[name='Address3']").val("");
+            $("[name='City']").val("");
+            $("[name='State_Province']").val("");
+            $("[name='Zip_PostalCode']").val("");
+            $("[name='ContactName']").val("");
+            $("[name='ContactPhone']").val("");
+            $("[name='ContactFax']").val("");
+            $("[name='ContactEmail']").val("");
+            $("[name='CountryID']").val("");
+            $("[name='MultipleDivision']").val("");
+            $("#md").val("");
+        });
+
+        $('#confirmEmail').on('keyup', function () {
+            var sEmail = $('#confirmEmail').val();
+            if (validateEmail(sEmail)) {
+                $('#messagemail').html('Email Address is valid').css('color', 'green');
+            }
+            else {
+                $('#messagemail').html('Email Address is not valid').css('color', 'red');
+            }
+        });
+
+        function validateEmail(sEmail) {
+            var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (filter.test(sEmail)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        getCompany(function (response) {
+            if (response.data.length > 0) {
+                for (var i = 0; i < response.data.length; i++) {
+                    var CompanyName = response.data[i]['CompanyName'];
+                    var CompanyID = response.data[i]['CompanyID'];
+                    divItems =
+                       "<li class='header alert alert-danger bg-b3 mb3' id='li" + CompanyID + "'>" +
+                            "<label style='font-weight: 600;'>" + CompanyName + "</label>" +
+                            "<a class ='btn btn-primary pull-right edit' style ='margin-left: 10px;' id='" + CompanyID + "'>Edit</a>" +
+                            "</li>"
+                    $('#Company').append(divItems);
+                }
+            }
+        });
+
+        $('#true').unbind().click(function () {
+            $('#true').val(true);
+        });
+
+        $('#false').unbind().click(function () {
+            $('#false').val(false);
+        });
+
+        $(document).on('click', '.edit', function (event) {
+            var id = $(this).attr('id');
+            event.preventDefault();
+            var formData = {
+                type: "post",
+                data: { 'CompanyID': id }
+            };
+            EditCompany(formData, function (response) {
+                $('#addCompany').modal('show');
+                $('#addCompany1').hide();
+                $('#editCompany').show();
+                //$('[name=Active]').val;
+                if (response.data['MultipleDivision'] != null) {
+                    $('#md').prop('checked', true);
+                    $("#mdn").show();
+                }
+                if (response.data['Active'] == true) {
+                    $('#true').prop('checked', true);
+                } else {
+                    $('#false').prop('checked', true);
+                }
+
+
+                $.each(response.data, function (key, value) {
+                    var ctrl = $('[name=' + key + ']');
+                    ctrl.val(value);
+                });
+            });
+        });
+
+        getAllCountries(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Country").append($("<option></option>").val(value.CountryID).html(value.Name));
+            });
+        });
+        $('#addCompany1').unbind().click(function (e) {
+            $('#company').unbind().submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var formData = {
+                    type: form.attr('method'),
+                    data: form.serialize()
+                };
+
+                addCompany(formData, function (response) {
+                    location.reload();
+                });
+
+            });
+        });
+
+        $('#editCompany').click(function (e) {
+            $('#company').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var formData = {
+                    type: form.attr('method'),
+                    data: form.serialize()
+                };
+                UpdateCompany(formData, function (response) {
+                    location.reload();
+                });
+
+            });
+        });
+
+        $(document).on('click', '.delete', function (event) {
+            var id = $(this).attr('id');
+            event.preventDefault();
+            var formData = {
+                type: "post",
+                data: { 'CompanyID': id }
+            };
+
+            DeleteCompany(formData, function (response) {
+                var id = formData.data['CompanyID'];
+                $('#li' + id).remove();
+            });
+        });
+
+        $("#md").unbind().click(function () {
+            var checkedValue = $('#md:checked').val();
+            if (checkedValue == 'On') {
+                $("#mdn").show();
+            } else {
+                $("#mdv").val('0');
+                $("#mdn").hide();
+
+            }
+        });
+
+        $('#CCode').unbind().on('keyup focusout', function () {
+            var Code = $(this).val();
+            if (Code != "") {
+                var formData = {
+                    type: 'post',
+                    data: { 'CompanyCode': Code }
+                };
+
+                IsCompanyCodeExsist(formData, function (response) {
+                    if (response.message == "Company code does not Exsist") {
+                        $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                    } else {
+                        $('#length').html('Code already in use').css('color', 'red');
+                    }
+                });
+            } else {
+                $('#length').html('Code can not be empty').css('color', 'red');
+            }
+        });
+
+        $("#blah").hide();
+        $("#imgInp").change(function () {
+            $("#blah1").hide();
+            $("#blah").show();
+            readURL(this);
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    });
+</script>

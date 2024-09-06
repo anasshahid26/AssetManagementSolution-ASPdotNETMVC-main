@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9e71cc9ac25a42ee91a355c7ff0e7589" Name="Diagram1" ZoomLevel="94">
+        <EntityTypeShape EntityType="MatrixFASEntities.Asset" Width="1.5" PointX="9.75" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetCompany" Width="1.5" PointX="3" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetDisposal" Width="1.5" PointX="7.5" PointY="32.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetLocation" Width="1.5" PointX="5.25" PointY="32.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetPermission" Width="1.5" PointX="8.25" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetPurchase" Width="1.5" PointX="12.75" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetReverification" Width="1.5" PointX="12.75" PointY="49.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetRole" Width="1.5" PointX="8.25" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetTagging" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.Country" Width="1.5" PointX="0.75" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.Currency" Width="1.5" PointX="8.25" PointY="42.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.DisposalNumber" Width="1.5" PointX="15" PointY="43.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.DisposalRemark" Width="1.5" PointX="9.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.GatePassTransaction" Width="1.5" PointX="15" PointY="37.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L1Category" Width="1.5" PointX="7.5" PointY="68.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L2Category" Width="1.5" PointX="12.75" PointY="45.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L2Location" Width="1.5" PointX="7.5" PointY="71.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L3Category" Width="1.5" PointX="18" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L3Location" Width="1.5" PointX="15.75" PointY="52.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L4Category" Width="1.5" PointX="20.25" PointY="36.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L4Location" Width="1.5" PointX="18" PointY="44.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.L5Location" Width="1.5" PointX="20.25" PointY="40.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.PurchaseDetail" Width="1.5" PointX="10.5" PointY="39.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.Reconciliation" Width="1.5" PointX="22.5" PointY="47" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.ReconciliationRecord" Width="1.5" PointX="20.25" PointY="52.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.RoomNumberDummy" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.Supplier" Width="1.5" PointX="5.25" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.sysdiagram" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.User_Activity" Width="1.5" PointX="7.5" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.UserCompany" Width="1.5" PointX="10.5" PointY="35.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.UserRole" Width="1.5" PointX="10.5" PointY="25.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.User" Width="1.5" PointX="5.25" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetDepreciation" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L1Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L2Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L2Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L3Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L3Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L4Category1" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L4Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Asset_L5Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetPurchase_Asset" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_DisposalNumber_Asset" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_GatePassTransaction_Asset" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetCompany_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetLocation_AssetCompany" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Supplier_AssetCompanies" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_UserCompany_AssetCompanies" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users1" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users2" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users3" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users4" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users5" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users6" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users7" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetDisposal_Users8" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_DisposalNumber_AssetDisposal" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_DisposalRemarks_AssetDisposal" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetLocation_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetPurchase_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_GatePassTransaction_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L1Category_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L2Category_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L2Location_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L3Category_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L3Location_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L4Category_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L4Location_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L5Location_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_PurchaseDetail_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_UserCompany_AssetLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_UserRoles_AssetPermissions" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetPurchase_PurchaseDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L1Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L2Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L2Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L3Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L3Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L4Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L4Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_AssetReverification_L5Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_UserRole_AssetRole" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_PurchaseDetail_Currency" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_GatePassTransaction_Supplier" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_GatePassTransaction_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_GatePassTransaction_Users1" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_GatePassTransaction_Users2" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_GatePassTransaction_Users3" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L2Category_L1Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L1Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L3Category_L2Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L2Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L3Location_L2Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L2Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L4Category_L3Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L3Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L4Location_L3Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L3Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L4Category" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_L5Location_L4Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L4Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_L5Location" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_PurchaseDetail_Supplier" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_Reconciliation_ReconciliationRecord" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_User_Activity_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_UserCompany_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixFASEntities.FK_UserRole_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MatrixFASEntities.AssetBarcodeTest" Width="1.5" PointX="5.375" PointY="4.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

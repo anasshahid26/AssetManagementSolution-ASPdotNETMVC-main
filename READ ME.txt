@@ -1,0 +1,12 @@
+REPO instructions
+
+"DBScripts" folder contains main backup of the tables.
+any new tables made, those scripts should be added here with proper numbering so the person can follow it ahead.
+
+
+"/FixedAssetSolutions/Content/img"
+
+This folder as been excluded from the project on GIT repo, as it is 2GB above.
+kindly update it manually in the code to work ahead from live or the respective person.
+
+Thank you.

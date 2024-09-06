@@ -1,0 +1,274 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title" id="title">Dashboard</h3>
+        <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+        <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+        <input type="text" id="uloc" value="@Session["L1LocCode"]" hidden="hidden" />
+        <input type="text" id="username" value="@Session["UserName"]" hidden="hidden" />
+    </div>
+    <div class="box-body">
+        <div class="row" style="padding: 20px;">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <!-- small box -->
+                    <div class="small-box bg-b3">
+                        <div class="inner text-center">
+                            <select style="margin-bottom:10px; background-color:aliceblue;" class="form-control" id="Location">
+                                <option id="def">Select Location</option>
+                            </select>
+                            <div>
+                                <h3 id="total">0</h3>
+                                <img id="loader" src="~/Content/img/loading.gif" style="width:50px; height:50px; margin:10px;" />
+                                <p>Total Active Assets</p>
+                            </div>
+                        </div>
+                        <div class="icon">
+                        </div>
+                    </div>
+                    <div class="small-box">
+                        <img src="~/Content/img/.png" id="CompanyLogo" style="width:30%;">
+                        <img id="locationLogo">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="box box-widget widget-user-2" style="padding:0px">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-b3">
+                            <!-- /.widget-user-image -->
+                            <h3 class="widget-user-username fw600" style="margin-left:0px;">Total Active Assets by Group</h3>
+                        </div>
+                        <div class="box-body no-padding" style="overflow-y: scroll; height: 280px;">
+                            <ul class="nav nav-stacked" id="groupAssets"></ul>
+                        </div>
+                    </div>
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Group Chart</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="chart-responsive">
+                                        <canvas id="myChart"></canvas>
+                                    </div>
+                                    <!-- ./chart-responsive -->
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="box box-widget widget-user-2" style="padding:0px">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-b3">
+                            <!-- /.widget-user-image -->
+                            <h3 class="widget-user-username fw600" style="margin-left:0px;">Total Active Assets by Section</h3>
+                        </div>
+                        <div class="box-body no-padding" style="overflow-y: scroll; height: 280px;">
+                            <ul class="nav nav-stacked" id="SectionAssets"></ul>
+                        </div>
+                    </div>
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Section Chart</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="chart-responsive">
+                                        <canvas id="myChart2"></canvas>
+                                    </div>
+                                    <!-- ./chart-responsive -->
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="col-md-3 col-sm-3 col-xs-12">
+                        <div class="box box-widget widget-user-2" style="padding:0px">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-b3">
+                                <!-- /.widget-user-image -->
+                                <h3 class="widget-user-username fw600" style="margin-left:0px;">Total Assets by Section</h3>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
+                                    <li><a href="#">Tasks <span class="pull-right badge bg-blue">31</span></a></li>
+                                    <li><a href="#">Completed Projects <span class="pull-right badge bg-blue">31</span></a></li>
+                                    <li><a href="#">Followers <span class="pull-right badge bg-blue">31</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+
+
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+
+    //var userName = $('#username').val();
+    //if (userName == "Demomatrix") {
+    //    $('#CompanyLogo').replaceWith("<img src='" + baseUrl.appServer + "Content/img/DemoCompany.png' style='width:30%;'>");
+    //}
+        
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    $('#loader').hide();
+
+    var role = $('#role').val();
+    if (role == "USER" || role == "UADMIN") {
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+
+        getCompanyUser(formData, function (response) {
+            console.log();
+            var CompanyID = response.data["CompanyID"]; 
+            $('#CompanyLogo').replaceWith("<img src='" + baseUrl.appServer + "Content/img/" + CompanyID + ".png' style='width:30%;'>");
+        });
+
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) { $('#def').remove(); }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+    } else {
+        $('#CompanyLogo').replaceWith("<img src='" + baseUrl.appServer + "Content/img/MAF.png' style='width:30%;'>");
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+    }
+
+    setTimeout(function () {
+        var lo = $("#Location").val();
+        var formData = {
+            type: "post",
+            data: { 'L1LocCode': lo }
+        };
+        if (lo != "Select Location") {
+            $('#loader').show();
+            $('#total').hide();
+            var locationlogo = $("#Location").find(":selected").text();
+            values = locationlogo.split(' ');
+            name = values[0];
+            var logo = "<img id='locationLogo' src='" + baseUrl.appServer + "Content/img/" + name + ".png' style='width:30%; margin-left:100px;'>";
+            $('#locationLogo').replaceWith(logo);
+            getDashboardData(formData, function (response) {
+                var Data = [];
+                var Data1 = [];
+                $('#loader').hide();
+                $('#total').show();
+                $('#total').text(response.data.AssetCount);
+                if (response.data.AssetCount != 0) {
+                    for (var i = 0 ; i < response.data.TotalGroup.length; i++) {
+                        var AssetGroupCount = response.data.TotalGroup[i]['AssetGroupCount'];
+                        var GroupName = response.data.TotalGroup[i]['GroupName'];
+                        Data.push({
+                            label: GroupName,
+                            value: AssetGroupCount,
+                            color: '#' + Math.floor(Math.random() * 16777215).toString(16)
+                        });
+                        var divItems = "<li class='ag'><a href='" + baseUrl.appServer + "AssetSearch/Index/Location?" + lo + "?" + GroupName + "?Asset Section'>" + GroupName + " <span class='pull-right badge' style='background-color:" + Data[i].color + "; font-size: 16px; color:black;'>" + AssetGroupCount + "</span></a></li>"
+                        $('#groupAssets').append(divItems);
+                    }
+
+                    for (var i = 0 ; i < response.data.TotalSection.length; i++) {
+                        var SectionCount = response.data.TotalSection[i]['SectionCount'];
+                        var SectionName = response.data.TotalSection[i]['SectionName'];
+                        Data1.push({
+                            label: SectionName,
+                            value: SectionCount,
+                            color: '#' + Math.floor(Math.random() * 16777215).toString(16)
+                        });
+                        var divItems = "<li class='ac'><a href='" + baseUrl.appServer + "AssetSearch/Index/Location?" + lo + "?Asset Group?" + SectionName + "'>" + SectionName + " <span class='pull-right badge' style='background-color:" + Data1[i].color + "; font-size: 16px; color:black;'>" + SectionCount + "</span></a></li>"
+                        $('#SectionAssets').append(divItems);
+                    }
+
+
+                    var countries1 = document.getElementById("myChart2").getContext("2d");
+                    new Chart(countries1).Doughnut(Data1);
+                    // Get the context of the canvas element we want to select
+                    var countries = document.getElementById("myChart").getContext("2d");
+                    new Chart(countries).Doughnut(Data);
+                }
+            });
+        }
+    }, 1000);
+    $("#Location").change(function () {
+        $('#loader').show();
+        $('#total').hide();
+        $("#Location").attr('disabled', true);
+        $('.ag').remove();
+        $('.ac').remove();
+        $('#total').text('0');
+        var locationid = $(this).val();
+        var locationlogo = $(this).find(":selected").text();
+        values = locationlogo.split(' ');
+        name = values[0];
+        var logo = "<img id='locationLogo' src='" + baseUrl.appServer + "Content/img/" + name + ".png' style='width:30%; margin-left:100px;'>";
+        $('#locationLogo').replaceWith(logo);
+
+        var formData = {
+            type: "post",
+            data: { 'L1LocCode': locationid }
+        };
+
+        getDashboardData(formData, function (response) {
+            var Data = [];
+            var Data1 = [];
+            $('#loader').hide();
+            $('#total').text(response.data.AssetCount);
+            $("#Location").attr('disabled', false);
+            $('#total').show();
+            if (response.data.AssetCount != 0) {
+                for (var i = 0 ; i < response.data.TotalGroup.length; i++) {
+                    var AssetGroupCount = response.data.TotalGroup[i]['AssetGroupCount'];
+                    var GroupName = response.data.TotalGroup[i]['GroupName'];
+                    Data.push({
+                        label: GroupName,
+                        value: AssetGroupCount,
+                        color: '#' + Math.floor(Math.random() * 16777215).toString(16)
+                    });
+                    var divItems = "<li class='ag'><a href='" + baseUrl.appServer + "AssetSearch/Index/Location?" + locationid + "?" + GroupName + "?Asset Section'>" + GroupName + " <span class='pull-right badge' style='background-color:" + Data[i].color + "; font-size: 16px; color:black;'>" + AssetGroupCount + "</span></a></li>"
+                    $('#groupAssets').append(divItems);
+                }
+
+                for (var i = 0 ; i < response.data.TotalSection.length; i++) {
+                    var SectionCount = response.data.TotalSection[i]['SectionCount'];
+                    var SectionName = response.data.TotalSection[i]['SectionName'];
+                    Data1.push({
+                        label: SectionName,
+                        value: SectionCount,
+                        color: '#' + Math.floor(Math.random() * 16777215).toString(16)
+                    });
+                    var divItems = "<li class='ac'><a href='" + baseUrl.appServer + "AssetSearch/Index/Location?" + locationid + "?Asset Group?" + SectionName + "'>" + SectionName + " <span class='pull-right badge' style='background-color:" + Data1[i].color + "; font-size: 16px; color:black;'>" + SectionCount + "</span></a></li>"
+                    $('#SectionAssets').append(divItems);
+                }
+
+
+                var countries1 = document.getElementById("myChart2").getContext("2d");
+                new Chart(countries1).Doughnut(Data1);
+                // Get the context of the canvas element we want to select
+                var countries = document.getElementById("myChart").getContext("2d");
+                new Chart(countries).Doughnut(Data);
+            }
+        });
+    });
+</script>

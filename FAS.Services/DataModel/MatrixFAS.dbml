@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MatrixFAS_7_May_2018" Class="MatrixFASDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-NO5L0L7\SQLEXPRESS;Initial Catalog=MatrixFAS_7_May_2018;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework" SettingsObjectName="FAS.Services.Properties.Settings" SettingsPropertyName="MatrixFAS_7_May_2018ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Asset" Member="Assets">
+    <Type Name="Asset">
+      <Column Name="UniqueID" Type="System.String" DbType="VarChar(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AssetNumber" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AssetDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="L1CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L2CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L3CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L4CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L1LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L2LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L3LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L4LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L5LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ITC1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ITC2" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ITC3" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LOCCODEASSET" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ROOMTYPECODE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CODELEVEL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Brand" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SerialNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Size" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Color" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DisposedOn" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="VerificationStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateOfVerification" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Depreciated" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NetBookValue" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Asset_AssetPurchase" Member="AssetPurchases" ThisKey="UniqueID" OtherKey="UniqueID" Type="AssetPurchase" />
+      <Association Name="L1Category_Asset" Member="L1Category" ThisKey="L1CatCode" OtherKey="L1CatCode" Type="L1Category" IsForeignKey="true" />
+      <Association Name="L2Category_Asset" Member="L2Category" ThisKey="L2CatCode" OtherKey="L2CatCode" Type="L2Category" IsForeignKey="true" />
+      <Association Name="AssetLocation_Asset" Member="AssetLocation" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="AssetLocation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AssetPurchase" Member="AssetPurchases">
+    <Type Name="AssetPurchase">
+      <Column Name="AssetPurchase" Member="AssetPurchase1" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UniqueID" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PurchaseID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L1LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Asset_AssetPurchase" Member="Asset" ThisKey="UniqueID" OtherKey="UniqueID" Type="Asset" IsForeignKey="true" />
+      <Association Name="PurchaseDetail_AssetPurchase" Member="PurchaseDetail" ThisKey="PurchaseID" OtherKey="PurchaseID" Type="PurchaseDetail" IsForeignKey="true" />
+      <Association Name="AssetLocation_AssetPurchase" Member="AssetLocation" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="AssetLocation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Supplier" Member="Suppliers">
+    <Type Name="Supplier">
+      <Column Name="SupplierID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SupplierName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="SupplierAddress" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="SupplierTelephone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SupplierEmail" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Supplier_PurchaseDetail" Member="PurchaseDetails" ThisKey="SupplierID" OtherKey="SupplierID" Type="PurchaseDetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.L1Category" Member="L1Categories">
+    <Type Name="L1Category">
+      <Column Name="L1CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="L1LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L1CatName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DepreciationRate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="L1Category_Asset" Member="Assets" ThisKey="L1CatCode" OtherKey="L1CatCode" Type="Asset" />
+      <Association Name="L1Category_L2Category" Member="L2Categories" ThisKey="L1CatCode" OtherKey="L1CatCode" Type="L2Category" />
+      <Association Name="AssetLocation_L1Category" Member="AssetLocation" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="AssetLocation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PurchaseDetail" Member="PurchaseDetails">
+    <Type Name="PurchaseDetail">
+      <Column Name="PurchaseID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SupplierID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L1LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="InvoiceNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateofPurchase" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="PONumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateofPO" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="iso" Type="System.String" DbType="Char(3)" CanBeNull="true" />
+      <Column Name="UnitPrice" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="InvoiceImage" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="PurchaseOrderImage" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="NetbookValue" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="PurchaseDetail_AssetPurchase" Member="AssetPurchases" ThisKey="PurchaseID" OtherKey="PurchaseID" Type="AssetPurchase" />
+      <Association Name="Supplier_PurchaseDetail" Member="Supplier" ThisKey="SupplierID" OtherKey="SupplierID" Type="Supplier" IsForeignKey="true" />
+      <Association Name="Currency_PurchaseDetail" Member="Currency" ThisKey="iso" OtherKey="iso" Type="Currency" IsForeignKey="true" />
+      <Association Name="AssetLocation_PurchaseDetail" Member="AssetLocation" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="AssetLocation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Currency" Member="Currencies">
+    <Type Name="Currency">
+      <Column Name="iso" Type="System.String" DbType="Char(3) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Association Name="Currency_PurchaseDetail" Member="PurchaseDetails" ThisKey="iso" OtherKey="iso" Type="PurchaseDetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.L2Category" Member="L2Categories">
+    <Type Name="L2Category">
+      <Column Name="L2CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="L1LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L1CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ITC1" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L2CatName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="L2Category_Asset" Member="Assets" ThisKey="L2CatCode" OtherKey="L2CatCode" Type="Asset" />
+      <Association Name="L1Category_L2Category" Member="L1Category" ThisKey="L1CatCode" OtherKey="L1CatCode" Type="L1Category" IsForeignKey="true" />
+      <Association Name="AssetLocation_L2Category" Member="AssetLocation" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="AssetLocation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AssetLocations" Member="AssetLocations">
+    <Type Name="AssetLocation">
+      <Column Name="L1LocCode" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="L1LocName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Address2" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Address3" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="State_Province" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Zip_PostalCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Country" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ContactPhone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ContactFax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ContactEmail" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MachineCreated" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="AssetDisposal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="AssetMovement" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AssetLocation_Asset" Member="Assets" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="Asset" />
+      <Association Name="AssetLocation_AssetPurchase" Member="AssetPurchases" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="AssetPurchase" />
+      <Association Name="AssetLocation_L1Category" Member="L1Categories" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="L1Category" />
+      <Association Name="AssetLocation_PurchaseDetail" Member="PurchaseDetails" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="PurchaseDetail" />
+      <Association Name="AssetLocation_L2Category" Member="L2Categories" ThisKey="L1LocCode" OtherKey="L1LocCode" Type="L2Category" />
+    </Type>
+  </Table>
+  <Function Name="dbo.GetAssets" Method="GetAssets">
+    <Parameter Name="L1LocCode" Parameter="l1LocCode" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="AssetDescription" Parameter="assetDescription" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="AssetNumber" Parameter="assetNumber" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L1CatName" Parameter="l1CatName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L2CatName" Parameter="l2CatName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L2LocName" Parameter="l2LocName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L3LocName" Parameter="l3LocName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L4LocName" Parameter="l4LocName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="CODELEVEL" Parameter="cODELEVEL" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Status" Parameter="status" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="GetAssetsResult">
+      <Column Name="AssetNumber" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AssetDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="L1CatName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L2CatName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L3CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L1LocName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L2LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L3LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L4LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L5LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Brand" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SerialNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Size" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Color" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DisposedOn" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="VerificationStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateOfVerification" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Depreciated" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NetBookValue" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetAssetsWithPurchases" Method="GetAssetsWithPurchases">
+    <Parameter Name="L1LocCode" Parameter="l1LocCode" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="AssetDescription" Parameter="assetDescription" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="AssetNumber" Parameter="assetNumber" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L1CatName" Parameter="l1CatName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L2CatName" Parameter="l2CatName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L2LocName" Parameter="l2LocName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L3LocName" Parameter="l3LocName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="L4LocName" Parameter="l4LocName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="CODELEVEL" Parameter="cODELEVEL" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Status" Parameter="status" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="GetAssetsWithPurchasesResult">
+      <Column Name="AssetNumber" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AssetDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="L1CatName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L2CatName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L3CatCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L1LocName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="L2LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L3LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L4LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="L5LocName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Brand" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SerialNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Size" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Color" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DisposedOn" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="VerificationStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateOfVerification" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Depreciated" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NetBookValue" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateofPurchase" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="UnitPrice" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

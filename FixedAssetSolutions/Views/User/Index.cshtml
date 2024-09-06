@@ -1,0 +1,711 @@
+﻿@using FAS.SharedModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+
+    <h3 class="box-title" id="title" hidden="hidden">Admin</h3>
+    @*<a class="btn btn-app pull-right" data-toggle="modal" data-target="#addLocation">
+            <i class="fa fa-plus"></i> Add Location
+        </a>*@
+
+    <div class="nav-tabs-custom">
+        <div class="tab-content" style="background: #f4f4f4;">
+            <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+            <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+            <div class="tab-pane active" id="AddLocation123">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="col-md-12"><h3 class="box-title box-title-main">Manage User</h3></div>
+                        <div class="col-md-3" style="margin-top: 10px;">
+                            <label for="exampleInputEmail1">Select Company Name</label>
+                            <select name="CompanyID" class="form-control Company" required="required">
+                                <option id="defco">Company Name</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 10px;">
+                            <label for="exampleInputEmail1">Select Location Name</label>
+                            <select name="L1LocCode" class="form-control Location" id="Loc" required="required">
+                                <option id="deflo">Location Name</option>
+                            </select>
+                        </div>
+                        <a class="btn btn-app pull-right" id="ADU" data-toggle="modal" data-target="#myModal">
+                            <i class="fa fa-plus"></i> Add User
+                        </a>
+                    </div>
+                    <div class="box-body">
+                        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12" id="noData">
+                                    <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th rowspan="1" colspan="1">S.No</th>
+                                                <th rowspan="1" colspan="1">Username</th>
+                                                <th rowspan="1" colspan="1">First Name</th>
+                                                <th rowspan="1" colspan="1">Last Name</th>
+                                                <th rowspan="1" colspan="1">Email</th>
+                                                @*<th rowspan="1" colspan="1">Roles</th>*@
+                                                <th rowspan="1" colspan="1">Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="location"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class='modal fade' id='roleModal' role='dialog'>
+                        <div class='modal-dialog modal-lg'>
+                            <div class='modal-content'>
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-bordered" style="margin-bottom: 30px;">
+                                        <thead>
+                                            <tr>
+                                                <th>Privilages</th>
+                                                <th>View</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="perm"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div id="myModal" class="modal fade" role="dialog" style="padding: 0px !important;">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <form id="user" method="POST">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" style="color: #00b3a1;">&times;</button>
+                                        <div class="col-md-6" style="margin-top:12px;"><h4 class="modal-title">Manage User</h4></div>
+                                        <div class="col-md-6" style="width:40%">
+                                            <img src="~/Content/img/Logo.png" style="width: 220px; float: right; margin-right: 60px;">
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="box">
+                                                    <div class="box-body">
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">First Name</label>
+                                                                    <input type="text" name="FirstName" class="form-control borderfas" placeholder="First Name">
+                                                                    <input type="text" name="UserID" hidden="hidden">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Last Name</label>
+                                                                    <input type="text" name="LastName" class="form-control borderfas" placeholder="Last Name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1" style="width: 100%;">Username<span style="color:red;">*</span><span class="pull-right" style="margin-left:10px;" id="message"></span></label>
+                                                                    <input type="text" name="UserName" class="form-control borderfas" placeholder="User Name" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1" style="width: 100%;">Email<span style="color:red;">*</span> <span class="pull-right" id='messagemail'></span></label>
+                                                                    <input type="email" name="Email" id="confirmEmail" class="form-control borderfas" placeholder="Email Address" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Password<span style="color:red;">*</span></label>
+                                                                    <input type="password" name="Password" id="password" class="form-control borderfas" placeholder="Password" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5" id="reconfirm">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1" style="width:100%;">Confirm Password<span style="color:red;">*</span><span class="pull-right" id='pass'></span></label>
+                                                                    <input type="password" class="form-control borderfas" id="confirmPassword" placeholder="Confirm Password" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="checkbox" style="margin-top: 30px;">
+                                                                    <span style="color:red;">*</span>
+                                                                    <label>
+                                                                        <input type="radio" id="true" name="Active" value="true" checked="checked"> Active
+                                                                    </label>
+                                                                    <label style="margin-left:10px;">
+                                                                        <input type="radio" id="false" name="Active" value="false"> Inactive
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Notes</label>
+                                                                    <textarea rows="4" cols="50" class="form-control borderfas" name="Note" placeholder="Notes"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="box" style="box-shadow:none; border: 1px solid #00b3a1;">
+                                                                    <div class="box-header">
+                                                                        <h3 class="box-title box-title-main">Roles</h3>
+                                                                    </div>
+                                                                    <div class="box-body" style="height: 300px; overflow: auto;">
+                                                                        <table class="table table-bordered" style="margin-bottom: 30px;">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th style="border: 1px solid #999;">Privilages</th>
+                                                                                    <th style="border: 1px solid #999;">View</th>
+                                                                                    <th style="border: 1px solid #999;">Edit</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="permissions"></tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="box" style="border: 1px solid #00b3a1; box-shadow:none;">
+                                                                    <div class="box-header">
+                                                                        <h3 class="box-title box-title-main">Locations</h3>
+                                                                    </div>
+                                                                    <div class="box-body" style="height: 300px; overflow: auto;">
+                                                                        <table class="table table-bordered" id="display">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th style="width: 10px; border: 1px solid #999;"><input type="checkbox" name="select-all" id="select-all" /></th>
+                                                                                    <th style="border: 1px solid #999;">Location Code</th>
+                                                                                    <th style="border: 1px solid #999;">Location Name</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="loca"></tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit" id="adduser"><i class="fa fa-save"></i></button>
+                                        <button type="submit" id="updateUser" class="btn btn-success"><i class="fa fa-save"></i></button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var title = $('#title').html();
+        $('#' + title).css('background-color', '#A2EEE6');
+        $('#confirmEmail').on('keyup focusout', function () {
+            var sEmail = $('#confirmEmail').val();
+            if (validateEmail(sEmail)) {
+                $('#messagemail').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+            }
+            else {
+                $('#messagemail').html('<i class="fa fa-exclamation-circle "></i>').css('color', 'red');
+            }
+        });
+        function validateEmail(sEmail) {
+            var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (filter.test(sEmail)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        $('#ADU').hide();
+        $('#updateUser').hide();
+        $(".modal").on("hidden.bs.modal", function () {
+            $("[name='FirstName']").val("");
+            $("[name='LastName']").val("");
+            $("[name='UserName']").val("");
+            $("[name='Password']").val("");
+            $("[name='Email']").val("");
+            $("[type='password']").val("");
+            $("[name='Note']").val("");
+        });
+        $('#true').unbind().click(function () {
+            $('#true').val(true);
+        });
+        $('#false').unbind().click(function () {
+            $('#true').val(false);
+            $('#false').val(false);
+        });
+
+        getAllPermission(function (response) {
+
+            if (response.data.length > 0) {
+                for (var i = 0; i < response.data.length; i++) {
+                    var PermissionID = response.data[i]['PermissionID'];
+                    var PermissionName = response.data[i]['PermissionName'];
+                    divItems =
+                       "<tr>" +
+                       "<td>" + PermissionName + "</td>" +
+                       "<td><input type='radio'  name='Permissions[" + i + "].PermissionName' value='" + PermissionID + ',' + "view' checked='checked'> View</td>" +
+                       "<td id='" + PermissionID + "'><input type='radio'  name='Permissions[" + i + "].PermissionName' value='" + PermissionID + ',' + "edit'> Edit</td>" +
+                       "</tr>"
+                    $('#permissions').append(divItems);
+                }
+            }
+        });
+        var userid = $('#userid').val();
+        var role = $('#role').val();
+        if (role == "UADMIN") {
+            var form = { "UserID": userid };
+            var formData = {
+                type: "POST",
+                data: form
+            };
+
+            getCompanyUser(formData, function (response) {
+                if (response.data.length == 1) { $('#defco').remove(); }
+                $.each(response.data, function (key, value) {
+                    $(".Company").append($("<option></option>").val(value.MultipleDivision + "*" + value.CompanyID + "*" + value.Locations + "*" + value.Active).html(value.CompanyName));
+                });
+            });
+            GetUserLocation(formData, function (response) {
+                if (response.data.length == 1) {
+                    $('#def').remove();
+                }
+                $.each(response.data, function (key, value) {
+                    if (response.data.length == 1) { $('#deflo').remove(); }
+                    $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+                });
+            });
+            //for (var i = 0; i < 15 ; i++) {
+            //    var count = i + 1;
+            //    divItems =
+            //    "<tr role='row' class='com'>" +
+            //    "<td class='fields'>" + count + "</td>" +
+            //    "<td class='fields' name='UserName" + count + "'></td>" +
+            //    "<td class='fields' name='FirstName" + count + "'></td>" +
+            //    "<td class='fields' name='LastName" + count + "'></td>" +
+            //    "<td class='fields' name='Email" + count + "'></td>" +
+            //    "<td class='text-center'>" +
+            //    "<button type='button' class='btn btn-primary edit' id='UserID" + count + "' value='' disabled='disabled'><i class='fa fa-edit'></i></button>" +
+            //    "</td>" +
+            //    "</tr>"
+            //    $('#location').append(divItems);
+            //}
+            setTimeout(function () {
+                var Company = $(".Company").val();
+                val = Company.split("*");
+                CompanyID = val[1];
+                var Location = $(".Location").val();
+                val1 = Location.split("*");
+                LocationID = val1[0]
+                var formData1 = {
+                    type: 'POST',
+                    data: {
+                        'CompanyID': CompanyID,
+                        'L1LocCode': LocationID
+                    }
+                }
+
+                GetUser(formData1, function (response) {
+                    
+                    for (var j = 0; j < response.data.length; j++) {
+
+                        var count = j + 1;
+
+                        divItems =
+                        "<tr role='row' class='com'>" +
+                        "<td class='fields'>" + count + "</td>" +
+                        "<td class='fields' name='UserName" + count + "'></td>" +
+                        "<td class='fields' name='FirstName" + count + "'></td>" +
+                        "<td class='fields' name='LastName" + count + "'></td>" +
+                        "<td class='fields' name='Email" + count + "'></td>" +
+                        "<td class='text-center'>" +
+                        "<button type='button' class='btn btn-primary edit' id='UserID" + count + "' value='' disabled='disabled'><i class='fa fa-edit'></i></button>" +
+                        "</td>" +
+                        "</tr>"
+                        $('#location').append(divItems);
+
+                        //var count = j + 1;
+                        $.each(response.data[j], function (key, value) {
+
+                            var ctrl = $('[name=' + key + '' + count + ']');
+                            ctrl.append(value);
+
+                            if (key == 'UserID') {
+                                var button = $('[id=' + key + '' + count + ']');
+                                button.prop('disabled', false);
+                                button.val(value);
+
+                            }
+                        });
+
+                    }
+                });
+
+
+                $('#confirmPassword').on('keyup focusout', function () {
+                    if ($(this).val() == $('#password').val() || $(this).val() == "null") {
+                        $('#pass').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                    } else $('#pass').html('<i class="fa fa-exclamation-circle "></i>').css('color', 'red');
+                });
+
+                $('#adduser').unbind().click(function (event) {
+                    $('#user').unbind().submit(function (event) {
+                        event.preventDefault();
+                        var allVals = [];
+                        $('#loca :checked').each(function () {
+                            allVals.push($(this).val());
+                        });
+                        var Loca = allVals.toString();
+                        console.log(Loca);
+                        //var form = $(this);
+                        //var formData = {
+                        //    type: form.attr('method'),
+                        //    data: form.serialize() + '&L1LocCode=' + L1LocCode + '&CompanyID=' + CompanyID
+                        //};
+                        //addUser(formData, function (response) {
+                        //    $('#myModal').modal('toggle');
+                        //    location.reload();
+                        //});
+                    });
+                });
+
+                $('#updateUser').unbind().click(function (e) {
+                    $('#user').submit(function (e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var formData = {
+                            type: form.attr('method'),
+                            data: form.serialize()
+                        };
+                        console.log(formData);
+                        //UpdateUser(formData, function (response) {
+                        //    location.reload();
+                        //});
+                    });
+                });
+
+                $(document).on('click', '.edit', function (event) {
+                    var id = $(this).attr('value');
+                    event.preventDefault();
+                    var formData = {
+                        type: "post",
+                        data: { 'UserID': id }
+                    };
+                    
+                    EditUser(formData, function (response) {
+                        $('#myModal').modal('show');
+                        $('#reconfirm').remove();
+                        $('#updateUser').show();
+                        $('#adduser').hide();
+                        if (response.data['Active'] == true) {
+                            $('#true').prop('checked', true);
+                        } else {
+                            $('#false').prop('checked', true);
+                        }
+                        $.each(response.data, function (key, value) {
+                            var ctrl = $('[name=' + key + ']');
+                            ctrl.val(value);
+                        });
+                        $.each(response.data.Permissions, function (key, value) {
+                            if (value['PermissionName'] == "True") {
+                                $('input[value="' + value['PermissionID'] + ',edit"]').prop('checked', true);
+                            } else {
+                                $('input[value="' + value['PermissionID'] + ',view"]').prop('checked', true);
+                            }
+                        });
+                    });
+                });
+            }, 1000);
+        } else {
+            getCompany(function (response) {
+                $.each(response.data, function (key, value) {
+                    $(".Company").append($("<option></option>").val(value.MultipleDivision + "*" + value.CompanyID + "*" + value.Locations + "*" + value.Active).html(value.CompanyName));
+                });
+            });
+        }
+
+        $(".Company").change(function () {
+            $('#14, #16, #26, #27, #28, #31').empty();
+            $('.alert').remove();
+            var id = $(this).val();
+            if (id != 0) {
+                values = id.split('*');
+                MultiDivision = values[0];
+                CompanyID = values[1];
+                Location = values[2];
+                Active = values[3];
+                if (Active == "true") {
+                    $("#example2, #ADU").show();
+                    //$('#ADU').show();
+                    $('.com, .result').remove();
+                    //$('.result').remove();
+                    $('#Loc').find('option').remove().end().append('<option value="">Select Location</option>');
+
+                    var formData = {
+                        type: 'POST',
+                        data: { 'CompanyID': CompanyID }
+                    };
+                    getLocations(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+
+                            var divItems1 =
+                               "<tr>" +
+                               "<td><input type='checkbox' id='" + value.L1LocCode + "' value='" + value.L1LocCode + "'></td>" +
+                               "<td>" + value.L1LocCode + "</td>" +
+                               "<td>" + value.L1LocName + "</td>" +
+                               "</tr>"
+                            $('#display > tbody:last-child').append(divItems1);
+                        });;
+                    });
+
+                    $('#adduser').unbind().click(function (event) {
+                        $('#user').unbind().submit(function (event) {
+                            event.preventDefault(event);
+                            var allVals = [];
+                            $('#loca :checked').each(function () {
+                                allVals.push($(this).val());
+                            });
+                            var Loca = allVals.toString();
+                            var form = $(this);
+                            var formData = {
+                                type: form.attr('method'),
+                                data: form.serialize() + '&L1LocCode=' + Loca + '&CompanyID=' + CompanyID
+                            };
+                            addUser(formData, function (response) {
+                                $('#myModal').modal('toggle');
+                                location.reload();
+                            });
+                        });
+                    });
+
+                    $(".Location").unbind().change(function () {
+                        
+                        $('#def').remove();
+                        var lid = $(this).val();
+                        values = lid.split('*');
+                        L1LocCode = values[0];
+                        Active = values[1];
+                        if (Active == "true") {
+                            $('#ADU').show();
+                            $("#example2").show();
+                            $('.alert').remove();
+                            $('.com').remove();
+                            //for (var i = 0; i < 15 ; i++) {
+                            //    var count = i + 1;
+                            //    divItems =
+                            //    "<tr role='row' class='com'>" +
+                            //    "<td class='fields'>" + count + "</td>" +
+                            //    "<td class='fields' name='UserName" + count + "'></td>" +
+                            //    "<td class='fields' name='FirstName" + count + "'></td>" +
+                            //    "<td class='fields' name='LastName" + count + "'></td>" +
+                            //    "<td class='fields' name='Email" + count + "'></td>" +
+                            //    "<td class='text-center'>" +
+                            //    "<button type='button' class='btn btn-primary edit' id='UserID" + count + "' value='' disabled='disabled'><i class='fa fa-edit'></i></button>" +
+                            //    "</td>" +
+                            //    "</tr>"
+                            //    $('#location').append(divItems);
+                            //}
+                            var formData1 = {
+                                type: 'POST',
+                                data: {
+                                    'CompanyID': CompanyID,
+                                    'L1LocCode': L1LocCode
+                                }
+                            }
+
+                            GetUser(formData1, function (response) {
+                                for (var j = 0; j < response.data.length; j++) {
+
+                                    var count = j + 1;
+
+                                    divItems =
+                                    "<tr role='row' class='com'>" +
+                                    "<td class='fields'>" + count + "</td>" +
+                                    "<td class='fields' name='UserName" + count + "'></td>" +
+                                    "<td class='fields' name='FirstName" + count + "'></td>" +
+                                    "<td class='fields' name='LastName" + count + "'></td>" +
+                                    "<td class='fields' name='Email" + count + "'></td>" +
+                                    "<td class='text-center'>" +
+                                    "<button type='button' class='btn btn-primary edit' id='UserID" + count + "' value='' disabled='disabled'><i class='fa fa-edit'></i></button>" +
+                                    "</td>" +
+                                    "</tr>"
+                                    $('#location').append(divItems);
+
+                                    $.each(response.data[j], function (key, value) {
+
+                                        var ctrl = $('[name=' + key + '' + count + ']');
+                                        ctrl.append(value);
+
+                                        if (key == 'UserID') {
+                                            var button = $('[id=' + key + '' + count + ']');
+                                            button.prop('disabled', false);
+                                            button.val(value);
+                                        }
+                                    });
+                                }
+                            });
+
+                            $('#confirmPassword').on('keyup focusout', function () {
+                                if ($(this).val() == $('#password').val() || $(this).val() == "null") {
+                                    $('#pass').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                                } else $('#pass').html('<i class="fa fa-exclamation-circle "></i>').css('color', 'red');
+                            });
+
+                            $('#updateUser').unbind().click(function (e) {
+                                $('#user').submit(function (e) {
+                                    e.preventDefault();
+                                    var allVals = [];
+                                    $('#loca :checked').each(function () {
+                                        allVals.push($(this).val());
+                                    });
+                                    var Loca = allVals.toString();
+                                    var form = $(this);
+                                    var formData = {
+                                        type: form.attr('method'),
+                                        data: form.serialize() + '&L1LocCode=' + Loca + '&CompanyID=' + CompanyID
+                                    };
+                                    console.log(formData);
+                                    UpdateUser(formData, function (response) {
+                                        alert('User rights updated successfully.');
+                                        location.reload();
+                                    });
+                                });
+                            });
+
+                            $('.btn-danger').unbind().click(function (e) {
+                                location.reload();
+                            });
+
+                            $(document).on('click', '.edit', function (event) {
+                                var id = $(this).attr('value');
+                                event.preventDefault();
+                                var formData = {
+                                    type: "post",
+                                    data: { 'UserID': id }
+                                };
+                                EditUser(formData, function (response) {
+                                    console.log(response);
+                                    $('#reconfirm').remove();
+                                    $('#myModal').modal('show');
+                                    $('#updateUser').show();
+                                    $('#adduser').hide();
+                                    if (response.data['Active'] == true) {
+                                        $('#true').prop('checked', true);
+                                    } else {
+                                        $('#false').prop('checked', true);
+                                    }
+                                    $.each(response.data, function (key, value) {
+                                        var ctrl = $('[name=' + key + ']');
+                                        ctrl.val(value);
+                                    });
+                                    $.each(response.data.Permissions, function (key, value) {
+                                        if (value['PermissionName'] == "True") {
+                                            $('input[value="' + value['PermissionID'] + ',edit"]').prop('checked', true);
+                                        } else {
+                                            $('input[value="' + value['PermissionID'] + ',view"]').prop('checked', true);
+                                        }
+                                    });
+
+                                    $.each(response.data.Locations, function (key, value) {
+                                        $('#' + value['L1LocCode']).prop('checked', true);
+                                    });
+                                });
+                            });
+                        } else {
+                            $('#ADU').hide();
+                            $("#example2").hide();
+                            divItems =
+                " <div class='alert alert-danger alert-dismissible'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Company Inactive ! Please Contact Administator." +
+                "</div>"
+
+                            $('#noData').append(divItems);
+                        }
+                    });
+                }
+                else {
+                    if (CompanyID != null) {
+                        $('#Loc').find('option').remove().end().append('<option value="">All Locations</option>');
+                        $("#example2").hide();
+                        $('#ADU').hide();
+                        divItems =
+
+                    " <div class='alert alert-danger alert-dismissible'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                    "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Company Inactive ! Please Contact Administator." +
+                    "</div>"
+
+                        $('#noData').append(divItems);
+                    }
+                    $('#Loc').find('option').remove().end().append('<option value="">Select Location</option>');
+                    $('#ADU').hide();
+                    $('.com').remove();
+                }
+            }
+            else {
+                $('.com').remove();
+            }
+        });
+
+        $('[name="UserName"]').unbind().on('keyup focusout', function () {
+            var userName = $(this).val();
+            var formData = {
+                type: 'post',
+                data: { 'UserName': userName }
+            };
+            if (userName != "") {
+                IsUsernameExsist(formData, function (response) {
+                    if (response.message == "Username does not Exsist") {
+                        $('#message').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                    } else {
+                        $('#message').html('Username already exsist').css('color', 'red');
+                    }
+                });
+            } else {
+                $('#message').html('Username can not be empty').css('color', 'red');
+            }
+        });
+    });
+
+    $('#select-all').click(function (event) {
+        if (this.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $(':checkbox').each(function () {
+                this.checked = false;
+            });
+
+        }
+    });
+</script>

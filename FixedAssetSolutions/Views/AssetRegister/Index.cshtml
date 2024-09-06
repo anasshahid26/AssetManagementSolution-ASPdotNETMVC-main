@@ -1,0 +1,352 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">Reports</h3>
+    <div class="box">
+        <div class="box-header with-border">
+            <div class="col-md-12">
+                <h3 class="box-title box-title-main">Select Location</h3>
+                <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+                <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+            </div>
+            <div class="col-md-3" style="margin-top: 10px;">
+
+                <label for="exampleInputEmail1">Location</label>
+                <select class="form-control borderfas" id="Location" style="background-color: #ffffff;">
+                    <option id="def">Select Location</option>
+                </select>
+
+            </div>
+
+            @*<div class="col-md-1 pull-right" style="margin-top: 35px;">
+                    <button type="button" class="btn btn-default" id="BarcodeButton" style="margin: 0px; color: #fff; border: 1px solid #46c7ba; background-color: #46c7ba;"><i class="fa fa-search"></i></button>
+                </div>
+
+                <div class="col-md-3 pull-right" style="margin-top: 10px;">
+                    <label for="exampleInputEmail1">Barcode ID</label>
+                    <input type="number" class="form-control" style="border: 2px solid #46c7ba;" id="Barcode">
+                </div>*@
+        </div>
+        <div class="box-body with-border">
+            <div class="col-md-12 text-center" style="border-bottom: 1px solid #46c7ba;">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-5 text-center" style="margin-top: 10px;">
+                    <h3 class="box-title box-title-main">Asset Register Report</h3>
+                    <div class="col-md-12" style="padding: 0px; top: 20px;">
+                        <button type="button" class="btn btn-app" style="margin: 0px; color: #000000; border: 1px solid rgb(177, 231, 224); background-color: rgb(177, 231, 224); margin-bottom: 40px;" id="DescriptionButton"><i class="fa fa-search"></i>Search</button>
+                    </div>
+                    @*<input type="text" class="form-control" style="border: 2px solid #46c7ba;" id="Description" placeholder="Enter your asset description">*@
+                    @*<label style="font-weight: 600; margin-top:40px;">Refine Your Search</label>*@
+                </div>
+
+                @*<div class="col-md-3" style="border: 3px solid #46c7ba; float: right; width:17%; padding:13px;">
+                        <h1 id="total" style="color: #46c7ba;">0</h1><span style="font-weight:600">Total Assets Found</span>
+                    </div>*@
+                <div class="col-md-3 col-sm-3 col-xs-3" style="float: right; margin-top: 13px;">
+                    <!-- small box -->
+                    @*<div class="small-box bg-b3">
+                            <div class="inner text-center">
+                                <div>
+                                    <h3 id="total">0</h3>
+                                    <img id="loader" src="~/Content/img/loading.gif" style="width:30px; height:30px; margin:10px;" />
+                                    <p>Total Assets</p>
+                                </div>
+                            </div>
+                            <div class="icon">
+                            </div>
+                        </div>*@
+                    <div class="small-box bg-b3">
+                        <div class="inner">
+                            <h3 id="total" style="font-size:60px;">0</h3>
+                            <img id="loader" src="~/Content/img/loading.gif" style="width:56px; height:56px; margin:10px;" />
+                        </div>
+                        <div class="small-box-footer" style="font-size:17px; color:black; font-weight:700;">
+                            Total Assets
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-12" style="border-bottom: 1px solid #46c7ba;">
+                            <div class="col-md-11" style="margin-bottom:20px">
+                                <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                    <label>Asset Group</label>
+                                    <select class="form-control filter" style="border: 2px solid #46c7ba;  background-color: #ffffff;" id="AssetGroup">
+                                        <option value="null">Asset Group</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                    <label>Asset Category</label>
+                                    <select class="form-control filter" style="border: 2px solid #46c7ba;  background-color: #ffffff;" id="AssetCategory">
+                                        <option value="null">Asset Category</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                    <label>Section Name</label>
+                                    <select class="form-control filter" style="border: 2px solid #46c7ba;  background-color: #ffffff;" id="AssetSection">
+                                        <option value="null">Asset Section</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                    <label>Room No</label>
+                                    <select class="form-control filter" style="border: 2px solid #46c7ba;  background-color: #ffffff;" id="AssetRoomNo">
+                                        <option value="null">Asset Room No</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                    <label>Room Type</label>
+                                    <select class="form-control filter" style="border: 2px solid #46c7ba;  background-color: #ffffff;" id="AssetRoomType">
+                                        <option value="null">Asset Room Type</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                    <label>Floor</label>
+                                    <select class="form-control filter" style="border: 2px solid #46c7ba;  background-color: #ffffff;" id="AssetFloor">
+                                        <option value="null">Asset Floor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="padding: 0px; top: 20px;">
+                                <button type="button" class="btn btn-app" style="margin: 0px; color: #000000; border: 1px solid rgb(177, 231, 224); background-color: rgb(177, 231, 224);" id="DescriptionButton"><i class="fa fa-search"></i>Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="exp"></div>
+                    <div class="box-body">
+                        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row">
+                                <div class="col-sm-12">
+                                    <table id="table2excel" data-tableName="Test Table 1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="border: 1px solid #999;">Barcode ID</th>
+                                                <th style="border: 1px solid #999;">Asset Description</th>
+                                                <th style="border: 1px solid #999;">Asset Group</th>
+                                                <th style="border: 1px solid #999;">Asset Category</th>
+                                                <th style="border: 1px solid #999;">Section Name</th>
+                                                <th style="border: 1px solid #999;">Room No</th>
+                                                <th style="border: 1px solid #999;">Room Type</th>
+                                                <th style="border: 1px solid #999;">Floor</th>
+                                                <th style="border: 1px solid #999;">Image</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="assets"></tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal text-center">
+
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content modal-content" id="img01" style="min-height:0%; top:100px; border: 10px solid #a2a4a3; border-radius: 30px; width:500px;">
+
+        <!-- Modal Caption (Image Text) -->
+        <div id="caption"></div>
+    </div>
+
+    <div id="addLocation" class="modal fade" role="dialog" style="">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Location</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="col-md-12">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Name</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Site</label>
+                                                <select class="form-control">
+                                                    <option>101</option>
+                                                    <option>102</option>
+                                                    <option>103</option>
+                                                    <option>104</option>
+                                                    <option>105</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Description</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Parent Location</label>
+                                                <select class="form-control">
+                                                    <option>101</option>
+                                                    <option>102</option>
+                                                    <option>103</option>
+                                                    <option>104</option>
+                                                    <option>105</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="checkbox" style="margin-top: 30px;">
+                                                <label>
+                                                    <input type="checkbox"> Inactive
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/jszip.min.js"></script>
+<script src="~/Scripts/buttons.html5.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+<script>
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    $('#loader').hide();
+    Table = $("#table2excel").DataTable({
+        data: [],
+        columns: [
+             { data: 'AssetNumber' },
+             { data: 'AssetDescription' },
+             { data: 'Group' },
+             { data: 'Category' },
+             { data: 'Section' },
+             { data: 'Room_No' },
+             { data: 'Room_Type' },
+             { data: 'Floor' },
+             { data: 'Image' }
+        ],
+        rowCallback: function (row, data) {
+            var imgLink = data['Image']; // if your JSON is 3D
+            var assetNumber = data['AssetNumber'];
+            //var imgLink = aData[4]; // where 4 is the zero-origin column for 2D
+            var imgTag = '<img src="' + baseUrl.appServer + 'Content/img/' + imgLink + '.jpg" id="' + assetNumber + '" data-toggle="modal" data-target="#myModal" class="images" style = "width:25px; height:25px;"/>';
+            $('td:eq(8)', row).html(imgTag); // where 4 is the zero-origin visible column in the HTML
+
+            return row;
+        },
+        //filter: true,
+        //info: false,
+        //ordering: false,
+        //processing: true,
+        //retrieve: true
+    });
+
+    var role = $('#role').val();
+    if (role == "USER" || role == "UADMIN") {
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+        Permissions(formData, function (response) {
+            if (response.data[15]['Permission'] == 'False') {
+                //$('#excel').prop("disabled", true);
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+    } else {
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+    }
+
+    $('#DescriptionButton').unbind().click(function () {
+        $('#total').hide();
+        $('#loader').show();
+        $('.odd').remove();
+
+        var Location = $("#Location").find(':selected').val();
+        var Description = $("#Description").val();
+        var AssetGroup = "Asset Group";
+        var AssetCategory = "Asset Category";
+        var AssetSection = "Asset Section";
+        var AssetRoomNo = "Asset Room No";
+        var AssetRoomType = "Asset Room Type";
+        var AssetFloor = "Asset Floor";
+        if ($("#prvExport").length != 0) {
+            $("#prvExport").replaceWith("<div id='exp'></div>");
+        }
+        $("#exp").append("<a class='dt-button buttons-excel buttons-html5' style='margin-top:10px;' id='prvExport' href='/AssetRegister/ExportExcel?L1LocCode=" + Location + "'>Export to Excel</a>");
+        var form = { "L1LocCode": Location, "AssetDescription": Description, "AssetNumber": null, "L1CatName": AssetGroup, "L2CatName": AssetCategory, "L2LocName": AssetSection, "L3LocName": AssetRoomNo, "L4LocName": AssetRoomType, "CODELEVEL": AssetFloor };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+        getAsset(formData, function (response) {
+            $('#exportServer').unbind().click(function () {
+                console.log("clicked");
+                Export(formData, function (response) {
+                    console.log(response);
+                });
+            });
+            var total = response.data.length;
+            $('#total').text(total);
+            $('#loader').hide();
+            $('#total').show();
+            Table.clear().draw();
+            Table.rows.add(response.data).draw();
+        });
+    });
+
+    $(document).on('click', '.images', function (e) {
+        var image = $(this).attr('src');
+        $('#myModal').on('show.bs.modal', function () {
+            $("#img01").attr("src", image);
+        });
+    });
+</script>

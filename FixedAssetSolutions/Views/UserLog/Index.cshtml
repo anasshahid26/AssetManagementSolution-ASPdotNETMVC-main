@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box">
+    <h3 class="box-title" id="title" hidden="hidden">Admin</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <div class="box-header">
+        <h3 class="box-title box-title-main">User Log History</h3>
+        <div class="col-md-3 pull-right">
+            <label>Select User Name</label>
+            <select name="UserID" class="form-control user" required="required">
+                <option id="deflo">User Name</option>
+            </select>
+        </div>
+        <div class="col-md-3 pull-right">
+            <label for="exampleInputEmail1">Select Location Name</label>
+            <select name="L1LocCode" class="form-control Location" id="Loc" required="required">
+                <option id="deflo">Location Name</option>
+            </select>
+        </div>
+        <div class="col-md-3 pull-right">
+            <label>Select Company Name</label>
+            <select name="CompanyID" class="form-control Company" required="required">
+                <option id="defco">Company Name</option>
+            </select>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="UserLog" data-tableName="Test Table 1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                        <thead>
+                            <tr role="row">
+                                <th style="width: 181px;">User Name</th>
+                                <th style="width: 224px;">Activity</th>
+                                <th style="width: 197px;">Date</th>
+                                <th style="width: 154px;">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+<script>
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    Table = $("#UserLog").DataTable({
+        data: [],
+        columns: [
+             { data: 'UserName' },
+             { data: 'Activity' },
+             { data: 'Date' },
+             { data: 'Time' }
+        ],
+        rowCallback: function (row, data) {
+        },
+        //filter: true,
+        //info: false,
+        //ordering: false,
+        //processing: true,
+        //retrieve: true
+    });
+    var userid = $('#userid').val();
+    var role = $('#role').val();
+    if (role == "UADMIN") {
+        var form = { "UserID": userid };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+
+        getCompanyUser(formData, function (response) {
+            if (response.data.length == 1) { $('#defco').remove(); }
+            $.each(response.data, function (key, value) {
+                $(".Company").append($("<option></option>").val(value.MultipleDivision + "*" + value.CompanyID + "*" + value.Locations + "*" + value.Active).html(value.CompanyName));
+            });
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                if (response.data.length == 1) { $('#deflo').remove(); }
+                $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+            });
+        });
+
+        setTimeout(function () {
+            var Company = $(".Company").val();
+            val = Company.split("*");
+            CompanyID = val[1];
+            var Location = $(".Location").val();
+            val1 = Location.split("*");
+            LocationID = val1[0]
+            var formData1 = {
+                type: 'POST',
+                data: {
+                    'CompanyID': CompanyID,
+                    'L1LocCode': LocationID
+                }
+            }
+            GetUser(formData1, function (response) {
+
+            });
+        }, 1000);
+    } else {
+        getCompany(function (response) {
+            $.each(response.data, function (key, value) {
+                $(".Company").append($("<option></option>").val(value.MultipleDivision + "*" + value.CompanyID + "*" + value.Locations + "*" + value.Active).html(value.CompanyName));
+            });
+        });
+    }
+    $(".Company").change(function () {
+        $('.alert').remove();
+        var id = $(this).val();
+        if (id != 0) {
+            values = id.split('*');
+            MultiDivision = values[0];
+            CompanyID = values[1];
+            Location = values[2];
+            Active = values[3];
+            if (Active == "true") {
+                $("#example2").show();
+                $('#ADU').show();
+                $('.com').remove();
+                $('.result').remove();
+                $('#Loc').find('option').remove().end().append('<option value="">All Locations</option>');
+
+                var formData = {
+                    type: 'POST',
+                    data: { 'CompanyID': CompanyID }
+                };
+                getLocations(formData, function (response) {
+                    $.each(response.data, function (key, value) {
+                        $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+                    });
+                });
+                $(".Location").unbind().change(function () {
+                    var lid = $(this).val();
+                    values = lid.split('*');
+                    L1LocCode = values[0];
+                    Active = values[1];
+                    if (Active == "true") {
+                        var formData1 = {
+                            type: 'POST',
+                            data: {
+                                'CompanyID': CompanyID,
+                                'L1LocCode': L1LocCode
+                            }
+                        }
+
+                        GetUser(formData1, function (response) {
+                            $.each(response.data, function (key, value) {
+                                $(".user").append($("<option></option>").val(value.UserID).html(value.UserName));
+                            });
+                        });
+
+                        $(".user").unbind().change(function () {
+                            var UserID = $(this).val();
+                            var formData = {
+                                type: "POST",
+                                data: { "UserID": UserID }
+                            };
+                            GetUserLog(formData, function (response) {
+                                Table.clear().draw();
+                                Table.rows.add(response.data).draw();
+                            });
+                        });
+                    }
+                });
+            }
+        }
+    });
+</script>

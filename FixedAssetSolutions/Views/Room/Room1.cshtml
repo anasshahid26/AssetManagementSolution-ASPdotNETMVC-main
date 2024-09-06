@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form id="moveAssetSingle" method="post">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title box-title-main pull-left">Add New Room</h3>
+        </div>
+        <div class="box-body with-border">
+            <div class="col-md-6">
+                <div class="col-md-6">
+                    <label>Location</label>
+                    <select class="form-control select1 borderfas" name="L3LocCode" id="AssetRoomNo" style="background-color: #ffffff; width:100%" required="">
+                        <option value="">Select Location</option>
+                        <option value="">Demo 1</option>
+                        <option value="">Demo 2</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                        <label>Section</label>
+                        <select class="form-control select1 borderfas" name="L3LocCode" id="AssetRoomNo" style="background-color: #ffffff; width:100%" required="">
+                            <option value="">Select Section</option>
+                        </select>
+                    </div>
+                <div class="col-md-12" style="margin-top:50px;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Room Number</label><br><span>Please Enter (MAX 1000) Room Number in every new line.</span>
+                            <textarea class="form-control borderfas" style="    width: 322px; height: 363px;" id="" name="AssetNumber" placeholder="Enter Room Number" required=""></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">InventoryManagement</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <div class="box" id="lb">
+        <div class="box-header with-border">
+            <div class="col-md-12">
+                <h3 class="box-title box-title-main">Asset Depericiation Setup</h3>
+            </div>
+            <div class="col-md-3" style="margin-top: 10px;">
+                <label for="exampleInputEmail1">Location</label>
+                <select class="form-control borderfas" id="Location" style="background-color: #ffffff;">
+                    <option id="def">Select Location</option>
+                </select>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="col-md-3">
+                <form id="depreciationForm">
+                    <table class="table table-bordered" style="margin-bottom: 30px;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #999;">Asset Group</th>
+                                <th style="border: 1px solid #999;">Depreciation Rate %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="group"></tbody>
+                    </table>
+                    <button type="submit" id="submitDepreciation"class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+         
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+</div>
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/jszip.min.js"></script>
+<script src="~/Scripts/buttons.html5.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+
+    var role = $('#role').val();
+    if (role == "USER" || role == "UADMIN") {
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+        Permissions(formData, function (response) {
+            if (response.data[15]['Permission'] == 'False') {
+                //$('#excel').prop("disabled", true);
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        var Location1 = $('#Location').val();
+        var formData = {
+            type: "POST",
+            data: { 'L1LocCode': Location1 }
+        };
+    } else {
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        $('#Location').unbind().change(function () {
+            $(".cl").remove();
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+            getL1Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#group").append($("<tr class='cl'><td>" + value.L1CatName + "</td><td><input class='form-control borderfas depericiation' style='width:90px;' name='" + value.L1CatCode + "' type='text'></td></tr>"));
+                });
+            });
+        });
+    }
+    $(document).on('click', '#submitDepreciation', function (event) {
+        event.preventDefault();
+        var GroupsInfo = [];
+        $('.depericiation').each(function () {
+            GroupsInfo.push({
+                DepreciatedValue: '' + $(this).val() + '',
+                L1CatCode: '' + $(this).attr("name")  + ''
+            });
+        });
+        var postdata = {
+            L1LocCode : $("#Location").find(':selected').val(),
+            DepreciationSetupList: GroupsInfo
+        };
+        var formData = {
+            type: "POST",
+            data: postdata
+        };
+        console.log(formData);
+        SetDepreciationRate(formData, function (response) {
+            console.log(response);
+        });
+        //event.preventDefault();
+        //$('#depreciationForm').submit(function (e) {
+        //    event.preventDefault();
+        //    var form = $(this);
+        //    var formData = {
+        //        data: form.serialize()
+        //    };
+        //    console.log(data);
+        //});
+    });
+
+</script>

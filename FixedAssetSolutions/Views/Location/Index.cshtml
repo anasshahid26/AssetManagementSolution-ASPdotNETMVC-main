@@ -1,0 +1,360 @@
+﻿@using FAS.SharedModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+
+    <h3 class="box-title" id="title" hidden="hidden">Admin</h3>
+    @*<a class="btn btn-app pull-right" data-toggle="modal" data-target="#addLocation">
+            <i class="fa fa-plus"></i> Add Location
+        </a>*@
+
+    <div class="nav-tabs-custom">
+        <div class="tab-content" style="background: #f4f4f4;">
+            <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+            <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+            <div class="tab-pane active" id="AddLocation123">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="col-md-12"><h3 class="box-title box-title-main">Manage Location</h3></div>
+                        <div class="col-md-3" style="margin-top: 10px;">
+                            <label for="exampleInputEmail1">Select Company Name</label>
+                            <select name="CompanyID" class="form-control Company" required="required">
+                                <option value="0">Company Name</option>
+                            </select>
+                        </div>
+                        <a class="btn btn-app pull-right" id="ADL" data-toggle="modal" data-target="#LocationModal">
+                            <i class="fa fa-plus"></i> Add Location
+                        </a>
+                    </div>
+                    <div class="box-body">
+                        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12" id="noData">
+                                    <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th rowspan="1" colspan="1">S.No</th>
+                                                <th rowspan="1" colspan="1">Location Code</th>
+                                                <th rowspan="1" colspan="1">Location Name</th>
+                                                <th rowspan="1" colspan="1">Location Address</th>
+                                                <th rowspan="1" colspan="1">Location City</th>
+                                                <th rowspan="1" colspan="1">Active/Inactive</th>
+                                                <th rowspan="1" colspan="1">Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="location"></tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="LocationModal" class="modal fade" role="dialog" style="padding: 0px !important;">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form id="addLocation" method="POST">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" style="color: #00b3a1;">&times;</button>
+                        <div class="col-md-6" style="margin-top:12px;"><h4 class="modal-title">Manage Location</h4></div>
+                        <div class="col-md-6" style="width:40%">
+                            <img src="~/Content/img/Logo.png" style="width: 220px; float: right; margin-right: 60px;">
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box" style="margin-top:40px;">
+                                    <div class="box-body">
+                                        <div class="col-md-12">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Location Code<span style="color:red;">*</span></label>
+                                                    <span id='error' style='font-size:10px; margin-left:15px; color:red; font-weight: bolder;' name='error'>(Location ID already in use)</span><span style="margin-left:10px;" id='length'></span>
+                                                    <input type="text" name="L1LocCode" id="LCode" maxlength="6"  pattern="[a-zA-Z0-9\s]{1,}" title="No Special Characters" class="form-control" placeholder="Enter Location Code" required="required">
+                                                    <input type="text" name="L1LocCode" hidden="hidden">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Location Name<span style="color:red;">*</span></label>
+                                                    <input type="text" name="L1LocName" class="form-control" placeholder="Enter Location Name" required="required">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Location Address<span style="color:red;">*</span></label>
+                                                    <input type="text" name="Address" class="form-control" placeholder="Enter Address" required="required">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Location City<span style="color:red;">*</span></label>
+                                                    <input type="text" name="City" class="form-control" placeholder="Enter City" required="required">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Location Country<span style="color:red;">*</span></label>
+                                                    <select name="CountryID" id="Country" class=form-control required="required">
+                                                        <option>Select Country</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="checkbox" style="margin-top: 30px;">
+                                                    <span style="color:red;">*</span>
+                                                    <label>
+                                                        <input type="radio" id="true" name="Active" value="true" required="required"> Active
+                                                        <input type="radio" id="false" name="Active" style="margin-left:20px;" value="false" required="required"> Inactive
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="savelocation"><i class="fa fa-save"></i></button>
+                        <button type="submit" id="updateLocation" class="btn btn-success"><i class="fa fa-save"></i></button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var title = $('#title').html();
+        $('#' + title).css('background-color', '#A2EEE6');
+        $('#ADL').hide();
+        $("#error").hide();
+        $("#updateLocation").hide();
+        $(".modal").on("hidden.bs.modal", function () {
+            $("[name='L1LocCode']").val("");
+            $("[name='LocationCode']").val("");
+            $("[name='LocationName']").val("");
+            $("[name='Address']").val("");
+            $("[name='City']").val("");
+            $("[name='CountryID']").val("");
+        });
+
+        $('#true').unbind().click(function () {
+            $('#true').val(true);
+        });
+
+        $('#false').unbind().click(function () {
+            $('#true').val(false);
+            $('#false').val(false);
+        });
+
+        var userid = $('#userid').val();
+        var role = $('#role').val();
+        if (role == "UADMIN") {
+            var form = { "UserID": userid };
+            var formData = {
+                type: "POST",
+                data: form
+            };
+            getCompanyUser(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $(".Company").append($("<option></option>").val(value.MultipleDivision + "*" + value.CompanyID + "*" + value.Locations).html(value.CompanyName));
+                });
+            });
+        } else {
+            getCompany(function (response) {
+                $.each(response.data, function (key, value) {
+                    $(".Company").append($("<option></option>").val(value.MultipleDivision + "*" + value.CompanyID + "*" + value.Locations + "*" + value.Active).html(value.CompanyName));
+                });
+            });
+        }
+
+        $(".Company").change(function () {
+            $('.alert').remove();
+                var id = $(this).val();
+                values = id.split('*');
+                MultiDivision = values[0];
+                CompanyID = values[1];
+                Location = values[2];
+                Active = values[3];
+
+                if (Active == "true") {
+                    $("#example2").show();
+                $('#ADL').show();
+                $('.editlo').remove();
+                var form = { "CompanyID": CompanyID };
+                var formData = {
+                    type: "POST",
+                    data: form
+                };
+
+                $('.com').remove();
+
+                for (var i = 0; i < MultiDivision ; i++) {
+                    var count = i + 1;
+                    divItems =
+
+                        "<tr role='row' class='com'><td class='fields'>" + count + "</td>" +
+                        "<td class='text-center' name='L1LocCode" + count + "'></td>" +
+                        "<td class='text-center' name='L1LocName" + count + "'></td>" +
+                        "<td class='text-center' name='Address" + count + "'></td>" +
+                        "<td class='text-center' name='City" + count + "'></td>" +
+                        "<td class='text-center' name='Active" + count + "'></td><td class='text-center'>" +
+                         "<button type='button' class='btn btn-primary edit' id='L1LocCode" + count + "' value='' disabled='disabled'><i class='fa fa-edit'></i></button>" +
+                        "</td>" +
+                        "</tr>"
+
+                    $('#location').append(divItems);
+
+                }
+
+                getAllCountries(function (response) {
+                    $.each(response.data, function (key, value) {
+                        $("#Country").append($("<option></option>").val(value.CountryID).html(value.Name));
+                    });
+                });
+
+                var formData = {
+                    type: 'POST',
+                    data: { 'CompanyID': CompanyID }
+                };
+
+                getLocations(formData, function (response) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        var count = i + 1;
+                        $.each(response.data[i], function (key, value) {
+                            var ctrl = $('[name=' + key + '' + count + ']').prop("disabled", true);
+                            ctrl.append(value);
+                            if (key == 'L1LocCode') {
+                                var button = $('[id=' + key + '' + count + ']');
+                                button.prop('disabled', false);
+                                button.val(value);
+                            }
+                            if (key == 'Active') {
+
+                                if (value == true) {
+                                    $('[name=' + key + '' + count + ']').closest("td").html("");
+                                    $('[name=' + key + '' + count + ']').append("Active");
+                                } else {
+                                    $('[name=' + key + '' + count + ']').append("Inactive");
+                                }
+                            }
+                        });
+                    }
+
+                    $('.CompanyID').attr('name', 'CompanyID');
+                    $('.LocationCode').attr('name', 'LocationCode');
+                    $('.LocationName').attr('name', 'LocationName');
+                    $('.Address').attr('name', 'Address');
+                    $('.City').attr('name', 'City');
+                    $('.CountryID').attr('name', 'CountryID');
+                    $('.Active').attr('name', 'Active');
+                    $('.error').attr('name', 'error');
+                });
+
+                $(document).on('click', '.edit', function (event) {
+                    var id = $(this).attr('value');
+                    event.preventDefault();
+                    var formData = {
+                        type: "post",
+                        data: { 'L1LocCode': id }
+                    };
+                    EditLocation(formData, function (response) {
+                        $('#LocationModal').modal('show');
+                        $("#updateLocation").show();
+                        $("#savelocation").hide();
+
+                        $.each(response.data, function (key, value) {
+                            var ctrl = $('[name=' + key + ']');
+                            ctrl.val(value);
+                            if (response.data['Active'] == true) {
+                                $('#true').prop('checked', true);
+                            } else {
+                                $('#false').prop('checked', true);
+                            }
+                        });
+
+                    });
+                });
+
+
+                $(document).on('click', '#updateLocation', function (event) {
+                    $('#addLocation').submit(function (e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var formData = {
+                            type: form.attr('method'),
+                            data: form.serialize() + '&CompanyID=' + CompanyID
+                        };
+                        UpdateLocation(formData, function (response) {
+                            location.reload();
+
+                        });
+                    });
+                });
+                $('#LCode').unbind().on('keyup focusout', function () {
+                    var Code = $(this).val();
+                    if (Code != "") {
+                    var formData = {
+                        type: 'post',
+                        data: { 'L1LocCode': Code }
+                    };
+                    IsLocationCodeExsist(formData, function (response) {
+                        if (response.message == "Location code does not Exsist") {
+                            $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                        } else {
+                            $('#length').html('Code already in use').css('color', 'red');
+                        }
+                    });
+                    } else {
+                        $('#length').html('Code can not be empty').css('color', 'red');
+                    }
+                });
+
+                $(document).on('click', '#savelocation', function (event) {
+                    $('#addLocation').submit(function (e) {
+                        event.preventDefault();
+                        var form = $(this);
+                        var formData = {
+                            type: form.attr('method'),
+                            data: form.serialize() + '&CompanyID=' + CompanyID
+                        };
+                        addLocation(formData, function (response) {
+                            location.reload();
+                        });
+                        return false;
+                    });
+                });
+                }
+                else {
+                    $("#example2").hide();
+                    $('#ADL').hide();
+                    divItems =
+
+                " <div class='alert alert-danger alert-dismissible'>"+
+                "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>"+
+                "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Company Inactive ! Please Contact Administator."+
+                "</div>"
+
+                    $('#noData').append(divItems);
+                }
+            });
+    });
+
+</script>

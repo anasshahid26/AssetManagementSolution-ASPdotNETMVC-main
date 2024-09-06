@@ -1,0 +1,216 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">InventoryManagement</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <div class="box" id="lb">
+        <div class="box-header with-border">
+            <div class="col-md-12">
+                <h3 class="box-title box-title-main">Select Location</h3>
+            </div>
+            <div class="col-md-3" style="margin-top: 10px;">
+                <label for="exampleInputEmail1">Location</label>
+                <select class="form-control borderfas" id="Location" style="background-color: #ffffff;">
+                    <option id="def">Select Location</option>
+                </select>
+            </div>
+        </div>
+        <div class="box-body with-border">
+            <div class="col-md-12 text-center" style="border-bottom: 1px solid #46c7ba;">
+                <div class="col-md-6">
+                    <h3 class="box-title box-title-main pull-left">Prepare Asset Reverification</h3>
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-xs-3" style="float: right; margin-top: 13px;">
+                    <div class="small-box bg-b3">
+                        <div class="inner">
+                            <h3 id="total" style="font-size:60px;">Start</h3>
+                            <img id="loader" src="/Content/img/loading.gif" style="width: 56px; height: 56px; margin: 10px; display: none;">
+                        </div>
+                        <div class="small-box-footer" id="mess" style="font-size:17px; color:black; font-weight:700;">
+                            Scan Assets for Reverification
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            @*<div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12" style="border-bottom: 1px solid #46c7ba;">
+                        <div class="col-md-10" style="margin-bottom:20px">
+                            <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                <label>Asset Group</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetGroup">
+                                    <option value="null">Asset Group</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                <label>Asset Category</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetCategory">
+                                    <option value="null">Asset Category</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                <label>Section Name</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetSection">
+                                    <option value="null">Asset Section</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                <label>Room No</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetRoomNo">
+                                    <option value="null">Asset Room No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                <label>Room Type</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetRoomType">
+                                    <option value="null">Asset Room Type</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px;">
+                                <label>Floor</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" id="AssetFloor">
+                                    <option value="null">Asset Floor</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="padding: 0px; top: 20px;">
+                            <button type="button" class="btn btn-lg btn-success" id="ReverificationSchedule">Start Reverification</button>
+                        </div>
+                    </div>
+                </div>
+            </div>*@             
+        </div>
+        <div class="box-footer">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-lg btn-success" id="ReverificationSchedule">Start Reverification</button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/jszip.min.js"></script>
+<script src="~/Scripts/buttons.html5.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+    $('#DisposedOn').unbind().on('keyup focusout', function () {
+        if ($('#DisposedOn').val() != "") {
+            $('#DescriptionButton').attr('disabled', false);
+        } else {
+            $('#DescriptionButton').attr('disabled', true);
+        }
+    });
+
+    $('.datepicker').datepicker({
+        autoclose: true
+    });
+    $('#Location').attr('disable', true);
+    $('#loader').hide();
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    //$('#loader').hide();
+    $('#print').unbind().click(function () {
+        //$("#lb").addClass("displayNone");
+        $("#lb").css("display", "none");
+        $(".content").css("height", "1000px");
+
+        window.print();
+    });
+
+    var role = $('#role').val();
+    if (role == "USER" || role == "UADMIN") {
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+
+        Permissions(formData, function (response) {
+            if (response.data[4]['Permission'] == 'False') {
+                //$('#excel').prop("disabled", true);
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        setTimeout(function () {
+                var Location1 = $('#Location').val();
+                var formData = {
+                    type: "POST",
+                    data: { 'L1LocCode': Location1 }
+                };
+
+                $('#ReverificationSchedule').unbind().click(function () {
+                    $('#total').hide();
+                    $('#loader').show();
+                    $('.odd').remove();
+                    var Location = $("#Location").find(':selected').val();
+                    var form = { "L1LocCode": Location };
+                    var formData = {
+                        type: "POST",
+                        data: form
+                    };
+
+                    ReverificationSchedule(formData, function (response) {
+                        $('#loader').hide();
+                        $('#total').show();
+                        $('#total').html(response.message);
+                        $('#mess').html("Assets ready for Reverification");
+                    });
+                });
+
+        }, 2000);
+
+    } else {
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+
+        $('#Location').unbind().change(function () {
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+
+            $('#ReverificationSchedule').unbind().click(function () {
+                $('#total').hide();
+                $('#loader').show();
+                $('.odd').remove();
+                var Location = $("#Location").find(':selected').val();
+                var form = { "L1LocCode": Location };
+                var formData = {
+                    type: "POST",
+                    data: form
+                };
+              
+                ReverificationSchedule(formData, function (response) {
+                    $('#loader').hide();
+                    $('#total').show();
+                    $('#total').html(response.message);
+                    $('#mess').html("Assets ready for Reverification");
+                    });
+            });
+        });
+    }
+</script>

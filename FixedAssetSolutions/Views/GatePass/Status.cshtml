@@ -1,0 +1,517 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">GatePass</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <div class="box" id="lb">
+        <div class="box-header with-border">
+            <div class="col-md-12">
+                <h3 class="box-title box-title-main">Select Location</h3>
+            </div>
+            <div class="col-md-3" style="margin-top: 10px;">
+                <label for="exampleInputEmail1">Location</label>
+                <select class="form-control borderfas" id="Location" style="background-color: #ffffff;">
+                    <option id="def">Select Location</option>
+                </select>
+            </div>
+            <div class="col-md-3" style="margin-top: 10px;">
+                <label for="exampleInputEmail1">Status</label>
+                <select class="form-control borderfas" id="Status" style="background-color: #ffffff;">
+                    <option value="">ALL</option>
+                    <option value="GP PROCESS">PROCESS</option>
+                    <option value="GP REPROCESS">REPROCESS</option>
+                    <option value="GP APPROVED">APPROVED</option>
+                    <option value="GP APPROVAL DENIED">DECLINED</option>
+                    <option value="GP RELEASED">OUTGOING</option>
+                    <option value="ACTIVE">RETURN</option>
+                </select>
+            </div>
+            @*<div class="col-md-1 pull-right" style="margin-top: 35px;">
+                <button type="button" class="btn btn-default" id="BarcodeButton" style="margin: 0px; color: #fff; border: 1px solid #46c7ba; background-color: #46c7ba;"><i class="fa fa-search"></i></button>
+            </div>
+
+            <div class="col-md-3 pull-right" style="margin-top: 10px;">
+                <label for="exampleInputEmail1">Gate Pass Number</label>
+                <select name="GatePass" class="form-control borderfas pull-left" id="GPNO" required="required">
+                    <option>Gate Pass Number</option>
+                </select>
+            </div>*@
+        </div>
+        <div class="box-body with-border">
+            <div class="col-md-12 text-center" style="border-bottom: 1px solid #46c7ba;">
+                <div class="col-md-3">
+                    <h3 class="box-title box-title-main pull-left">Gate Pass Status Report</h3>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-app" style="margin: 40px; color: #000000; border: 1px solid rgb(177, 231, 224); background-color: rgb(177, 231, 224);" id="DescriptionButton"><i class="fa fa-search"></i>Search</button>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3" style="float: right; margin-top: 13px;">
+                    <div class="small-box bg-b3">
+                        <div class="inner">
+                            <h3 id="total" style="font-size:60px;">0</h3>
+                            <img id="loader" src="~/Content/img/loading.gif" style="width:56px; height:56px; margin:10px;" />
+                        </div>
+                        <div class="small-box-footer" style="font-size:17px; color:black; font-weight:700;">
+                            Gate Pass
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box-body">
+                        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row">
+                                <div class="col-sm-12">
+                                    <table id="table2excel" data-tableName="Test Table 1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th></th>
+                                                <th data-field="Status" style="border: 1px solid #999;">Status</th>
+                                                <th data-field="Status" style="border: 1px solid #999;">Gate Pass Number</th>
+                                                <th data-field="Floor" style="border: 1px solid #999;">Description</th>
+                                                <th data-field="AssetNumber" style="border: 1px solid #999;">Process Date</th>
+                                                <th data-field="AssetDescription" style="border: 1px solid #999;">Approve Date</th>
+                                                <th data-field="Group" style="border: 1px solid #999;">Outgoing Date</th>
+                                                <th data-field="Category" style="border: 1px solid #999;">Returned Date</th>
+                                                <th data-field="Section" style="border: 1px solid #999;">Supplier Name</th>
+                                                <th data-field="Room_No" style="border: 1px solid #999;">Cost of Repair</th>
+                                                <th data-field="Room_Type" style="border: 1px solid #999;">Reason</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="assets"></tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal modal text-center">
+
+        <img class="modal-content modal-content" id="img01" style="min-height:0%; top:100px; border: 10px solid #a2a4a3; border-radius: 30px; width:500px;">
+
+        <div id="caption"></div>
+    </div>
+
+    <div id="DataModal" class="modal modal">
+        <div class="box" style="top:100px; width:90%; margin-left: 70px;" id="#lb2">
+            <div class="box-header with-border text-center">
+                <a href="#" id="print" class="btn btn-primary pull-left" style="background-color:orange; border-color: #ffa500;"><i class="fa fa-print"></i>  Print</a>
+                <h3 class="box-title">Asset Detail</h3>
+                <button type="button" class="close pull-right" data-dismiss="modal" style="color: #00b3a1;">×</button></div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <table class="table">
+                        <thead><tr><th style="color:orange; border-bottom: 2px solid #ffa51f;">Product Detail</th></tr></thead>
+                        <tbody>
+                            <tr><th>Barcode ID</th> <td id="bc">10008777</td></tr>
+                            <tr><th>Description</th><td id="ds">LIFTER MINI</td></tr>
+                            <tr><th>Group</th><td id="gr">EQUIPMENT</td></tr>
+                            <tr><th>Category</th><td id="ct">LIFTER</td></tr>
+                            <tr><th>Section</th><td id="se">OFFICE</td></tr>
+                            <tr><th>Room No</th><td id="rn">ENGR OFFICE</td></tr>
+                            <tr><th>Room Type</th><td id="rt"></td></tr>
+                            <tr><th>Floor</th><td id="fl">B</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <table class="table">
+                        <thead><tr><th style="color:orange; border-bottom: 2px solid #ffa51f;">Purchase Details</th></tr></thead>
+                        <tbody>
+                            <tr><th>Supplier Name</th> <td id="sn">10008777</td></tr>
+                            <tr><th>Invoice Number</th><td id="in">69-69-896</td></tr>
+                            <tr><th>Date of Purchase</th><td id="dop">23-02-2017</td></tr>
+                            <tr><th>Currency</th><td id="cu">US Dollar</td></tr>
+                            <tr><th>Unit Price</th><td id="up">2500</td></tr>
+                            <tr><th>PO Number</th><td id="pn">2569698</td></tr>
+                            <tr><th>Date of PO</th><td id="dpo">24-02-2017</td></tr>
+                            <tr><th>Supplier Email</th><td id="sel">JKtrader@live.com</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4 text-center">
+                    <img src="~/Content/img/notavailable.png" id="imgid" style="width:70%" />
+                    <h1 style="color:green;" id="h3"></h1>
+                    <h4 id="dds"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/jszip.min.js"></script>
+<script src="~/Scripts/buttons.html5.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+    $('#Location').attr('disable', true);
+    $('#loader').hide();
+    var url = decodeURI(window.location.search);
+    console.log(url);
+    if (url != "") {
+        var urL = url.split('?');
+        //console.log(urL);
+        L1LocCode = urL[1];
+        Group = urL[2];
+        Section = urL[3];
+        setTimeout(function () {
+            $('#Location').val(L1LocCode);
+            $('#AssetGroup').append($('<option>', { value: 1, text: '' + Group + '' }));
+            $('#AssetSection').append($('<option>', { value: 1, text: '' + Section + '' }));
+            $('#AssetGroup').val("1");
+            $('#AssetSection').val("1");
+        }, 2000);
+
+        var form = { "L1LocCode": L1LocCode, "L1CatName": Group, "L2LocName": Section };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+        $('#Location').val("DEMO1");
+        $('#total').hide();
+        $('#loader').show();
+        getAsset(formData, function (response) {
+            var total = response.data.length;
+            $('#total').text(total);
+            $('#loader').hide();
+            $('#total').show();
+            Table.clear().draw();
+            Table.rows.add(response.data).draw();
+        });
+
+    }
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    //$('#loader').hide();
+    $('#print').unbind().click(function () {
+        //$("#lb").addClass("displayNone");
+        $("#lb").css("display", "none");
+        $(".content").css("height", "1000px");
+
+        window.print();
+    });
+    /* Formatting function for row details - modify as you need */
+    function format(d) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+            '<tr>' +
+                '<td>Supplier Name</td>' +
+                '<td> ALTAJ SELLERS</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Unit Price</td>' +
+                '<td>24 $</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Extra info:</td>' +
+                '<td>And any further details here (images etc)...</td>' +
+            '</tr>' +
+        '</table>';
+    }
+
+    Table = $("#table2excel").DataTable({
+        data: [],
+        columns: [
+            {
+                className: 'details-control',
+                orderable: false,
+                data: null,
+                defaultContent: ''
+            },
+             { data: 'Status' },
+             { data: 'GatePassTransactionCode' },
+             { data: 'AssetDescription' },
+             { data: 'DateOfProcessing' },
+             { data: 'DateOfApproval' },
+             { data: 'DateOfRelease' },
+             { data: 'ReturnDate' },
+             { data: 'SupplierName' },
+             { data: 'CostOfRepair' },
+             { data: 'ReasonForMaintanence' }
+        ],
+        dom: 'Bfrtip',
+        "pageLength": 25,
+        buttons: [{
+            extend: 'excelHtml5',
+            text: 'Export to Excel',
+            exportOptions: {
+                columns: ':visible:not(.not-export-col)'
+            },
+            //customize: function (xlsx) {
+            //    var sheet = xlsx.xl.worksheets['sheet16.xml'];
+            //    // jQuery selector to add a border
+            //    $('row c[r*="10"]', sheet).attr('s', '25');
+            //}
+            customize: function (xlsx) {
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                var downrows = 3;
+                var clRow = $('row', sheet);
+                //update Row
+                clRow.each(function () {
+                    var attr = $(this).attr('r');
+                    var ind = parseInt(attr);
+                    ind = ind + downrows;
+                    $(this).attr("r", ind);
+                });
+
+                // Update  row > c
+                $('row c ', sheet).each(function () {
+                    var attr = $(this).attr('r');
+                    var pre = attr.substring(0, 1);
+                    var ind = parseInt(attr.substring(1, attr.length));
+                    ind = ind + downrows;
+                    $(this).attr("r", pre + ind);
+                });
+
+                function Addrow(index, data) {
+                    msg = '<row r="' + index + '">'
+                    for (i = 0; i < data.length; i++) {
+                        var key = data[i].k;
+                        var value = data[i].v;
+                        msg += '<c t="inlineStr" r="' + key + index + '" s="42">';
+                        msg += '<is>';
+                        msg += '<t>' + value + '</t>';
+                        msg += '</is>';
+                        msg += '</c>';
+                    }
+                    msg += '</row>';
+                    return msg;
+                }
+                var locat = $("#Location option:selected").text();
+                //insert
+                var r1 = Addrow(1, [{ k: 'A', v: 'Matrix Fixed Asset Solution' }]);
+                var r2 = Addrow(2, [{ k: 'A', v: 'Report Name' }, { k: 'B', v: 'Asset Search Report' }]);
+                var r3 = Addrow(3, [{ k: 'A', v: 'Location Name' }, { k: 'B', v: locat }]);
+
+
+                sheet.childNodes[0].childNodes[1].innerHTML = r1 + r2 + r3 + sheet.childNodes[0].childNodes[1].innerHTML;
+            }
+        }],
+        rowCallback: function (row, data) {
+            if (data.Status == "DISPOSED") {
+                $('td', row).css('background-color', 'rgba(155, 146, 185, 0.37)');
+            }
+            var imgLink = data['Image'];
+            var assetNumber = data['AssetNumber'];
+            var imgTag = '<img src="' + baseUrl.appServer + 'Content/img/' + imgLink + '.jpg" id="' + assetNumber + '" data-toggle="modal" data-target="#myModal" class="images" style = "width:25px; height:25px;"/>';
+            $('td:eq(11)', row).html(imgTag);
+            return row;
+        }
+
+    });
+
+    // Add event listener for opening and closing details
+    $('#table2excel tbody').on('click', 'td.details-control', function () {
+        $('#DataModal').modal('toggle');
+        var tr = $(this).closest('tr');
+        var row = Table.row(tr);
+        var data = row.data();
+        console.log(data);
+        $('#bc').html(data.AssetNumber);
+        $('#ds').html(data.AssetDescription);
+        $('#gr').html(data.Group);
+        $('#ct').html(data.Category);
+        $('#se').html(data.Section);
+        $('#rn').html(data.Room_No);
+        $('#rt').html(data.Room_Type);
+        $('#fl').html(data.Floor);
+        $('#h3').text(data.Status);
+
+        $('#imgid').attr('src', ''+baseUrl.appServer+'Content/img/'+ data.Image + '.jpg');
+        if (data.Status == "ACTIVE") {
+            $('#h3').css('color', 'green');
+            $('#dds').text(data.DateOfVerification);
+            console.log(data);
+        } else {
+            $('#h3').css('color', 'red');
+            $('#dds').text(data.DisposedOn);
+        }
+        var Location1 = $('#Location').val();
+        var UID = Location1 + data.AssetNumber;
+        var form = {"UniqueID": UID};
+        var formData = { type: "POST", data: form };
+        PurchaseDetail(formData, function (response) {
+            console.log(response);
+            $('#sn').html(response.data.SupplierName);
+            $('#in').html(response.data.InvoiceNumber);
+            $('#dop').html(response.data.DateofPurchase);
+            $('#cu').html(response.data.iso);
+            $('#up').html(response.data.UnitPrice);
+            $('#pn').html(response.data.PONumber);
+            $('#dpo').html(response.data.DateOfPO);
+            $('#sel').html(response.data.SupplierEmail);
+        });
+    });
+
+    $('#BarcodeButton').unbind().click(function () {
+        $(".odd").remove();
+        $('.even').remove();
+        var Location1 = $('#Location').val();
+        if (Location1 != "Select Location") {
+            var barcode = $("#GPNO").val();
+            var form = { "GatePassTransactionCode": barcode, "L1LocCode": Location1 };
+            var formData = {
+                type: "POST",
+                data: form
+            };
+            GatePass(formData, function (response) {
+                var total = response.data.length;
+                $('#total').text(total);
+                $('#loader').hide();
+                $('#total').show();
+                Table.clear().draw();
+                Table.rows.add(response.data).draw();
+            });
+        }
+    });
+
+
+    var role = $('#role').val();
+    if (role == "USER" || role == "UADMIN") {
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+
+        Permissions(formData, function (response) {
+            if (response.data[4]['Permission'] == 'False') {
+                //$('#excel').prop("disabled", true);
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        setTimeout(function () {
+            var Location1 = $('#Location').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+
+            $("#GPNO").select2();
+            GPNumberList(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#GPNO").append($("<option></option>").val(value.GatePassTransactionCode).html(value.GatePassTransactionCode));
+                });
+            });
+
+        }, 2000);
+
+    } else {
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        $('#Location').unbind().change(function () {
+            $('#AssetGroup').find('option').remove().end().append('<option value="null">Asset Group</option>');
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+
+            $("#GPNO").select2();
+            GPNumberList(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#GPNO").append($("<option></option>").val(value.GatePassTransactionCode).html(value.GatePassTransactionCode));
+                });
+            });
+
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+        });
+    }
+
+
+    $('#Location').unbind().change(function () {
+        Table.clear().draw();
+        var total = 0;
+        $('#total').text(total);
+        $('#AssetGroup').find('option').remove().end().append('<option value="null">Asset Group</option>');
+        var Location1 = $("#Location").find(':selected').val();
+        var formData = {
+            type: "POST",
+            data: { 'L1LocCode': Location1 }
+        };
+
+        $("#GPNO").select2();
+        GPNumberList(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#GPNO").append($("<option></option>").val(value.GatePassTransactionCode).html(value.GatePassTransactionCode));
+            });
+        });
+    });
+
+    $('#DescriptionButton').unbind().click(function () {
+        $('#total').hide();
+        $('#loader').show();
+        $('.odd').remove();
+        var Location = $("#Location").find(':selected').val();
+        var Status = $("#Status").find(':selected').val();
+
+        if (Status == "GP PROCESS") {
+            $('.small-box-footer').text("Total Processed Asset");
+        } else if (Status == "GP REPROCESS") {
+            $('.small-box-footer').text("Total Reprocess Asset");
+        } else if (Status == "GP APPROVED") {
+            $('.small-box-footer').text("Total Approved Asset");
+        }else if (Status == "GP APPROVAL DENIED") {
+            $('.small-box-footer').text("Total Decline Asset");
+        }else if (Status == "GP RELEASED") {
+            $('.small-box-footer').text("Total Outgoing Asset");
+        }else {
+            $('.small-box-footer').text("Total Gate Pass");
+        }
+
+        var form = { "L1LocCode": Location, "Status": Status };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+        GetGatePass(formData, function (response) {
+            var total = response.data.length;
+            $('#total').text(total);
+            $('#loader').hide();
+            $('#total').show();
+            Table.clear().draw();
+            Table.rows.add(response.data).draw();
+        });
+    });
+
+    $(document).on('click', '.images', function (e) {
+        var image = $(this).attr('src');
+        $('#myModal').on('show.bs.modal', function () {
+            $("#img01").attr("src", image);
+        });
+    });
+
+
+</script>

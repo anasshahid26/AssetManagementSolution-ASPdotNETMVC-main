@@ -1,0 +1,903 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">GatePass</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <div class="box">
+        <div class="box-body with-border">
+            <div class="col-md-12 text-center" style="border-bottom: 1px solid #46c7ba;">
+                <div class="col-md-4">
+                    <h3 class="box-title box-title-main pull-left">Outgoing Gate Pass Processing</h3>
+                </div>
+                <div class="col-md-8">
+                    <div class="col-md-4" style="margin-top: 10px; margin-bottom: 10px;">
+                        <label for="exampleInputEmail1">Select Company Name</label>
+                        <select name="CompanyID" id="c" class="form-control Company borderfas" required="required">
+                            <option id="defc">Company Name</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4" style="margin-top: 10px; margin-bottom: 10px;">
+                        <label for="exampleInputEmail1">Select Location Name</label>
+                        <select name="L1LocCode" class="form-control Location borderfas" id="Loc" required="required">
+                            <option id="defl">Location Name</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 pull-right barcode" style="margin-top: 35px;">
+                        <button type="button" class="btn btn-default" id="BarcodeButton" style="margin: 0px; color: #fff; border: 1px solid #46c7ba; background-color: #46c7ba;"><i class="fa fa-search"></i></button>
+                    </div>
+                    <div class="col-md-3 pull-right barcode" style="margin-top: 10px; margin-bottom: 10px;">
+                        <label for="exampleInputEmail1">Barcode ID</label>
+                        <select name="AssetNumber" class="form-control borderfas pull-left" id="AN" required="required">
+                            <option>Barcode No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pull-right barcode" style="margin-top: 10px; margin-bottom: 10px;">
+                    <label for="exampleInputEmail1">Pending Gate Pass for Approval</label>
+                    <select name="GatePassTransaction" class="form-control borderfas pull-left" id="GPNO" required="required">
+                        <option>Transaction Number</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-body">
+                        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-md-7" style="margin-top:50px;" id="noData">
+                                    <div class="box">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title box-title-main pull-left">Current Asset Information</h3>
+                                        </div>
+                                        <div class="box-body with-border">
+                                            <div class="col-md-6">
+                                                <label>Barcode ID</label>
+                                                <input type="text" class="form-control borderfas AssetNum" style="width:100%" disabled="disabled">
+                                                <label>Asset Description</label>
+                                                <input type="text" class="form-control borderfas" style="width:100%" id="Descrip" disabled="disabled">
+                                                <label>Asset Category</label>
+                                                <input type="text" class="form-control borderfas" style="width:100%" id="CategoryValue" disabled="disabled">
+                                                <label>Asset Section</label>
+                                                <input type="text" class="form-control borderfas" style="width:100%" id="SectionValue" disabled="disabled">
+                                                <label>Room Number</label>
+                                                <input type="text" class="form-control borderfas" style="width:100%" id="RoomNoValue" disabled="disabled">
+                                                <label>ERP Asset Code</label>
+                                                <input type="text" class="form-control borderfas" style="width:100%;" disabled="disabled">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div id="reasonDecline">
+                                                    <label style="color:red;">Approval Decline Reason</label>
+                                                    <input type="text" class="form-control borderfas" id="commentapp" style="width:100%; border: 1px solid red; color:red; margin-bottom: 40px;" disabled="disabled">
+                                                </div>
+                                                <div class="text-center" id="assetImage"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="margin-top:50px;" id="noData">
+                                    <form id="moveAssetSingle" method="post">
+                                        <div class="box" style="border: 1px solid green;">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title box-title-main pull-left" style="color:green;">Gate Pass Processing Details</h3>
+                                            </div>
+                                            <div class="box-body with-border">
+                                                <label>Supplier</label>
+                                                <select class="form-control borderfas" name="SupplierID" id="supplier" style="background-color: #ffffff; width:100%" required>
+                                                    <option value="">Select Supplier</option>
+                                                </select>
+                                                <label>Reason for Maintenance</label>
+                                                <select class="form-control borderfas" name="ReasonForMaintanence" id="reason" style="background-color: #ffffff; width:100%" required>
+                                                    <option value="">Select Reason</option>
+                                                    <option value="other">Others</option>
+                                                    <option value="Broken">Broken</option>
+                                                    <option value="Out of Order">Out of Order</option>
+                                                    <option value="Waranty Void">Waranty Void</option>
+                                                    <option value="Repair">Repair</option>
+                                                    <option value="Out of Date">Out of Date</option>
+                                                    <option value="Upgrade">Upgrade</option>
+                                                    <option value="Refill">Refill</option>
+                                                </select>
+                                                <label class="txtreason">Other (Reasons)</label>
+                                                <input type="text" class="form-control borderfas txtreason" name="OtherReason" style="width:100%">
+                                                <label>Cost of Repair (AED)</label>
+                                                <input type="number" class="form-control borderfas" id="costRe" name="CostOfRepair" style="width:100%" required>
+                                                <div class="col-md-6">
+                                                    <label>Date of Processing</label>
+                                                    <div class="input-group date" style="width:100%;">
+                                                        <div class="input-group-addon borderfas">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control pull-right borderfas" id="dateofp" name="DateOfProcessing" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Expected Return Date</label>
+                                                    <div class="input-group date" style="width:100%;">
+                                                        <div class="input-group-addon borderfas">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control pull-right borderfas datepicker" id="dateofr" name="ReturnDate" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="reproccom">Resubmission Comment</label>
+                                                    <input type="text" class="form-control borderfas reproccom" name="ProcessComment" style="width:100%">
+                                                </div>
+                                                <input type="text" id="processby" name="ProcessedBy" hidden="hidden">
+                                                <input type="text" class="AssetNum" name="AssetNumber" hidden="hidden">
+                                            </div>
+                                            <div class="box-footer">
+                                                <button type="submit" id="Process" class="btn btn-block btn-danger btn-lg select1">Okay for Processing</button>
+                                                <button type="submit" id="ReProcess" class="btn btn-block btn-success btn-lg">Okay for Reprocessing</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="OkayModal" class="modal modal text-center">
+
+        <!-- Modal Content (The Image) -->
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <form id="pModal">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 style="color:red;">Do you want to proceed</h5>
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" id="Okay" class="btn btn-default">OK</button>
+                        <button type="button" id="Cancel" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal text-center">
+
+        <!-- Modal Content (The Image) -->
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <form id="formModal">
+                <div class="box">
+                    <div class="box-header">
+                        <h5>Confirm your password</h5>
+                    </div>
+                    <div class="box-body">
+                        <input type="password" name="Password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" id="confirm" class="btn btn-block btn-primary">Confirm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- Modal Caption (Image Text) -->
+        <div id="caption"></div>
+    </div>
+
+    <div id="alertsuccessModal" class="modal modal text-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <div class="callout callout-success lead text-center" style="border-color: #00a65a;">
+                <h4>Alert !</h4>
+                <p>Gate Pass in Process Successful !</p>
+                <a href="/GatePass/Processing" style="text-decoration: none;" class="btn btn-block btn-success">OK !</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertfailedModal" class="modal modal text-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="padding:200px;">
+            <div class="callout callout-danger lead text-center" style="border-color: #dd4b39;">
+                <h4>Alert !</h4>
+                <p>Incorrect Password</p>
+                <p>Asset Movement Failed</p>
+                <a href="/GatePass/Processing" style="text-decoration: none;" class="btn btn-block btn-danger">OK !</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+    $('#reasonDecline').hide();
+    $('.reproccom').hide();
+    $('#ReProcess').hide();
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+    //$(".barcode").hide();
+    $('#currentRoom').attr("disabled", "disabled");
+    $(".txtreason").hide();
+    //$('.select1').attr("disabled", "disabled");
+
+    $('#reason').unbind().change(function () {
+        console.log("changed");
+        var reason = $("#reason").val();
+        if (reason == "other") {
+            $(".txtreason").show();
+        } else {
+            $(".txtreason").hide();
+        }
+    });
+
+    $("#dateofp").datepicker().datepicker("setDate", new Date());
+
+    $('#dateofr').datepicker({
+        autoclose: true
+    });
+
+    var role = $('#role').val();
+    var userid = $('#userid').val();
+    $('#processby').val(userid);
+    if (role === "USER" || role === "UADMIN") {
+        $(".Company").attr('disabled', true);
+        //    Getting User Company Start
+        var form = { "UserID": userid };
+        var formData = {
+            type: "POST",
+            data: form
+        };
+        getCompanyUser(formData, function (response) {
+            $('#defc').remove();
+            $(".Company").append($("<option></option>").val(response.data.Active + "*" + response.data.CompanyID).html(response.data.CompanyName));
+        });
+        //    Getting User Location Start
+        GetUserLocation(formData, function (response) {
+            if (response.data.length === 1) {
+                $('#defl').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+            });
+        });
+
+        var formData = { type: "post", data: { 'UserID': userid } };
+        Permissions(formData, function (response) {
+            console.log(response);
+            if (response.data[21]['Permission'] == 'False') {
+                $(".barcode").hide();
+                $("#Process").hide();
+            }
+        });
+        
+        //    Getting User Location End
+        setTimeout(function () {
+            var id = $('#c').val();
+            Company = id.split("*");
+            ActiveCompany = Company[0];
+            CompanyID = Company[1];
+            //If Company is Active
+            console.log(ActiveCompany);
+            if (ActiveCompany === "true") {
+
+                var formData = {
+                    type: 'post',
+                    data: { 'CompanyID': CompanyID }
+                };
+                $("#supplier").select2();
+                getSupplier(formData, function (response) {
+                    $.each(response.data, function (key, value) {
+                        $("#supplier").append($("<option></option>").val(value.SupplierID).html(value.SupplierName));
+                    });
+                });
+
+                if ($(".Location option").length === 1) {
+                    var Location = $(".Location").val();
+                    values = Location.split("*");
+                    LocationName = values[0];
+                    ActiveLocation = values[1];
+                    console.log("hello");
+                    var form = { "L1LocCode": LocationName };
+                    var formData = {
+                        type: "POST",
+                        data: form
+                    };
+                    $("#AN").select2();
+                    AssetNumberList(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            if (value.Status == "ACTIVE") {
+                                $("#AN").append($("<option></option>").val(value.AssetNumber).html(value.AssetNumber));
+                            }
+                        });
+                    });
+
+                    GPNumberList(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            if (value.Status == "GP PROCESS" || value.Status == "GP REPROCESS" || value.Status == "GP APPROVAL DENIED") {
+                                if (value.Status == "GP APPROVAL DENIED") {
+                                    $("#GPNO").append($("<option></option>").val(value.GatePassTransactionCode).html(value.GatePassTransactionCode).css("color", "red"));
+                                } else {
+                                    $("#GPNO").append($("<option></option>").val(value.GatePassTransactionCode).html(value.GatePassTransactionCode));
+                                }
+                            }
+                        });
+                    });
+
+                    if (ActiveLocation === "true") {
+                        //$(".barcode").show();
+
+                        $('#GPNO').unbind().change(function () {
+                            $('.reproccom').show();
+                            $('#Process').hide();
+                            $('#ReProcess').show();
+                            $('#currentRoom').val("");
+                            $('#GroupValue').val("");
+                            $('#Descrip').val("");
+                            $('#CategoryValue').val("");
+                            $('#SectionValue').val("");
+                            $('#RoomNoValue').val("");
+                            $('#RoomTypeValue').val("");
+                            $('#FloorValue').val("");
+                            $('.AssetNum').val("");
+                            $('#supplier').val("").trigger('change');
+                            $('#reason').val("");
+                            $('#costRe').val("");
+                            $('#dateofp').val("");
+                            $('#dateofr').val("");
+                            $('#commentapp').val("");
+                            var GPNO = $("#GPNO").val();
+                            var L1Location = $('.Location').val();
+                            values = L1Location.split('*');
+                            L1Location = values[0];
+                            if (L1Location !== "") {
+                                var form = { "GatePassTransactionCode": GPNO, "L1LocCode": L1Location };
+                                var formData = { type: "POST", data: form };
+                                GatePass(formData, function (response) {
+                                    console.log(response);
+                                    var AssetNumber = response.data['AssetNumber'];
+                                    var AssetDescription = response.data['AssetDescription'];
+                                    var L2CatName = response.data['L2CatName'];
+                                    var L3CatCode = response.data['L3CatCode'];
+                                    var L2LocName = response.data['L2LocName'];
+                                    var L3LocName = response.data['L3LocName'];
+                                    var Supplier = response.data['SupplierID'];
+                                    var Reason = response.data['ReasonForMaintanence'];
+                                    var Cost = response.data['CostOfRepair'];
+                                    var DateProc = response.data['DateOfProcessing'];
+                                    var ReturnDate = response.data['ReturnDate'];
+                                    var AppComment = response.data['ApprovalComment'];
+                                    $('#currentRoom').val(L3LocName);
+                                    $('#Descrip').val(AssetDescription);
+                                    $('#CategoryValue').val(L2CatName);
+                                    $('#SectionValue').val(L2LocName);
+                                    $('#RoomNoValue').val(L3LocName);
+                                    $('.AssetNum').val(AssetNumber);
+                                    $('#supplier').val(Supplier).trigger('change');
+                                    $('#reason').val(Reason);
+                                    $('#costRe').val(Cost);
+                                    $('#dateofp').val(DateProc);
+                                    $('#dateofr').val(ReturnDate);
+                                    $('#commentapp').val(AppComment);
+                                    var ImageItem = "<img id='" + AssetNumber + "' class='images' src='" + baseUrl.appServer + "Content/img/" + L3CatCode + ".jpg' style = 'width:80%; margin-left:30px;'>"
+                                    $('#assetImage').append(ImageItem);
+                                });
+                            }
+                        });
+
+                        $('#BarcodeButton').unbind().click(function () {
+                            $(".odd").hide();
+                            $('#currentRoom').val("");
+                            $('#GroupValue').val("");
+                            $('#Descrip').val("");
+                            $('#CategoryValue').val("");
+                            $('#SectionValue').val("");
+                            $('#RoomNoValue').val("");
+                            $('#RoomTypeValue').val("");
+                            $('#FloorValue').val("");
+                            $('.AssetNum').val("");
+                            var barcode = $("#AN").val();
+                            var L1Location = $('.Location').val();
+                            values = L1Location.split('*');
+                            L1Location = values[0];
+                            if (L1Location !== "") {
+                                var form = { "AssetNumber": barcode, "L1LocCode": L1Location };
+                                var formData = { type: "POST", data: form };
+                                GetAssetBC(formData, function (response) {
+                                    if (response.data[0]['AssetNumber'] != null) {
+                                        $('#moveAssetSingle').show();
+                                        $('.alert, .images').remove();
+                                        var AssetNumber = response.data[0]['AssetNumber'];
+                                        var AssetDescription = response.data[0]['AssetDescription'];
+                                        var L2CatName = response.data[0]['Category'];
+                                        var L3CatCode = response.data[0]['Image'];
+                                        var L2LocName = response.data[0]['Section'];
+                                        var L3LocName = response.data[0]['Room_No'];
+                                        $('#currentRoom').val(L3LocName);
+                                        $('#CategoryValue').val(L2CatName);
+                                        $('#Descrip').val(AssetDescription);
+                                        $('#SectionValue').val(L2LocName);
+                                        $('#RoomNoValue').val(L3LocName);
+                                        $('.AssetNum').val(AssetNumber);
+                                        var ImageItem = "<img id='" + AssetNumber + "' class='images' src='" + baseUrl.appServer + "Content/img/" + L3CatCode + ".jpg' style = 'width:80%; margin-left:30px;'>"
+                                        $('#assetImage').append(ImageItem);
+                                    }
+                                });
+                            } else {
+
+                            }
+                        });
+
+
+                    } else {
+                        $(".barcode").hide();
+                        $('#moveAssetSingle').hide();
+                        divItems =
+                                " <div class='alert alert-danger alert-dismissible'>" +
+                                "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                                "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Location Inactive ! Please Contact Administator." +
+                                "</div>"
+
+                        $('#noData').append(divItems);
+                    }
+                } else {
+
+                    $('.Location').unbind().change(function () {
+                        $('.odd, .alert').remove();
+                        $('#AN').select2();
+                        //$(".barcode").show();
+                        $('#moveAssetSingle').show();
+                        $('#currentRoom').val("");
+                        $('#Descrip').val("");
+                        $('#CategoryValue').val("");
+                        $('#SectionValue').val("");
+                        $('#RoomNoValue').val("");
+                        $('.AssetNum').val("");
+                        var Location = $("#Loc").val();
+                        values = Location.split("*");
+                        ActiveLocation = values[1];
+                        L1Location = values[0];
+
+                        if (L1Location != "") {
+                            var form = { "L1LocCode": L1Location };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+                            AssetNumberList(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    if (value.Status == "ACTIVE") {
+                                        $("#AN").append($("<option></option>").val(value.AssetNumber).html(value.AssetNumber));
+                                    }
+                                });
+                            });
+                        }
+
+                        if (ActiveLocation === "true") {
+                            //$(".barcode").show();
+                            $('#BarcodeButton').unbind().click(function () {
+                                $(".odd").hide();
+                                $('#currentRoom').val("");
+                                $('#Descrip').val("");
+                                $('#CategoryValue').val("");
+                                $('#SectionValue').val("");
+                                $('#RoomNoValue').val("");
+                                $('.AssetNum').val("");
+                                var barcode = $("#AN").val();
+                                var L1Location = $('.Location').val();
+                                values = L1Location.split('*');
+                                L1Location = values[0];
+                                if (L1Location !== "") {
+                                    var form = { "AssetNumber": barcode, "L1LocCode": L1Location };
+                                    var formData = { type: "POST", data: form };
+                                    GetAssetBC(formData, function (response) {
+                                        if (response.data[0]['AssetNumber'] > 0) {
+                                            $('#moveAssetSingle').show();
+                                            $('.alert, .images').remove();
+                                            var AssetNumber = response.data[0]['AssetNumber'];
+                                            var AssetDescription = response.data[0]['AssetDescription'];
+                                            var L2CatName = response.data[0]['Category'];
+                                            var L3CatCode = response.data[0]['Image'];
+                                            var L2LocName = response.data[0]['Section'];
+                                            var L3LocName = response.data[0]['Room_No'];
+                                            console.log(response.data);
+                                            $('#currentRoom').val(L3LocName);
+                                            $('#Descrip').val(AssetDescription);
+                                            $('#CategoryValue').val(L2CatName);
+                                            $('#SectionValue').val(L2LocName);
+                                            $('#RoomNoValue').val(L3LocName);
+                                            $('.AssetNum').val(AssetNumber);
+                                            var ImageItem = "<img id='" + AssetNumber + "' class='images' src='" + baseUrl.appServer + "Content/img/" + L3CatCode + ".jpg' style = 'width:80%; margin-left:30px;'>"
+                                            $('#assetImage').append(ImageItem);
+                                            var formData = { type: "post", data: { 'UserID': userid } };
+                                            //Permissions(formData, function (response) {
+                                            //    if (response.data[17]['Permission'] == 'True') {
+                                            //        //$('.select1').attr("disabled", false);
+                                            //    }
+                                            //});
+                                        }
+                                    });
+                                } else {
+
+                                }
+                            });
+                        } else {
+                            $(".barcode").hide();
+                            $('#moveAssetSingle').hide();
+                            divItems =
+                                    " <div class='alert alert-danger alert-dismissible'>" +
+                                    "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                                    "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Location Inactive ! Please Contact Administator." +
+                                    "</div>"
+
+                            $('#noData').append(divItems);
+                        }
+                    });
+                }
+            } else {
+                $(".barcode").hide();
+                $('#moveAssetSingle').hide();
+                divItems =
+                        " <div class='alert alert-danger alert-dismissible'>" +
+                        "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                        "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Company Inactive ! Please Contact Administator." +
+                        "</div>";
+                $('#noData').append(divItems);
+            }
+        }, 1000);
+    }
+    else {
+        getCompany(function (response) {
+            $.each(response.data, function (key, value) {
+                $(".Company").append($("<option></option>").val(value.CompanyID + "*" + value.Active).html(value.CompanyName));
+            });
+        });
+        $(".Company").change(function () {
+            $('.alert').remove();
+            $('#moveAssetSingle').show();
+            $("#AN").show();
+            $('.select1').attr("disabled", "disabled");
+            $('.Location').find('option').remove().end().append('<option>Location Name</option>');
+            $('#GPNO').find('option').remove().end().append('<option>Transaction Number</option>');
+            $('#currentRoom').val("");
+            $('#Descrip').val("");
+            $('#CategoryValue').val("");
+            $('#SectionValue').val("");
+            $('#RoomNoValue').val("");
+            $('.AssetNum').val("");
+            var id = $(this).val();
+            if (id != "Company Name") {
+                values = id.split('*');
+                Active = values[1];
+                CompanyID = values[0];
+                if (Active == "true") {
+                    $("#example2").show();
+                    $('#ADU').show();
+                    $('.com').remove();
+                    $('.result').remove();
+                    var formData = {
+                        type: 'POST',
+                        data: { 'CompanyID': CompanyID }
+                    };
+                    getLocations(formData, function (response) {
+                        if (response.data.length > 0) {
+                            $.each(response.data, function (key, value) {
+                                $(".Location").append($("<option></option>").val(value.L1LocCode + "*" + value.Active).html(value.L1LocName));
+                            });
+                        } else {
+                            $(".barcode").hide();
+                        }
+                    });
+
+                    //var Company = $('#CID').val();
+                    //console.log(Company);
+                    var formData = {
+                        type: 'post',
+                        data: { 'CompanyID': CompanyID }
+                    };
+                    $("#supplier").select2();
+                    getSupplier(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            $("#supplier").append($("<option></option>").val(value.SupplierID).html(value.SupplierName));
+                        });
+                    });
+
+                    $('.Location').unbind().change(function () {
+                        $('.odd, .alert').remove();
+                        $('#AN').select2();
+                        //$(".barcode").show();
+                        $('#moveAssetSingle').show();
+                        $('#currentRoom').val("");
+                        $('#Descrip').val("");
+                        $('#CategoryValue').val("");
+                        $('#SectionValue').val("");
+                        $('#RoomNoValue').val("");
+                        $('.AssetNum').val("");
+                        $('#supplier').val("").trigger('change');
+                        $('#reason').val("");
+                        $('#costRe').val("");
+                        //$('#dateofp').val("");
+                        $('#dateofr').val("");
+                        $('#commentapp').val("");
+                        var Location = $("#Loc").val();
+                        values = Location.split("*");
+                        ActiveLocation = values[1];
+                        L1Location = values[0];
+                        if (L1Location != "") {
+                            var form = { "L1LocCode": L1Location };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+                            AssetNumberList(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    if (value.Status == "ACTIVE" || value.Status == "DISPOSED") {
+                                        $("#AN").append($("<option></option>").val(value.AssetNumber).html(value.AssetNumber));
+                                    }
+                                });
+                            });
+
+                            //$("#GPNO").select2();
+                            GPNumberList(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    if (value.Status == "GP PROCESS" || value.Status == "GP REPROCESS" || value.Status == "GP APPROVAL DENIED") {
+                                        if (value.Status == "GP APPROVAL DENIED") {
+                                            $("#GPNO").append($("<option></option>").val(value.GatePassTransactionCode).html(value.GatePassTransactionCode).css("color", "red"));
+                                        } else {
+                                            $("#GPNO").append($("<option></option>").val(value.GatePassTransactionCode).html(value.GatePassTransactionCode).css("color", "green"));
+                                        }
+                                    }
+                                });
+                            });
+                        }
+
+                        if (ActiveLocation === "true") {
+                            //$(".barcode").show();
+                            $('#GPNO').unbind().change(function () {
+                                var iindex = ($(this)[0].selectedIndex);
+                                var color = ($(this)[0].options[iindex].style['color']);
+                                if (color == "red") {
+                                    $('#reasonDecline').show();
+                                } else {
+                                    $('#reasonDecline').hide();
+                                }
+                                $('.reproccom').show();
+                                $('#Process').hide();
+                                $('#ReProcess').show();
+                                $('#currentRoom').val("");
+                                $('#Descrip').val("");
+                                $('#CategoryValue').val("");
+                                $('#SectionValue').val("");
+                                $('#RoomNoValue').val("");
+                                $('.AssetNum').val("");
+                                $('#supplier').val("").trigger('change');
+                                $('#reason').val("");
+                                $('#costRe').val("");
+                                $('#dateofp').val("");
+                                $('#dateofr').val("");
+                                $('#commentapp').val("");
+                                $('.images').remove();
+                                var GPNO = $("#GPNO").val();
+                                var L1Location = $('.Location').val();
+                                values = L1Location.split('*');
+                                L1Location = values[0];
+                                if (L1Location !== "") {
+                                    var form = { "GatePassTransactionCode": GPNO, "L1LocCode": L1Location };
+                                    var formData = { type: "POST", data: form };
+                                    GatePass(formData, function (response) {
+                                        console.log(response);
+                                        var AssetNumber = response.data['AssetNumber'];
+                                        var AssetDescription = response.data['AssetDescription'];
+                                        var L2CatName = response.data['L2CatName'];
+                                        var L3CatCode = response.data['L3CatCode'];
+                                        var L2LocName = response.data['L2LocName'];
+                                        var L3LocName = response.data['L3LocName'];
+                                        var Supplier = response.data['SupplierID'];
+                                        var Reason = response.data['ReasonForMaintanence'];
+                                        var Cost = response.data['CostOfRepair'];
+                                        var DateProc = response.data['DateOfProcessing'];
+                                        var ReturnDate = response.data['ReturnDate'];
+                                        var AppComment = response.data['ApprovalComment'];
+                                        $('#currentRoom').val(L3LocName);
+                                        $('#Descrip').val(AssetDescription);
+                                        $('#CategoryValue').val(L2CatName);
+                                        $('#SectionValue').val(L2LocName);
+                                        $('#RoomNoValue').val(L3LocName);
+                                        $('.AssetNum').val(AssetNumber);
+                                        $('#supplier').val(Supplier).trigger('change');
+                                        $('#reason').val(Reason);
+                                        $('#costRe').val(Cost);
+                                        $('#dateofp').val(DateProc);
+                                        $('#dateofr').val(ReturnDate);
+                                        $('#commentapp').val(AppComment);
+                                        var ImageItem = "<img id='" + AssetNumber + "' class='images' src='" + baseUrl.appServer + "Content/img/" + L3CatCode + ".jpg' style = 'width:80%; margin-left:30px;'>"
+                                        $('#assetImage').append(ImageItem);
+                                    });
+                                }
+                            });
+                            $('#BarcodeButton').unbind().click(function () {
+                                $(".odd").hide();
+                                $('#currentRoom').val("");
+                                $('#Descrip').val("");
+                                $('#CategoryValue').val("");
+                                $('#SectionValue').val("");
+                                $('#RoomNoValue').val("");
+                                $('.AssetNum').val("");
+                                $('#supplier').val("").trigger('change');
+                                $('#reason').val("");
+                                $('#costRe').val("");
+                                //$('#dateofp').val("");
+                                $('#dateofr').val("");
+                                $('#commentapp').val("");
+                                $('#GPNO').val("");
+                                $('#ReProcess').hide("");
+                                $('.reproccom').hide();
+                                $('#Process').show("");
+                                var barcode = $("#AN").val();
+                                var L1Location = $('.Location').val();
+                                values = L1Location.split('*');
+                                L1Location = values[0];
+                                if (L1Location !== "") {
+                                    var form = { "AssetNumber": barcode, "L1LocCode": L1Location };
+                                    var formData = { type: "POST", data: form };
+                                    GetAssetBC(formData, function (response) {
+                                        if (response.data.length > 0) {
+                                            $('#moveAssetSingle').show();
+                                            $('.alert, .images').remove();
+                                            $('.select1').attr("disabled", false);
+                                            var AssetNumber = response.data[0]['AssetNumber'];
+                                            var AssetDescription = response.data[0]['AssetDescription'];
+                                            var L2CatName = response.data[0]['Category'];
+                                            var L3CatCode = response.data[0]['Image'];
+                                            var L2LocName = response.data[0]['Section'];
+                                            var L3LocName = response.data[0]['Room_No'];
+                                            $('#currentRoom').val(L3LocName);
+                                            $('#Descrip').val(AssetDescription);
+                                            $('#CategoryValue').val(L2CatName);
+                                            $('#SectionValue').val(L2LocName);
+                                            $('#RoomNoValue').val(L3LocName);
+                                            $('.AssetNum').val(AssetNumber);
+                                            var ImageItem = "<img id='" + AssetNumber + "' class='images' src='" + baseUrl.appServer + "Content/img/" + L3CatCode + ".jpg' style = 'width:80%; margin-left:30px;'>"
+                                            $('#assetImage').append(ImageItem);
+                                        }
+                                        else {
+                                            $('.alert').remove();
+                                            $('#moveAssetSingle').hide();
+                                            divItems =
+
+                                                " <div class='alert alert-danger alert-dismissible'>" +
+                                                "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                                                "<h4><i class='icon fa fa-ban'></i> Alert!</h4>No Assets Found" +
+                                                "</div>"
+
+                                            $('#noData').append(divItems);
+                                        }
+                                    });
+                                } else {
+
+                                }
+                            });
+                        } else {
+                            $(".barcode").hide();
+                            $('#moveAssetSingle').hide();
+                            divItems =
+                                    " <div class='alert alert-danger alert-dismissible'>" +
+                                    "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                                    "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Location Inactive ! Please Contact Administator." +
+                                    "</div>"
+
+                            $('#noData').append(divItems);
+                        }
+                    });
+
+                } else {
+                    $('#moveAssetSingle').hide();
+                    divItems =
+
+                        " <div class='alert alert-danger alert-dismissible'>" +
+                        "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>" +
+                        "<h4><i class='icon fa fa-ban'></i> Alert!</h4>Company Inactive ! Please Contact Administator." +
+                        "</div>"
+
+                    $('#noData').append(divItems);
+                }
+            }
+            else {
+                $(".barcode").hide();
+                $('#moveAssetSingle').hide();
+            }
+
+        });
+    }
+
+    $(document).on('click', '.images', function (e) {
+        var image = $(this).attr('src');
+        $('#myModal').on('show.bs.modal', function () {
+            $("#img01").attr("src", image);
+        });
+    });
+
+    $('#Process').unbind().click(function (event) {
+        var userId = $('#userid').val();
+        $('#moveAssetSingle').unbind().submit(function (event) {
+            event.preventDefault();
+            var newForm = $(this);
+            var newformData = {
+                type: newForm.attr('method'),
+                data: newForm.serialize()
+            };
+            $('#OkayModal').toggle();
+            $('#Cancel').unbind().click(function () {
+                $('#OkayModal').hide();
+            });
+            $('#Okay').unbind().click(function () {
+                $('#OkayModal').hide();
+                $('#myModal').toggle();
+            });
+            $('#formModal').submit(function (event) {
+                $('#myModal').toggle();
+                event.preventDefault();
+                var L1Location = $('.Location').val();
+                values = L1Location.split('*');
+                L1Location = values[0];
+                var form = $(this);
+                var formData = {
+                    type: 'post',
+                    data: form.serialize() + '&' + newformData.data + '&UserID=' + userId + '&L1LocCode=' + L1Location
+                };
+                Processing(formData, function (response) {
+                    if (response.message == "Incorrect Password") {
+                        $('#alertfailedModal').toggle();
+                    } else {
+                        $('#alertsuccessModal').toggle();
+                    }
+                });
+            });
+        });
+    });
+
+    $('#ReProcess').unbind().click(function (event) {
+        var userId = $('#userid').val();
+        $('#moveAssetSingle').unbind().submit(function (event) {
+            event.preventDefault();
+            var newForm = $(this);
+            var newformData = {
+                type: newForm.attr('method'),
+                data: newForm.serialize()
+            };
+            console.log(newformData);
+            $('#myModal').toggle();
+            $('#formModal').submit(function (event) {
+                $('#myModal').toggle();
+                event.preventDefault();
+                var L1Location = $('.Location').val();
+                values = L1Location.split('*');
+                L1Location = values[0];
+                var GPTC = $('#GPNO').val();
+                var form = $(this);
+                var formData = {
+                    type: 'post',
+                    data: form.serialize() + '&' + newformData.data + '&UserID=' + userId + '&L1LocCode=' + L1Location + '&GatePassTransactionCode=' + GPTC
+                };
+                GatePassReProcessing(formData, function (response) {
+                    if (response.message == "Incorrect Password") {
+                        $('#alertfailedModal').toggle();
+                    } else {
+                        $('#alertsuccessModal').toggle();
+                    }
+                });
+            });
+        });
+    });
+</script>

@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html>
+<html ng-app="myModule">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Matrix AMS | Fixed Asset Solution</title>
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    @Styles.Render("~/bundles/Content")
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/main/js")
+
+</head>
+<body class="hold-transition skin-ams layout-top-nav" style="padding: 0px;">
+    <div class="wrapper">
+        <header class="main-header">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand slope" id="clogo" style="text-decoration: none;" href="~/Home/Index">
+                            <img src="~/Content/img/Logo.png" alt="Dispute Bills" style="background-color:white;">
+                        </a>
+                    </div>
+                    <div id="navbar1" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li id="Admin" class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADMIN<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Manage Company<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/Company/Index">Company</a></li>
+                                            <li><a href="~/Location/Index">Location</a></li>
+                                            @*<li class="onlyAdmin"><a href="~/Section/Index">Section</a></li>
+                                                <li class="onlyAdmin"><a href="~/Group/Index">Group</a></li>*@
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Setup<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li class="onlyAdmin"><a href="~/Section/Index">Section</a></li>
+                                            <li class="onlyAdmin"><a href="~/Group/Index">Group</a></li>
+                                          
+
+                                            
+
+                                            <li class="dropdown-submenu">
+                                                <a class="test" tabindex="-1" href="#">Location Detail Addition<span></span></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="~/Location/Section">Section</a></li>
+                                                    <li><a href="~/Location/RoomNumber">Room Number</a></li>
+                                                </ul>
+                                            </li>
+
+
+                                            <li class="dropdown-submenu">
+                                                <a class="test" tabindex="-1" href="#">Room Detail Addition<span></span></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="~/Room/RoomType">Room Type</a></li>
+                                                    <li><a href="~/Room/RoomNumberByRoomType">Room Number By Room Type</a></li>
+                                                </ul>
+                                            </li>
+
+                                            <li class="dropdown-submenu">
+                                                <a class="test" tabindex="-1" href="#">Asset Detail Addition<span></span></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="~/AssetAddition/DetailAddition_AssetGroup">Asset Group</a></li>
+                                                    <li><a href="~/AssetAddition/DetailAddition_AssetCategory">Asset Category</a></li>
+                                                    <li><a href="~/AssetAddition/DetailAddition_AssetDescription_RoomsType">Asset Description - Rooms Type</a></li>
+                                                    <li><a href="~/AssetAddition/DetailAddition_AssetDescription_Others">Asset Description - Others</a></li>
+                                                </ul>
+                                            </li>
+                                        
+                                            
+
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/User/Index">User Management<span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Home/ChangePassword">Change Password<span></span></a>
+                                    </li>
+                                    <li><a href="~/UserLog/Index">User Log History</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Asset Data Upload<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/Home/Unauthorize">Export Data</a></li>
+                                            <li><a href="~/Home/Unauthorize">Import Data</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Handheld<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/Home/Unauthorize">Download Application to HHD</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="Dashboard"><a href="~/Home/Index">DASHBOARD</a></li>
+                            <li id="Disposal" class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">DISPOSAL<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="~/AssetDisposal/Prepare">Preparer – Mgr / Inv Controller</a></li>
+                                    <li><a href="~/AssetDisposal/Validate">Validator – Dept Head</a></li>
+                                    <li><a href="~/AssetDisposal/Review">Reviewer – Chief Engineer / IT Manager</a></li>
+                                    <li><a href="~/AssetDisposal/Verify">Verifier – Director Finance</a></li>
+                                    <li><a href="~/AssetDisposal/Agree">Agreed By – GM</a></li>
+                                    <li><a href="~/AssetDisposal/Approve">Approve – HO Finance</a></li>
+                                    <li><a href="~/AssetDisposal/ApproveAM">Approve – HO AM
+                                         Director</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Status Report<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetDisposal/Index">Summary</a></li>
+                                            <li><a href="~/AssetDisposal/Status">Detail</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            @*<li id="GatePass" class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">GATE PASS<span class="caret"></span></a>
+
+                                    <ul class="dropdown-menu">
+                                        <li><a href="~/GatePass/Processing">Processing</a></li>
+                                        <li><a href="~/GatePass/Approval">Approval</a></li>
+                                        <li><a href="~/GatePass/Outgoing">Outgoing </a></li>
+                                        <li><a href="~/GatePass/Return">Return</a></li>
+                                        <li><a href="~/GatePass/Status">Status</a></li>
+                                    </ul>
+                                </li>*@
+                            <li id="InventoryManagement" class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">INVENTORY MANAGEMENT<span class="caret"></span></a>
+
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Asset Addition<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetAddition/Single">Single Asset</a></li>
+                                            <li><a href="~/AssetAddition/Bulk">Bulk Asset</a></li>
+                                            <li><a href="~/AssetAddition/PurchaseDetail">Purchase Detail</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a tabindex="-1" href="~/AssetSearch/Index">Asset Search</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Asset Tagging</a>
+
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetTagging/Index">Asset Tagging Entry</a></li>
+                                            <li><a href="~/AssetTagging/AssetTggingSearch">Asset Tagging Search</a></li>
+
+                                        </ul>
+
+
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Asset Reverification<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetReverification/NewAssetReverification">Start Asset Reverification</a></li>
+                                            <li><a href="~/AssetReverification/AssetReVerificationHHD">Reverification HHD</a></li>
+                                            <li><a href="~/AssetReverification/ManualReverification">Manual Reverification</a></li>
+                                            <li><a href="~/AssetReverification/CloseReverification">Close Asset Reverification</a></li>
+                                            <li><a href="~/AssetReverification/Index">Reverification Status</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Depericiation<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/Depreciation/Setup">Depreciation Setup</a></li>
+                                            <li><a href="~/Depreciation/Computation">Depreciation Computation</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a tabindex="-1" href="@Url.RouteUrl("UpdateBarcode")">Replace Barcode</a></li>
+                                </ul>
+                            </li>
+                            <li id="Handheld" class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">MOVEMENT<span class="caret"></span></a>
+
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Asset Movement<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetMovementSingle/Index">Single Asset</a></li>
+                                            <li><a href="~/AssetMovementSingle/Bulk">Bulk Asset</a></li>
+                                        </ul>
+                                    </li>
+                                    @*<li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Event Management<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/Home/Unauthorize">Issue</a></li>
+                                            <li><a href="~/Home/Unauthorize">Transfer</a></li>
+                                            <li><a href="~/Home/Unauthorize">Return</a></li>
+                                        </ul>
+                                    </li>*@
+                                </ul>
+                            </li>
+                            <li id="Reports" class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">REPORTS<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" href="~/Home/Unauthorize">Asset History</a></li>
+
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Disposal Status Report<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetDisposal/Index">Summary</a></li>
+                                            <li><a href="~/AssetDisposal/Status">Detail</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">Reconcilliation Report<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetReconciliation/Category">Reconcilliation by Category</a></li>
+                                            <li><a href="~/AssetReconciliation/Description">Reconcilliation by Description</a></li>
+                                            <li><a href="~/AssetReconciliation/RoomNo">Reconcilliation by Room</a></li>
+                                            <li><a href="~/AssetReconciliation/RoomNoNew">Reconcilliation by Room No</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">View Reports<span></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="~/AssetTagging/Index">Asset Tagging List</a></li>
+                                            <li><a href="~/AssetDisposal/Report">Asset Disposal</a></li>
+                                            <li><a href="~/AssetRegister/Index">Asset Register</a></li>
+                                            <li><a href="~/AssetTagging/AssetValue">Asset Value</a></li>
+                                            <li class="dropdown-submenu">
+                                                <a class="test" tabindex="-1" href="#">Asset Index<span></span></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="~/AssetIndexSummary/Index">Asset Index Summary</a></li>
+                                                    <li><a href="~/AssetIndex/Index">Asset Index Detail</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                @*</li>
+                                    <li style="margin-left:40px;"><a href="http://www.matrix-ams.com">ABOUT</a></li>
+                                    <li id="Help"><a href="~/Home/Help">HELP</a></li>*@
+                            <li><a href="/Login/Logout"><i class="fa fa-power-off"></i></a></li>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+                <!--/.container-fluid -->
+            </nav>
+        </header>
+        <div class="content-wrapper">
+            <div class="content-header"></div>
+            <div class="content">
+
+                @RenderBody()
+
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer" style="padding:0px; border-top:0px;">
+            @*<div class="col-md-6">
+                    <strong>Copyright &copy;  <a href="#" style="color: black">Matrix AMS</a>.</strong> All rights reserved.
+                </div>*@
+            <div class="col-md-12" style="background-color: #00b3a1;">
+                <div class="col-md-6" style="padding-top: 20px;">
+                    <strong>Copyright &copy;<a href="#" style="color: black">Matrix AMS</a>.</strong> All rights reserved.
+                </div>
+                <div class="col-md-6">
+                    <ul class="nav navbar-nav pull-right">
+                        <li><a class="" href="http://www.matrix-ams.com">ABOUT</a></li>
+                        <li><a class="" href="~/Home/Help">HELP</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+        <!-- Add the sidebar's background. This div must be placed
+             immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+
+    </div>
+    <!-- ./wrapper -->
+    @Scripts.Render("~/bundles/js")
+
+    <script>
+        $('li').click(function () {
+            $(this).addClass('active').siblings().removeClass('active');
+        });
+
+        if (role == "USER" || role == "UADMIN") {
+            $(".onlyAdmin").hide();
+        }
+    </script>
+</body>
+</html>

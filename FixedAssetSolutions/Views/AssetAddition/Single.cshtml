@@ -1,0 +1,1133 @@
+﻿
+@{
+    ViewBag.Title = "Single";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <h3 class="box-title" id="title" hidden="hidden">InventoryManagement</h3>
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+    <input type="text" id="CID" value="@Session["CompanyID"]" hidden="hidden" />
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title box-title-main">Single Asset Addition</h3>
+        </div>
+        <div class="box-body">
+            <section class="content">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        @*<li class="active" id="ItemDetail"><a href="#ItemDetail" data-toggle="tab" aria-expanded="true">Item Addition</a></li>*@
+                        @*<li id="PurchaseDetail"><a href="#PurchaseDetail" data-toggle="tab" aria-expanded="false">Purchase Detail</a></li>*@
+                    </ul>
+                    <div class="tab-content" style="border: 1px solid grey;">
+                        <div class="tab-pane active" id="ItemDetailtab">
+                            <form method="post" id="AddAssetItem">
+                                <div class="box-body">
+                                    <div class="col-md-8">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Location</label>
+                                                <select class="form-control borderfas" id="Location" name="L1LocCode" style="background-color: #ffffff;" required>
+                                                    <option id="def" value="">Select Location</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Asset Description</label>
+                                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L3CatCode" id="AssetType" required>
+                                                    <option value="">Asset Description</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label style="font-weight: 500;">(If Asset Description not listed add new description below)</label><br />
+                                                <a href="#" id="newDescription" class="btn btn-primary" style="background-color:orange; border-color: #ffa500;"><i class="fa fa-plus"></i>  Add New Description</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Asset Group</label>
+                                                <select class="form-control filter borderfas" style="background-color:lightgrey;" name="L1CatCode" id="AssetGroup" required>
+                                                    <option value="">Asset Group</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Asset Category</label>
+                                                <select class="form-control filter borderfas" style="background-color:lightgrey;" name="L2CatCode" id="AssetCategory" required>
+                                                    <option value="">Asset Category</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 bcc">
+                                            <div class="col-md-6" style="padding: 0px 15px 0px 0px;">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Barcode ID</label>
+                                                    <input type="text" class="form-control borderfas" name="AssetNumber" id="ANum" placeholder="Enter Barcode ID" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-default" id="BarcodeButton" style="margin: 25px 0px 0px 0px; color: #fff; border: 1px solid #46c7ba; background-color: #46c7ba;"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label>Section Name</label>
+                                                <select class="form-control filter borderfas" style="background-color:#ffffff;" name="L2LocCode" id="AssetSection" required>
+                                                    <option value="">Asset Section</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label>Room No</label>
+                                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L3LocCode" id="AssetRoomNo" required>
+                                                    <option value="">Asset Room No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label>Room Type</label>
+                                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L4LocCode" id="AssetRoomType" required>
+                                                    <option value="">Asset Room Type</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 locb">
+                                            <div class="form-group">
+                                                <label>Floor</label>
+                                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L5LocCode" id="AssetFloor" required>
+                                                    <option value="">Asset Floor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-4" style="background-color: azure;">
+                                        <div style="display:table-cell; vertical-align:middle; text-align:center; width:50%;">
+                                            <img alt="" id="images" style="margin: auto; width:50%; margin-top: 50px;" src="~/Content/img/upload.png">
+                                        </div>
+                                        <div class="fileUpload btn" id="upload" style="width: 95%; margin-top: 50px; color:white; background-color:orange; border-color: #ffa500;">
+                                            <span>Upload</span>
+                                            <input id="fileup" type="file" class="upload" />
+                                        </div>
+                                    </div>*@
+                                    <div class="col-lg-4">
+                                        @*@using (Html.BeginForm("AssetImageAddition", "AsetAddition", FormMethod.Post,
+                                         new { enctype = "multipart/form-data" }))*@
+                                        <div class="form" id="imageUpload">
+                                            
+                                            <label for="file">Upload Image:</label>
+                                            <input type="file" name="file" id="file" style="width: 100%;" />
+                                            <button type="button" name="imagedata" id="fileup">Upload</button>
+                                            <img id="loader" src="/Content/img/loading.gif" style="width: 20px; height: 20px; margin: 10px; display: none;">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="box-footer locb text-center">
+                                    <button type="button" id="item" class="btn btn-lg btn-primary" onclick="ConfirmImageUpload()">Add Item</button>
+                                    <button type="reset" id="Cancel" class="btn btn-lg btn-danger">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div id="commonError" class="modal modal text-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="padding:200px;">
+        <div class="callout callout-danger lead text-center" style="border-color: #dd4b39;">
+            <h4>Alert !</h4>
+            <p id="errorMessage"></p>
+            <button type="button" id="EOkay" class="btn btn-block btn-danger">OK</button>
+        </div>
+    </div>
+</div>
+
+<div id="successAlert" class="modal modal text-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="padding:200px;">
+        <div class="callout callout-success lead text-center" style="border-color: #00a65a;">
+            <h4>Alert !</h4>
+            <p id="successMEssage">Asset Added</p>
+            <button type="button" id="SuccessOkay" class="btn btn-block btn-success" onclick="ToggleSuccessModal()">OK</button>
+        </div>
+    </div>
+</div>
+
+<div id="ConfirmationAlert" class="modal modal text-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="padding:200px;">
+        <div class="callout callout-success lead text-center" style="border-color: #00a65a;">
+            <h4>Confirm ?</h4>
+            <p id="successMEssage">Are you sure you want to add asset?</p>
+            <button type="button" class="btn btn-block btn-success" onclick="AddAsset()">Yes</button>
+            <button type="button" class="btn btn-block btn-danger" onclick="ToggleConfirmationModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="NoImagePopUp" class="modal modal text-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="padding:200px;">
+        <div class="callout callout-success lead text-center" style="border-color: #00a65a;">
+            <h4>Confirm ?</h4>
+            <p id="successMEssage">You haven't uploaded any image, you want to continue?</p>
+            <button type="button" class="btn btn-block btn-success" onclick="AddAsset()">Yes</button>
+            <button type="button" class="btn btn-block btn-danger" onclick="ToggleNoImagePopUp()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="DescriptionModal" class="modal modal text-center">
+    <div class="box" style="top:10px; width:50%; margin-left: 352px;">
+        <div class="box-header with-border">
+            <h3 class="box-title">Add Asset Description</h3>
+        </div>
+        <form id="L3CategoryFrom" method="POST">
+            <div class="box-body" style="padding:50px;">
+                <div class="form-group">
+                    <label class="pull-left">Enter Asset Description</label><span style="margin-left:10px;" id='length'></span>
+                    <input type="text" name="L3CatName" class="form-control borderfas" id="NewDescription" placeholder="Enter Asset Description" required>
+                </div>
+                <div class="form-group">
+                    <label class="pull-left">Select Group</label>
+                    <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L1CatCode" id="AssetGroupList" required>
+                        <option value="">Select Group</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="pull-left">Select Category (If category not listed add new below)</label>
+                    <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L2CatCode" id="AssetCategoryList" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <a href="#" id="newL2Categoryform" class="btn btn-primary pull-left" style="background-color:orange; border-color: #ffa500;" onclick="ToggleNewL2CategoryButton()"><i class="fa fa-plus"></i>Add New Category</a>
+                    <input type="text" style="display:none" class="form-control borderfas" id="newtextL2Category" name="newtextL2Category" placeholder="Enter category">
+                    <button type="button" id="AddL2Category" onclick="AddNewL2Category()" style="display:none" class="btn bt btn-primary pull-left">Add Category</button>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" id="newL3Category" class="btn bt btn-primary pull-right">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script>
+
+   // $('.locb').hide();
+   // $('.bcc').hide();
+    
+    var title = $('#title').html();
+    $('#' + title).css('background-color', '#A2EEE6');
+
+    $(".select2").css("width", "100%");
+
+    $("#upload").hide();
+
+
+    getAllCountries(function (response) {
+        $.each(response.data, function (key, value) {
+            $("#Country").append($("<option></option>").val(value.CountryID).html(value.Name));
+        });
+    });
+
+    $('#ItemDetail').click(function () {
+        $('#ItemDetailtab').addClass("active");
+        $('#PurchaseDetailtab').removeClass("active");
+    });
+
+    $('.datepicker').datepicker({
+        autoclose: true
+    });
+
+    $("#Cancel").click(function () {
+        location.reload(true);
+    });
+
+    getCurrency(function (response) {
+        $.each(response.data, function (key, value) {
+            $("#iso").append($("<option></option>").val(value.iso).html(value.iso + " - " + value.name));
+        });
+        $("#iso").select2();
+
+    });
+
+    var role = $('#role').val();
+   
+    if (role == "USER") {
+
+        var userId = $('#userid').val();
+        var formData = {
+            type: "post",
+            data: { 'UserID': userId }
+        };
+        Permissions(formData, function (response) {
+            console.log(response.data[5]);
+           
+            if (response.data[5]['Permission'] == 'False') {
+                $('#purchase').hide();
+                $('#item').hide();
+                
+            }
+        });
+        GetUserLocation(formData, function (response) {
+            if (response.data.length == 1) {
+                $('#def').remove();
+            }
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+        getCompanyUser(formData, function (response) {
+            $('#defc').remove();
+            $(".Company").append($("<option></option>").val(response.data['CompanyID']).html(response.data['CompanyName']));
+        });
+
+        setTimeout(function () {
+            var Location1 = $('#Location').val();
+            var formData = {
+                type: "POST",
+                data: { 'L1LocCode': Location1 }
+            };
+
+            getL3Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetType").append($("<option></option>").val(value.L3CatCode).html(value.L3CatName));
+                });
+                $("#AssetType").select2();
+            });
+
+            $("#AssetType").unbind().change(function () {
+                var gid = $(this).val();
+
+               
+                if (gid != "null") {
+                    
+                    $('.bcc').show();
+                    $('#AssetCategory').find('option').remove().end().append('<option value="">Asset Category</option>');
+                    var form = { "L3CatCode": gid, "L1LocCode": Location1 };
+                    var formData = { type: "POST", data: form };
+                    getL1Category(formData, function (response) {
+                        $('#AssetGroup').find('option').remove();
+                        $.each(response.data, function (key, value) {
+                            $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                        });
+                    });
+                    getL2Category(formData, function (response) {
+                        $('#AssetCategory').find('option').remove();
+                        $.each(response.data, function (key, value) {
+                            $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                        });
+                    });
+
+                    $('#BarcodeButton').unbind().click(function () {
+                        var AN = $('#ANum').val();
+                        var form = { 'L1LocCode': Location1, 'AssetNumber': AN };
+                        var formData = { type: 'POST', data: form };
+                        IsBarcodeExsist(formData, function (response) {
+                            if (response.message == "Barcode does not Exist") {
+                                $('.locb').show();
+                            } else {
+                                $('#commonError').toggle();
+                                $('#errorMessage').text(response.message);
+                                $('#EOkay').unbind().click(function () {
+                                    $('#commonError').toggle();
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+
+            getL2Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                });
+                $("#AssetSection").unbind().change(function () {
+                    $('#AssetRoomNo').find('option').remove().end().append('<option value="">Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                    var sid = $(this).val();
+                    var form = {
+                        "L2LocCode": sid,
+                        "L1LocCode": Location1
+                    };
+                    var formData = {
+                        type: "POST",
+                        data: form
+                    };
+
+                    getL3Location(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                        });
+                        $("#AssetRoomNo").unbind().change(function () {
+                            $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+                            $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                            var rid = $(this).val();
+                            var form = {
+                                "L3LocCode": rid,
+                                "L1LocCode": Location1
+                            };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+                            getL4Location(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                                });
+                                $("#AssetRoomType").unbind().change(function () {
+                                    $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                                    var tid = $(this).val();
+                                    var form = {
+                                        "L4LocCode": tid,
+                                        "L1LocCode": Location1
+                                    };
+                                    var formData = {
+                                        type: "POST",
+                                        data: form
+                                    };
+                                    getL5Location(formData, function (response) {
+                                        $.each(response.data, function (key, value) {
+                                            $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+
+            $('#newDescription').unbind().click(function () {
+                $('#DescriptionModal').modal('toggle');
+                var Locations = $('#Location').val();
+                var formData = {
+                    type: "post",
+                    data: { 'L1LocCode': Locations }
+                };
+                getL1Category(formData, function (response) {
+                    $('#AssetGroupList').find('option').remove().end().append('<option value="">Asset Category</option>');
+                    $.each(response.data, function (key, value) {
+                        $("#AssetGroupList").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                    });
+                    $("#AssetGroupList").unbind().change(function () {
+                        var gid = $(this).val();
+                        if (gid != "null") {
+                            $('#AssetCategoryList').find('option').remove().end().append('<option value="">Asset Category</option>');
+                            var form = { "L1CatCode": gid, "L1LocCode": Location1 };
+                            var formData = { type: "POST", data: form };
+                            getL2CategoryOnly(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetCategoryList").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                                });
+                            });
+                        }
+                    });
+                });
+            });
+
+            $('#NewDescription').unbind().on('keyup focusout', function () {
+                var Descp = $(this).val();
+                if (Descp != "" || Descp != " ") {
+                    var formData = {
+                        type: 'post',
+                        data: { 'L1LocCode': $("#Location").find(':selected').val(), 'L3CatName': Descp }
+                    };
+                    IsL3CategoryExist(formData, function (response) {
+                        if (response.message == "Asset Description Exist") {
+                            $('#length').show();
+                            $('#length').html('Asset Description Exist').css('color', 'red');
+                            $('#newL3Category').attr('disabled', true);
+                        }
+                        else {
+                            $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                            $('#newL3Category').attr('disabled', false);
+                        }
+                    });
+                } else {
+                    $('#length').html('Asset Description can not be empty').css('color', 'red');
+                }
+            });
+
+        }, 2000);
+
+        $('#Location').change(function () {
+            $("#NewDescription").val("");
+            $('#AssetType').find('option').remove().end().append('<option value="">Asset Description</option>');
+            $('#AssetGroup').find('option').remove().end().append('<option value="">Asset Group</option>');
+            $('#AssetGroupList').find('option').remove().end().append('<option value="">Asset Group</option>');
+            $('#AssetCategory').find('option').remove().end().append('<option value="">Asset Category</option>');
+            $('#AssetSection').find('option').remove().end().append('<option value="">Asset Section</option>');
+            $('#AssetRoomNo').find('option').remove().end().append('<option value="">Asset Room No</option>');
+            $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+            $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "post",
+                data: { 'L1LocCode': Location1 }
+            };
+
+            getL3Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetType").append($("<option></option>").val(value.L3CatCode).html(value.L3CatName));
+                });
+                $("#AssetType").select2();
+            });
+
+            $("#AssetType").unbind().change(function () {
+                var gid = $(this).val();
+                if (gid != "null") {
+                    $('.bcc').show();
+                    $('#AssetCategory').find('option').remove().end().append('<option value="">Asset Category</option>');
+                    var form = { "L3CatCode": gid, "L1LocCode": Location1 };
+                    var formData = { type: "POST", data: form };
+                    getL1Category(formData, function (response) {
+                        $('#AssetGroup').find('option').remove();
+                        $.each(response.data, function (key, value) {
+                            $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                        });
+                    });
+                    getL2Category(formData, function (response) {
+                        $('#AssetCategory').find('option').remove();
+                        $.each(response.data, function (key, value) {
+                            $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                        });
+                    });
+                }
+            });
+            $('#newDescription').unbind().click(function () {
+                $('#DescriptionModal').modal('toggle');
+                var Locations = $('#Location').val();
+                var formData = {
+                    type: "post",
+                    data: { 'L1LocCode': Locations }
+                };
+                getL1Category(formData, function (response) {
+                    $.each(response.data, function (key, value) {
+                        $("#AssetGroupList").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                    });
+                    $("#AssetGroupList").unbind().change(function () {
+                        var gid = $(this).val();
+                        if (gid != "null") {
+                            $('#AssetCategoryList').find('option').remove().end().append('<option value="">Asset Category</option>');
+                            var form = { "L1CatCode": gid, "L1LocCode": Location1 };
+                            var formData = { type: "POST", data: form };
+                            getL2CategoryOnly(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetCategoryList").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                                });
+                            });
+                        }
+                    });
+                });
+            });
+
+            $('#newL3Category').unbind().click(function (e) {
+                $('#L3CategoryFrom').unbind().submit(function (e) {
+                    e.preventDefault();
+                    var Location1 = $("#Location").find(':selected').val();
+                    var form = $(this);
+                    var USERID = $('#userid').val();
+                    var formData = {
+                        type: form.attr('method'),
+                        data: form.serialize() + "&L1LocCode=" + Location1 + "&UserID=" + USERID
+                    };
+                    L3CategoryAddition(formData, function (response) {
+                        alert("New Asset Description Added.");
+                        RefreshAssetType();
+                        $('#DescriptionModal').modal('toggle');
+                    });
+                });
+            });
+
+            $('#NewSupplier').unbind().click(function (e) {
+                $('#NewSupplierForm').unbind().submit(function (e) {
+                    e.preventDefault();
+                    var Company = $('#CID').val();
+                    var form = $(this);
+                    var USERID = $('#userid').val();
+                    var formData = {
+                        type: form.attr('method'),
+                        data: form.serialize() + "&UserID=" + USERID
+                    };
+                    supplierAddition(formData, function (response) {
+
+                    });
+
+                });
+            });
+
+
+            $('#NewDescription').unbind().on('keyup focusout', function () {
+                var Descp = $(this).val();
+                if (Descp != "") {
+                    var formData = {
+                        type: 'post',
+                        data: { 'L1LocCode': $("#Location").find(':selected').val(), 'L3CatName': Descp }
+                    };
+                    IsL3CategoryExist(formData, function (response) {
+                        if (response.message == "Asset Description Exist") {
+                            $('#length').show();
+                            $('#length').html('Asset Description Exist').css('color', 'red');
+                            $('#newL3Category').attr('disabled', true);
+                        }
+                        else {
+                            $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                            $('#newL3Category').attr('disabled', false);
+                        }
+                    });
+                } else {
+                    $('#length').html('Asset Description can not be empty').css('color', 'red');
+                }
+            });
+
+            getL2Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                });
+                $("#AssetSection").unbind().change(function () {
+                    $('#AssetRoomNo').find('option').remove().end().append('<option value="">Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                    var sid = $(this).val();
+                    var form = {
+                        "L2LocCode": sid,
+                        "L1LocCode": Location1
+                    };
+                    var formData = {
+                        type: "POST",
+                        data: form
+                    };
+
+                    getL3Location(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                        });
+                        $("#AssetRoomNo").unbind().change(function () {
+                            $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+                            $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                            var rid = $(this).val();
+                            var form = {
+                                "L3LocCode": rid,
+                                "L1LocCode": Location1
+                            };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+                            getL4Location(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                                });
+                                $("#AssetRoomType").unbind().change(function () {
+                                    $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                                    var tid = $(this).val();
+                                    var form = {
+                                        "L4LocCode": tid,
+                                        "L1LocCode": Location1
+                                    };
+                                    var formData = {
+                                        type: "POST",
+                                        data: form
+                                    };
+                                    getL5Location(formData, function (response) {
+                                        $.each(response.data, function (key, value) {
+                                            $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        var Company = $('#CID').val();
+
+        $('#newL3Category').unbind().click(function (e) {
+            $('#L3CategoryFrom').unbind().submit(function (e) {
+                
+                e.preventDefault();
+                var Location1 = $("#Location").find(':selected').val();
+                var form = $(this);
+                var USERID = $('#userid').val();
+                var formData = {
+                    type: form.attr('method'),
+                    data: form.serialize() + "&L1LocCode=" + Location1 + "&UserID=" + USERID
+                };
+                L3CategoryAddition(formData, function (response) {
+                    alert("New Asset Description Added.");
+                    RefreshAssetType();
+                    $('#DescriptionModal').modal('toggle');
+                });
+
+            });
+        });
+
+        $('#BarcodeButton').unbind().click(function () {
+            var Location1 = $("#Location").find(':selected').val();
+            var AN = $('#ANum').val();
+            var form = { 'L1LocCode': Location1, 'AssetNumber': AN };
+            var formData = { type: 'POST', data: form };
+            IsBarcodeExsist(formData, function (response) {
+                if (response.message == "Barcode does not Exist") {
+                    $('.locb').show();
+                } else {
+                    $('#commonError').toggle();
+                    $('#errorMessage').text(response.message);
+                    $('#EOkay').unbind().click(function () {
+                        $('#commonError').toggle();
+                    });
+                }
+            });
+        });
+
+    } else {
+
+        var formData = {
+            type: 'post'
+        };
+
+        getCompany(function (response) {
+            $.each(response.data, function (key, value) {
+                $(".Company").append($("<option></option>").val(value.CompanyID).html(value.CompanyName));
+            });
+        });
+
+        getLocationAdmin(function (response) {
+            $.each(response.data, function (key, value) {
+                $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+            });
+        });
+
+        $('#Location').change(function () {
+            $("#NewDescription").val("");
+            $('#AssetType').find('option').remove().end().append('<option value="">Asset Description</option>');
+            $('#AssetGroup').find('option').remove().end().append('<option value="">Asset Group</option>');
+            $('#AssetCategory').find('option').remove().end().append('<option value="">Asset Category</option>');
+            $('#AssetSection').find('option').remove().end().append('<option value="">Asset Section</option>');
+            $('#AssetRoomNo').find('option').remove().end().append('<option value="">Asset Room No</option>');
+            $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+            $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+            var Location1 = $("#Location").find(':selected').val();
+            var formData = {
+                type: "post",
+                data: { 'L1LocCode': Location1 }
+            };
+
+            getL3Category(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetType").append($("<option></option>").val(value.L3CatCode).html(value.L3CatName));
+                });
+                $("#AssetType").select2();
+            });
+
+            $("#AssetType").unbind().change(function () {
+                var gid = $(this).val();
+                if (gid != "null") {
+                    
+                    $('.bcc').show();
+                    $('#AssetCategory').find('option').remove().end().append('<option value="">Asset Category</option>');
+                    var form = { "L3CatCode": gid, "L1LocCode": Location1 };
+                    var formData = { type: "POST", data: form };
+                    getL1Category(formData, function (response) {
+                        $('#AssetGroup').find('option').remove();
+                        $.each(response.data, function (key, value) {
+                            $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                        });
+                    });
+                    getL2Category(formData, function (response) {
+                        $('#AssetCategory').find('option').remove();
+                        $.each(response.data, function (key, value) {
+                            $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                        });
+                    });
+
+                    $('#BarcodeButton').unbind().click(function () {
+                        var AN = $('#ANum').val();
+                        var form = { 'L1LocCode': Location1, 'AssetNumber': AN };
+                        var formData = { type: 'POST', data: form };
+                        IsBarcodeExsist(formData, function (response) {
+                            if (response.message == "Barcode does not Exist") {
+                                $('.locb').show();
+                            } else {
+                                $('#commonError').toggle();
+                                $('#errorMessage').text(response.message);
+                                $('#EOkay').unbind().click(function () {
+                                    $('#commonError').toggle();
+                                });
+                            }
+                        });
+                    });
+
+                    $("#upload").show();
+                    var src = "" + baseUrl.appServer + "Content/img/" + gid + ".png";
+                    $("#images").attr("src", src)
+                }
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#images').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            //$("#fileup").change(function () {
+            //    readURL(this);
+            //    var fileUpload = $("#fileup").get(0);
+            //    var files = fileUpload.files;
+
+            //    var fileData = new FormData();
+
+            //    // Looping over all files and add it to FormData object
+            //    for (var i = 0; i < files.length; i++) {
+            //        fileData.append(files[i].name, files[i]);
+            //    }
+            //    fileData.append('username', 'Manas');
+            //    //$.ajax({
+            //    //    url: '/AssetAddition/UploadFiles',
+            //    //    type: "POST",
+            //    //    contentType: false, // Not to set any content header
+            //    //    processData: false, // Not to process data
+            //    //    data: fileData,
+            //    //    success: function (result) {
+            //    //        alert(result);
+            //    //    },
+            //    //    error: function (err) {
+            //    //        alert(err.statusText);
+            //    //    }
+            //    //});
+            //    var formData = { type: "POST", data: fileData };
+            //    console.log(formData);
+            //    alert();
+            //    UploadFiles(formData, function (response) {
+            //        console.log(response);
+            //        alert("Data: " + data + "\nStatus: " + status);
+            //    });
+            //});
+
+            $('#newDescription').unbind().click(function () {
+                $('#DescriptionModal').modal('toggle');
+                var Locations = $('#Location').val();
+                var formData = {
+                    type: "post",
+                    data: { 'L1LocCode': Locations }
+                };
+                getL1Category(formData, function (response) {
+                    $.each(response.data, function (key, value) {
+                        $("#AssetGroupList").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                    });
+                    $("#AssetGroupList").unbind().change(function () {
+                        var gid = $(this).val();
+                        if (gid != "null") {
+                            $('#AssetCategoryList').find('option').remove().end().append('<option value="">Asset Category</option>');
+                            var form = { "L1CatCode": gid, "L1LocCode": Location1 };
+                            var formData = { type: "POST", data: form };
+                            getL2CategoryOnly(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetCategoryList").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                                });
+                            });
+                        }
+                    });
+                });
+            });
+
+            $('#newL3Category').unbind().click(function (e) {
+                $('#L3CategoryFrom').unbind().submit(function (e) {
+                    e.preventDefault();
+                    var Location1 = $("#Location").find(':selected').val();
+                    var form = $(this);
+                    var USERID = $('#userid').val();
+                    var formData = {
+                        type: form.attr('method'),
+                        data: form.serialize() + "&L1LocCode=" + Location1 + "&UserID=" + USERID
+                    };
+                    L3CategoryAddition(formData, function (response) {
+                        alert("New Asset Description Added.");
+                        RefreshAssetType();
+                        $('#DescriptionModal').modal('toggle');
+                    });
+                });
+            });
+
+            $('#NewSupplier').unbind().click(function (e) {
+                $('#NewSupplierForm').unbind().submit(function (e) {
+                    e.preventDefault();
+                    var Company = $('#CID').val();
+                    var form = $(this);
+                    var USERID = $('#userid').val();
+                    var formData = {
+                        type: form.attr('method'),
+                        data: form.serialize() + "&UserID=" + USERID
+                    };
+                    supplierAddition(formData, function (response) {
+
+                    });
+
+                });
+            });
+
+
+            $('#NewDescription').unbind().on('keyup focusout', function () {
+                var Descp = $(this).val();
+                if (Descp != "") {
+                    var formData = {
+                        type: 'post',
+                        data: { 'L1LocCode': $("#Location").find(':selected').val(), 'L3CatName': Descp }
+                    };
+                    IsL3CategoryExist(formData, function (response) {
+                        if (response.message == "Asset Description Exist") {
+                            $('#length').show();
+                            $('#length').html('Asset Description Exist').css('color', 'red');
+                            $('#newL3Category').attr('disabled', true);
+                        }
+                        else {
+                            $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                            $('#newL3Category').attr('disabled', false);
+                        }
+                    });
+                } else {
+                    $('#length').html('Asset Description can not be empty').css('color', 'red');
+                }
+            });
+
+            getL2Location(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetSection").append($("<option></option>").val(value.L2LocCode).html(value.L2LocName));
+                });
+                $("#AssetSection").unbind().change(function () {
+                    $('#AssetRoomNo').find('option').remove().end().append('<option value="">Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                    var sid = $(this).val();
+                    var form = {
+                        "L2LocCode": sid,
+                        "L1LocCode": Location1
+                    };
+                    var formData = {
+                        type: "POST",
+                        data: form
+                    };
+
+                    getL3Location(formData, function (response) {
+                        $.each(response.data, function (key, value) {
+                            $("#AssetRoomNo").append($("<option></option>").val(value.L3LocCode).html(value.L3LocName));
+                        });
+                        $("#AssetRoomNo").unbind().change(function () {
+                            $('#AssetRoomType').find('option').remove().end().append('<option value="">Asset Room Type</option>');
+                            $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                            var rid = $(this).val();
+                            var form = {
+                                "L3LocCode": rid,
+                                "L1LocCode": Location1
+                            };
+                            var formData = {
+                                type: "POST",
+                                data: form
+                            };
+                            getL4Location(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetRoomType").append($("<option></option>").val(value.L4LocCode).html(value.L4LocName));
+                                });
+                                $("#AssetRoomType").unbind().change(function () {
+                                    $('#AssetFloor').find('option').remove().end().append('<option value="">Asset Floor</option>');
+                                    var tid = $(this).val();
+                                    var form = {
+                                        "L4LocCode": tid,
+                                        "L1LocCode": Location1
+                                    };
+                                    var formData = {
+                                        type: "POST",
+                                        data: form
+                                    };
+                                    getL5Location(formData, function (response) {
+                                        $.each(response.data, function (key, value) {
+                                            $("#AssetFloor").append($("<option></option>").val(value.L5LocCode).html(value.L5LocName));
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    }
+
+    $('#fileup').unbind().click(function (e) {
+        $('#loader').show();
+            //e.preventDefault();
+        var fileUpload = $("#file").get(0);
+        if (fileUpload.files.length != 0){
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            debugger;
+            // Looping over all files and add it to FormData object  
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                url: '/AssetAddition/FileUpload?filename=' + $("#AssetType").val(),
+                type: "POST",
+                contentType: false, // Not to set any content header  
+                processData: false, // Not to process data  
+                data: fileData,
+                success: function (result) {
+                    $('#loader').hide();
+                    alert(result);
+                },
+                error: function (err) {
+                    $('#loader').hide();
+                    alert(err.statusText);
+                }
+            });
+        }
+        else {
+            alert("Select image to upload.");
+        }
+    });
+
+    function RefreshAssetType() {
+        var Location1 = $("#Location").find(':selected').val();
+        var formData = {
+            type: "post",
+            data: { 'L1LocCode': Location1 }
+        };
+
+        getL3Category(formData, function (response) {
+            $.each(response.data, function (key, value) {
+                $("#AssetType").append($("<option></option>").val(value.L3CatCode).html(value.L3CatName));
+            });
+            $("#AssetType").select2();
+        });
+    }
+
+    function RefreshAssetCategory() {
+        var Location1 = $("#Location").find(':selected').val();
+        var gid = $("#AssetGroupList").find(':selected').val();
+        if (gid != undefined) {
+            $('#AssetCategoryList').find('option').remove().end().append('<option value="">Asset Category</option>');
+            var form = { "L1CatCode": gid, "L1LocCode": Location1 };
+            var formData = { type: "POST", data: form };
+            getL2CategoryOnly(formData, function (response) {
+                $.each(response.data, function (key, value) {
+                    $("#AssetCategoryList").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                });
+            });
+        }
+    }
+
+    function ToggleSuccessModal() {
+        $('#successAlert').toggle();
+        location.reload(true);
+    }
+
+    function ToggleConfirmationModal() {
+        $('#ConfirmationAlert').toggle();
+    }
+
+    function ToggleNoImagePopUp() {
+        $('#NoImagePopUp').toggle();
+    }
+
+    function ConfirmImageUpload() {
+        var fileUpload = $("#file").get(0);
+        if (fileUpload.files.length == 0) {
+            ToggleNoImagePopUp();
+        }
+        else {
+            ToggleConfirmationModal();
+        }
+    }
+
+    function AddNewL2Category() {
+        var L1LocCode = $("#Location").find(':selected').val();
+        var L1CatCode = $("#AssetGroupList").find(':selected').val();
+        var newCategoryName = $("#newtextL2Category").val();
+
+        if (L1CatCode != "" && newCategoryName != "") {
+            $.ajax({
+                url: "/add-L2Cat",
+                type: "POST",
+                data: { L1LocCode: L1LocCode, L1CatCode: L1CatCode, L2CatName: newCategoryName },
+                success: function (result) {
+                    alert("New Category added.");
+                    RefreshAssetCategory();
+                    ToggleNewL2CategoryButton();
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+        else {
+            alert("Select Asset Group Or Cannot add empty category");
+        }
+    }
+
+    function ToggleNewL2CategoryButton() {
+        if ($("#newtextL2Category").css('display') == 'none') {
+            $("#newtextL2Category").css('display', 'block');
+            $("#AddL2Category").css('display', 'block');
+        }
+        else {
+            $("#newtextL2Category").css('display', 'none');
+            $("#AddL2Category").css('display', 'none');
+        }        
+    }
+
+    function AddAsset() {
+        $('#AddAssetItem').unbind().submit(function (event) {
+            event.preventDefault();
+            var USERID = $('#userid').val();
+            var newForm = $(this);
+            var formData = {
+                type: "POST",
+                data: newForm.serialize() + "&UserID=" + USERID
+            };
+            AssetAddition(formData, function (response) {
+                console.log(response.message);
+                if (response.message == "An error occurred while updating the entries. See the inner exception for details.") {
+                    $('#commonError').toggle();
+                    $('#errorMessage').text(response.message);
+                    $('#EOkay').unbind().click(function () {
+                        $('#NoImagePopUp').hide();
+                        $('#ConfirmationAlert').hide();
+                        $('#commonError').toggle();
+                    });
+                } else {
+                    $('#NoImagePopUp').hide();
+                    $('#ConfirmationAlert').hide();
+                    $('#successAlert').toggle();
+                }
+            });
+
+        });
+
+        $('#AddAssetItem').submit();
+    }
+
+</script>

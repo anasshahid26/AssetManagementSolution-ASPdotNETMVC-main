@@ -1,0 +1,1122 @@
+﻿@{
+    ViewBag.Title = "ManualReverification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <input type="text" id="userid" value="@Session["UserID"]" hidden="hidden" />
+    <input type="text" id="role" value="@Session["Role"]" hidden="hidden" />
+
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title box-title-main">Manual Asset Reverification</h3>
+            @*<h3 class="box-title box-title-main pull-right" style="color:seagreen"><i class="fa fa-exclamation-circle" style="margin-right:10px;"></i>Page is not active yet !</h3>*@
+        </div>
+
+        <div class="box-body">
+            <section class="content">
+                <div class="nav-tabs-custom">
+                    <div class="box-footer no-padding">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="row">
+                                    <div class="col-md-6">&nbsp;</div>
+                                    <div class="col-md-6">
+                                        <div class="form-group text-center">
+                                            <button type="button" id="Scan" class="btn bg-olive margin">SCAN</button>
+                                            <button type="button" id="Clear" class="btn bg-red margin">CANCEL</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">LOCATION</label>
+                                            <select name="L1LocCode" class="form-control borderfas" id="Location" required="required">
+                                                <option>SELECT LOCATION</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">SECTION</label>
+                                            <select class="form-control borderfas" id="AssetSection" required="required">
+                                                <option>SELECT SECTION</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">ROOM</label>
+                                            <select class="form-control borderfas" id="AssetRoomNo" required="required">
+                                                <option>SELECT ROOM NUMBER</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Barcode ID</label><br /><span>Please Cut and Paste (MAX 1000) Barcodes in every new line.</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control borderfas" rows="3" name="AssetNumber" id="AN" placeholder="Enter Barcode ID" style="height:210px;" required>@ViewBag.tagslist</textarea>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group text-center">
+                                            <button type="button" id="AcceptReverification" class="btn bg-olive margin">ACCEPT</button>
+                                            <button type="button" id="ClearReverification" class="btn bg-red margin">CANCEL</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group text-center">
+                                            <div>
+                                                <label>DATABASE</label><span style="margin-left:10px;" id="dbCount">0</span>
+                                            </div>
+                                            <div>
+                                                <label>SCANNED</label><span style="margin-left:10px;" id="scCount">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group text-center" style="height:500px; overflow-x:scroll; overflow-y:scroll;">
+                                            <table class="table table-bordered table-hover dataTable">
+                                                <thead>
+                                                    <tr style="border:1px solid black;">
+                                                        <th style="border:1px solid gray; padding:7px;">Re-Vefiried Barcode</th>
+                                                        <th style="border:1px solid gray; padding:7px;">Description</th>
+                                                        <th style="border:1px solid gray; padding:7px;">Status</th>
+                                                        <th style="border:1px solid gray; padding:7px;">Status</th>
+                                                        @*<th style="border:1px solid gray; padding:7px;">Verified</th>
+                                                            <th style="border:1px solid gray; padding:7px;">Un-Verified</th>*@
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="veriID">
+                                                    <tr>
+                                                        <td>@*<button type='button' class='btn btn-sm bg-primary margin' id="AdAset">ADD ASSET</button>*@</td>
+                                                        <td class='text-center'></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        @*<td></td>
+                                                            <td></td>*@
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control borderfas" id="TYPECODE" style="margin-top:10px; font-weight:700; visibility:hidden;" />
+                                        </div>
+                                        <div class="form-group" style="visibility:hidden;">
+                                            <label for="exampleInputEmail1">FLOOR</label>
+                                            <select class="form-control borderfas" id="AssetFloor" required="required">
+                                                <option>SELECT FLOOR</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @*<div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                            </div>*@
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <div id="ReplaceBarcode" class="modal modal">
+            <div class="box" style="" id="#lb2">
+                <div class="box-header with-border text-center">
+                    <h3 class="box-title">Replace Barcode ID</h3>
+                    <button type="button" class="pull-right closed" data-dismiss="modal" style="color: #00b3a1;">×</button>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form id="ReplaceBarcodeForm">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Old Barcode ID</label>
+                                <input type="text" class="form-control borderfas" id="OLDBARCODE" style="margin-top:10px; font-weight:700;" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">New Barcode ID</label><span id="length" style="margin-left:15px;"></span>
+                                <input type="text" class="form-control borderfas" id="NEWBARCODE" style="margin-top:10px; font-weight:700;" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="submit" id="ReplaceButton" class="btn btn-lg bg-primary margin">REPLACE</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="DataModal" class="modal modal">
+            <div class="box" style="top:100px; width:40%; margin-left: 730px;" id="#lb2">
+                <div class="box-header with-border text-center">
+                    <h3 class="box-title">Add Description</h3>
+                    <button type="button" class="pull-right closed" data-dismiss="modal" style="color: #00b3a1;">×</button>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form id="addDescriptionForm">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Barcode ID</label>
+                                <input type="text" class="form-control borderfas" id="BARCODE" style="margin-top:10px; font-weight:700;" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Asset Description</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L3CatCode" id="AssetType" required>
+                                    <option value="">Asset Description</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Asset Group</label>
+                                <select class="form-control filter borderfas" style="background-color:lightgrey;" name="L1CatCode" id="AssetGroup" required>
+                                    <option value="">Asset Group</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Asset Category</label>
+                                <select class="form-control filter borderfas" style="background-color:lightgrey;" name="L2CatCode" id="AssetCategory" required>
+                                    <option value="">Asset Category</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="submit" id="AddDescription" class="btn bg-primary margin">ADD DESCRIPTION</button>
+                                <a href="#" class="btn btn-primary newDescription" style="background-color:orange; border-color: #ffa500;"><i class="fa fa-plus"></i>  Add New Description</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="AssetAdd" class="modal modal">
+            <div class="box" style="top:100px; width:40%; margin-left: 730px;" id="#lb2">
+                <div class="box-header with-border text-center">
+                    <h3 class="box-title">Add Description</h3>
+                    <button type="button" class="pull-right closed" data-dismiss="modal" style="color: #00b3a1;">×</button>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form id="addnewDescriptionForm">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Barcode ID</label>
+                                <input type="text" class="form-control borderfas" name="AssetNumber" id="ANum1" placeholder="Enter Barcode ID" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Asset Description</label>
+                                <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L3CatCode" id="AssetType1" required>
+                                    <option value="">Asset Description</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Asset Group</label>
+                                <select class="form-control filter borderfas" style="background-color:lightgrey;" name="L1CatCode" id="AssetGroup1" required>
+                                    <option value="">Asset Group</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Asset Category</label>
+                                <select class="form-control filter borderfas" style="background-color:lightgrey;" name="L2CatCode" id="AssetCategory1" required>
+                                    <option value="">Asset Category</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="submit" id="AddNewDescription" class="btn bg-primary margin">ADD DESCRIPTION</button>
+                                <a href="#" class="btn btn-primary newDescription" style="background-color:orange; border-color: #ffa500;"><i class="fa fa-plus"></i>  Add New Description</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div id="OkayModal" class="modal modal text-center">
+            <!-- Modal Content (The Image) -->
+            <div class="col-md-3"></div>
+            <div class="col-md-6" style="padding:200px;">
+                <form id="pModal">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 id="warning" style="color:red;"></h5>
+                        </div>
+                        <div class="box-footer">
+                            <button type="button" id="Okay" class="btn btn-default">OK</button>
+                            <button type="button" id="Cancel" class="btn btn-default">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="alertfailedModal" class="modal modal text-center">
+            <div class="col-md-3"></div>
+            <div class="col-md-6" style="padding:200px;">
+                <div class="callout callout-danger lead text-center" style="border-color: #dd4b39;">
+                    <h4>Alert !</h4>
+                    <p id="errormessage"></p>
+                    <button type="button" id="close" class="btn btn-default">Ok</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="alertsuccessModal" class="modal modal text-center">
+            <div class="col-md-3"></div>
+            <div class="col-md-6" style="padding:200px;">
+                <div class="callout callout-success lead text-center" style="border-color: #00a65a;">
+                    <p>Asset Reverification Completed</p>
+                    <a href="/AssetReverification/AssetReverificationHHD" style="text-decoration: none;" class="btn btn-block btn-success">OK !</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="DescriptionModal" class="modal modal text-center">
+            <div class="box" style="top:10px; width:50%; margin-left: 352px;">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add Asset Description</h3>
+                    <button type="button" class="pull-right closed" data-dismiss="modal" style="color: #00b3a1;">×</button>
+                </div>
+                <form id="L3CategoryFrom" method="POST">
+                    <div class="box-body" style="padding:50px;">
+                        <div class="form-group">
+                            <label class="pull-left">Enter Asset Description</label><span style="margin-left:10px;" id='length'></span>
+                            <input type="text" name="L3CatName" class="form-control borderfas" id="NewDescription" placeholder="Enter Asset Description" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="pull-left">Select Group</label>
+                            <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L1CatCode" id="AssetGroupList" required>
+                                <option value="">Select Group</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="pull-left">Select Category</label>
+                            <select class="form-control filter borderfas" style="background-color: #ffffff;" name="L2CatCode" id="AssetCategoryList" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" id="newL3Category" class="btn btn-primary pull-right">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/jquery.dataTables.min.js"></script>
+        <script src="~/Scripts/dataTables.buttons.min.js"></script>
+        <script src="~/Scripts/jszip.min.js"></script>
+        <script src="~/Scripts/buttons.html5.min.js"></script>
+        <script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+        <script>
+            $('#close').unbind().click(function () {
+                $("#alertfailedModal").toggle();
+            });
+            var role = $('#role').val();
+            if (role == "USER" || role == "UADMIN") {
+                var userId = $('#userid').val();
+                var formData = {
+                    type: "post",
+                    data: { 'UserID': userId }
+                };
+
+                GetUserLocation(formData, function (response) {
+                    if (response.data.length == 1) {
+                        $('#def').remove();
+                    }
+                    $.each(response.data, function (key, value) {
+                        $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+                    });
+                });
+                setTimeout(function () {
+                    var Location1 = $("#Location").find(':selected').val();
+                    var formData = {
+                        type: "POST",
+                        data: { 'L1LocCode': Location1 }
+                    };
+
+                    $('#Location').unbind().change(function () {
+                        var total = 0;
+                        $('#total').text(total);
+                        $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                        $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                        $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                        $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                        var Location1 = $("#Location").find(':selected').val();
+                        var formData = {
+                            type: "POST",
+                            data: { 'L1LocCode': Location1 }
+                        };
+                        GetHierarchyWRTSection(formData);
+                    });
+
+                    GetHierarchyWRTSection(formData);
+
+                    $('#Scan').unbind().click(function () {
+                        $('.scanedAssets').remove();
+                        $('#dbCount').text('0');
+                        $('#scCount').text('0');
+
+                        var Location = $("#Location").find(':selected').val();
+                        var AssetSection = $("#AssetSection").find(':selected').text();
+                        var AssetFloor = $("#AssetFloor").find(':selected').text();
+                        var AssetRoomNo = $("#AssetRoomNo").find(':selected').text();
+                        var AssetInfo = [];
+                        var foo = $('#AN').val();
+
+                        foo = foo.split('\n');
+                        foo = foo.filter(function (entry) { return entry.trim() != ''; });
+
+                        $.each(foo, function (key, value) {
+                            AssetInfo.push({
+                                AssetNumber: value
+                            });
+                        });
+
+                        var form = { "L1LocCode": Location, "L2LocName": AssetSection, "L3LocName": AssetRoomNo, "CODELEVEL": AssetFloor, "Assets": AssetInfo };
+                        var formData = {
+                            type: "POST",
+                            data: form
+                        };
+
+                        AssetReverification(formData, function (response) {
+                            $('#dbCount').text(response.data.Count);
+                            $('#scCount').text(foo.length);
+                            for (var i = 0; i < response.data.VerifiedAssets.length; i++) {
+
+                                var AssetNumber = response.data.VerifiedAssets[i].AssetNumber;
+                                var AssetDescription = response.data.VerifiedAssets[i].AssetDescription;
+                                var Status = response.data.VerifiedAssets[i].Status;
+
+                                console.log(response.data.VerifiedAssets);
+
+                                if (Status === "NO NAME") {
+                                    //var divItem1 = "<tr class='scanedAssets' id='" + AssetNumber + "'><td>" + AssetNumber + "</td><td class='text-center scanedAssets'><button type='button' class='btn btn-sm bg-primary margin adddescript'>ADD DESCRIPTION</button></td><td>" + Status + "</td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "'></td></tr>";
+                                    //$("#veriID").append(divItem1);
+
+                                    //var divItem = "<tr class='scanedAssets'><td><a id='" + AssetNumber + "' href='#' class='missingBarcode'>" + AssetNumber + "</a></td><td>" + AssetDescription + "</td><td>" + Status + "</td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "'></td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "'></td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "' checked onclick='return false;'></td></tr>";
+                                    //$("#veriID").append(divItem);
+                                    //} else {
+                                    //var divItem = "<tr class='scanedAssets'><td>" + AssetNumber + "</td><td>" + AssetDescription + "</td><td>" + Status + "</td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "' checked onclick='return false;'></td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "' checked onclick='return false;'></td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "'></td></tr>";
+
+                                } else {
+                                    if (Status === 'MISSING') {
+                                        var divItem = "<tr class='scanedAssets danger'><td><a id='" + AssetNumber + "' href='#' class='missingBarcode'>" + AssetNumber + "</a></td><td>" + AssetDescription + "</td><td class='AssetStatus'>" + Status + "</td><td class='AssetStatusHide' style='display:none;'>" + Status + "</td><td><input id='chkSelect' class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "' onclick='ChangeCheckboxLabel(this)'></td></tr>";
+                                        $("#veriID").append(divItem);
+
+
+                                    } else {
+                                        var divItem = "<tr class='scanedAssets'><td>" + AssetNumber + "</td><td>" + AssetDescription + "</td><td class='AssetStatus'>" + Status + "</td><td class='AssetStatusHide' style='display:none;'>" + Status + "</td><td><input id='chkSelect' class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "' checked onclick='ChangeCheckboxLabel(this)'></td></tr>";
+                                        $("#veriID").append(divItem);
+
+                                    }
+                                }
+                            }
+
+                            $('.newDescription').unbind().click(function () {
+                                $('#DescriptionModal').modal('toggle');
+                                var Locations = $('#Location').val();
+                                var formData = {
+                                    type: "post",
+                                    data: { 'L1LocCode': Locations }
+                                };
+                                getL1Category(formData, function (response) {
+                                    $.each(response.data, function (key, value) {
+                                        $("#AssetGroupList").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                                    });
+                                    $("#AssetGroupList").unbind().change(function () {
+                                        var gid = $(this).val();
+                                        if (gid != "null") {
+                                            $('#AssetCategoryList').find('option').remove().end().append('<option value="">Asset Category</option>');
+                                            var form = { "L1CatCode": gid, "L1LocCode": Locations };
+                                            var formData = { type: "POST", data: form };
+                                            getL2CategoryOnly(formData, function (response) {
+                                                $.each(response.data, function (key, value) {
+                                                    $("#AssetCategoryList").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                                                });
+                                            });
+                                        }
+                                    });
+                                });
+                            });
+
+                            $('#newL3Category').unbind().click(function (e) {
+                                $('#L3CategoryFrom').unbind().submit(function (e) {
+                                    e.preventDefault();
+                                    var Location1 = $("#Location").find(':selected').val();
+                                    var form = $(this);
+                                    var USERID = $('#userid').val();
+                                    var formData = {
+                                        type: form.attr('method'),
+                                        data: form.serialize() + "&L1LocCode=" + Location1 + "&UserID=" + USERID
+                                    };
+                                    L3CategoryAddition(formData, function (response) {
+                                    });
+
+                                });
+                            });
+
+                            $('.missingBarcode').unbind().click(function () {
+                                var thisThat = $(this);
+                                console.log(thisThat);
+                                OldBarcode = $(this)[0]['innerHTML'];
+                                $('#OLDBARCODE').val(OldBarcode);
+
+                                var isDescriptionExsist = $('.adddescript').length;
+                                if (isDescriptionExsist) {
+                                    $('#errormessage').text("Please Enter Description First");
+                                    $('#alertfailedModal').toggle();
+                                } else {
+
+                                    $('#ReplaceBarcode').toggle();
+                                    $('#NEWBARCODE').unbind().on('keyup focusout', function () {
+                                        var Value = $(this).val();
+                                        if (Value != "") {
+                                            var formData = {
+                                                type: 'post',
+                                                data: { 'AssetNumber': Value, 'L1LocCode': $("#Location").val() }
+                                            };
+
+                                            IsBarcodeExsistRev(formData, function (response) {
+                                                console.log(response);
+                                                if (response.message == "Barcode does not Exist") {
+                                                    $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                                                    $('#ReplaceButton').unbind().click(function (event) {
+                                                        event.preventDefault();
+                                                        var NewBarcode = $('#NEWBARCODE').val();
+                                                        var form = { "OldBarcode": OldBarcode, "NewBarcode": NewBarcode, "L1LocCode": $("#Location").val() };
+                                                        var formData = {
+                                                            type: "POST",
+                                                            data: form
+                                                        };
+                                                        $('#warning').text("Do you really want to replace the barcode?");
+                                                        $('#OkayModal').toggle();
+                                                        $('#Cancel').unbind().click(function () {
+                                                            $('#OkayModal').toggle();
+                                                            $('#ReplaceBarcode').toggle();
+                                                        });
+                                                        $('#Okay').unbind().click(function () {
+
+                                                            ReplaceBarcode(formData, function (response) {
+                                                                if (response.message === "Success") {
+                                                                    var Description = $('#' + OldBarcode).closest('tr')[0]['childNodes'][1]['innerHTML'];
+                                                                    $('#' + OldBarcode).closest('tr').replaceWith("<tr><td>" + NewBarcode + "</td><td>" + Description + "</td><td>VERIFIED BARCODE</td><td><input class='chk' name='asset[]' type='checkbox' value='" + NewBarcode + "' checked onclick='return false;'></td></tr>");
+                                                                    $('#OkayModal').toggle();
+                                                                    $('#ReplaceBarcode').toggle();
+                                                                }
+                                                            });
+
+                                                        });
+                                                    });
+                                                } else {
+                                                    $('#length').html('Code already in use').css('color', 'red');
+                                                }
+                                            });
+                                        } else {
+                                            $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'red');
+                                        }
+                                    });
+                                }
+                            });
+
+                            $('.adddescript').unbind().click(function () {
+                                var RowTo = $(this);
+                                var Barcode = $(this).closest('tr')[0].childNodes[0]['innerHTML'];
+                                var NewRow = $(this).closest('tr')[0].childNodes;
+
+                                $('#BARCODE').val(Barcode);
+                                var L1LocCode = $("#Location").val();
+                                var L2LocCode = $("#AssetSection").val();
+                                var L3LocCode = $("#AssetRoomNo").val();
+                                var L4LocCode = $("#TYPECODE").val();
+                                var L5LocCode = $("#TYPECODE").val() + $("#AssetFloor").val();
+
+                                $('#DataModal').toggle();
+                                var Location = $("#Location").find(':selected').val();
+                                var formData = {
+                                    type: "POST",
+                                    data: { 'L1LocCode': Location }
+                                };
+                                getL3Category(formData, function (response) {
+                                    $.each(response.data, function (key, value) {
+                                        $("#AssetType").append($("<option></option>").val(value.L3CatCode).html(value.L3CatName));
+                                    });
+                                    $("#AssetType").select2();
+                                });
+
+                                $("#AssetType").unbind().change(function () {
+                                    var gid = $(this).val();
+                                    if (gid != "null") {
+                                        $('#AssetCategory').find('option').remove().end().append('<option value="">Asset Category</option>');
+                                        var form = { "L3CatCode": gid, "L1LocCode": Location };
+                                        var formData = { type: "POST", data: form };
+                                        getL1Category(formData, function (response) {
+                                            $('#AssetGroup').find('option').remove();
+                                            $.each(response.data, function (key, value) {
+                                                $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                                            });
+                                        });
+                                        getL2Category(formData, function (response) {
+                                            $('#AssetCategory').find('option').remove();
+                                            $.each(response.data, function (key, value) {
+                                                $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                                            });
+                                        });
+                                    }
+
+                                    $('#AddDescription').unbind().click(function (event) {
+                                        event.preventDefault();
+                                        $('#warning').text("Do you really want to add the description?");
+                                        $('#OkayModal').toggle();
+                                        $('#Cancel').unbind().click(function () {
+                                            $('#OkayModal').toggle();
+                                            $('#DataModal').toggle();
+                                        });
+                                        var L1CatCode = $("#AssetGroup").val();
+                                        var L2CatCode = $("#AssetCategory").val();
+                                        var L3CatCode = $("#AssetType").val();
+                                        $('#Okay').unbind().click(function () {
+                                            var formData = {
+                                                type: "POST",
+                                                data: form + "&L1LocCode=" + L1LocCode + "&L2LocCode=" + L2LocCode + "&L3LocCode=" + L3LocCode + "&L4LocCode=" + L4LocCode + "&L5LocCode=" + L5LocCode + "&AssetNumber=" + Barcode + "&L1CatCode=" + L1CatCode + "&L2CatCode=" + L2CatCode + "&L3CatCode=" + L3CatCode
+                                            };
+                                            console.log(formData);
+                                            AssetAdditionReverification(formData, function (response) {
+                                                var NBarcode = $('#BARCODE').val();
+                                                var NDescription = $('#AssetType').find(':selected').text();
+                                                $("<tr class='scanedAssets'><td class='" + NBarcode + "'>" + NBarcode + "</td><td>" + NDescription + "</td><td>VERIFIED DESCP</td><td><input class='chk' name='asset[]' type='checkbox' value='" + NBarcode + "' checked></td></tr>").insertAfter(RowTo.closest('tr'));
+                                                $('#' + Barcode).remove();
+                                                $('#DataModal').toggle();
+                                                $('#OkayModal').toggle();
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+
+                            $('#AcceptReverification').unbind().click(function () {
+                                var isDescriptionExsist = $('.adddescript').length;
+                                var AssetInfo = [];
+                                if (isDescriptionExsist) {
+                                    $('#errormessage').text("Please Enter Description");
+                                    $('#alertfailedModal').toggle();
+                                    //alert("Please Enter Description");
+                                } else {
+                                    var assetToBeVerified = $('.scanedAssets');
+                                    console.log(assetToBeVerified);
+                                    if ($('.chk:checked').length != $('.chk').length) {
+                                        $('#errormessage').text("Not all Barcodes are Checked");
+                                        $('#alertfailedModal').toggle();
+                                        //alert("Not all Barcodes are Checked");
+                                    } else {
+                                        $('#warning').text("Are you sure you want to accept?");
+                                        $('#OkayModal').toggle();
+                                        $('#Cancel').unbind().click(function () {
+                                            $('#OkayModal').toggle();
+                                        });
+                                        $('#Okay').unbind().click(function () {
+                                            console.log("done");
+                                            $.each(assetToBeVerified, function (key, value) {
+                                                console.log(value['cells'][3]['childNodes'][0]['value']);
+                                                AssetInfo.push({
+                                                    AssetNumber: value['cells'][3]['childNodes'][0]['value'],
+                                                    VerificationStatus: value['cells'][2]['innerText']
+                                                });
+                                            });
+
+                                            var form = {
+                                                L1LocCode: $("#Location").val(),
+                                                L2LocCode: $("#AssetSection").val(),
+                                                L3LocCode: $("#AssetRoomNo").val(),
+                                                L4LocCode: $("#TYPECODE").val(),
+                                                L5LocCode: $("#TYPECODE").val() + $("#AssetFloor").val(),
+                                                Assets: AssetInfo
+                                            };
+                                            var formData = {
+                                                type: "POST",
+                                                data: form
+                                            };
+                                            console.log(formData);
+                                            ReverifiedAssets(formData, function (response) {
+                                                console.log(response);
+                                                $('#alertsuccessModal').toggle();
+                                                //location.reload();
+                                            });
+                                        });
+                                    }
+                                }
+                            });
+                        });
+                    });
+
+
+                }, 2000);
+            } else {
+                getLocationAdmin(function (response) {
+                    $.each(response.data, function (key, value) {
+                        $("#Location").append($("<option></option>").val(value.L1LocCode).html(value.L1LocName));
+                    });
+                });
+                $('#Location').unbind().change(function () {
+                    var total = 0;
+                    $('#total').text(total);
+                    $('#AssetSection').find('option').remove().end().append('<option value="null">Asset Section</option>');
+                    $('#AssetRoomNo').find('option').remove().end().append('<option value="null">Asset Room No</option>');
+                    $('#AssetRoomType').find('option').remove().end().append('<option value="null">Asset Room Type</option>');
+                    $('#AssetFloor').find('option').remove().end().append('<option value="null">Asset Floor</option>');
+                    var Location1 = $("#Location").find(':selected').val();
+                    var formData = {
+                        type: "POST",
+                        data: { 'L1LocCode': Location1 }
+                    };
+                    GetHierarchyWRTSection(formData);
+                });
+
+                $('#Scan').unbind().click(function () {
+                    $('.scanedAssets').remove();
+                    $('#dbCount').text('0');
+                    $('#scCount').text('0');
+
+                    var Location = $("#Location").find(':selected').val();
+                    var AssetSection = $("#AssetSection").find(':selected').text();
+                    var AssetFloor = $("#AssetFloor").find(':selected').text();
+                    var AssetRoomNo = $("#AssetRoomNo").find(':selected').text();
+                    //if ($("#Location").find(':selected').val() != "SELECT LOCATION") {
+                    //    Location = $("#Location").find(':selected').val();
+                    //}
+                    //if ($("#Location").find(':selected').val() != "SELECT SECTION") {
+                    //    AssetSection = $("#AssetSection").find(':selected').text();
+                    //}
+                    //if ($("#Location").find(':selected').val() != "SELECT LOCATION") {
+                    //    AssetFloor = $("#AssetFloor").find(':selected').text();
+                    //}
+                    //if ($("#Location").find(':selected').val() != "SELECT LOCATION") {
+                    //    AssetRoomNo = $("#AssetRoomNo").find(':selected').text();
+                    //}
+
+                    var AssetInfo = [];
+                    var foo = $('#AN').val();
+                    foo = foo.split('\n');
+                    foo = foo.filter(function (entry) { return entry.trim() != ''; });
+                    $.each(foo, function (key, value) {
+                        AssetInfo.push({
+                            AssetNumber: value
+                        });
+                    });
+                    var form = { "L1LocCode": Location, "L2LocName": AssetSection, "L3LocName": AssetRoomNo, "CODELEVEL": AssetFloor, "Assets": AssetInfo };
+                    var formData = {
+                        type: "POST",
+                        data: form
+                    };
+                    AssetReverification(formData, function (response) {
+                        $('#dbCount').text(response.data.Count);
+                        $('#scCount').text(foo.length);
+                        for (var i = 0; i < response.data.VerifiedAssets.length; i++) {
+                            var AssetNumber = response.data.VerifiedAssets[i].AssetNumber;
+                            var AssetDescription = response.data.VerifiedAssets[i].AssetDescription;
+                            var Status = response.data.VerifiedAssets[i].Status;
+                            console.log(response.data.VerifiedAssets);
+                            if (Status === "NO NAME") {
+                                //var divItem1 = "<tr class='scanedAssets' id='" + AssetNumber + "'><td>" + AssetNumber + "</td><td class='text-center scanedAssets'><button type='button' class='btn btn-sm bg-primary margin adddescript'>ADD DESCRIPTION</button></td><td>" + Status + "</td><td><input class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "' checked onclick='return false;'></td></tr>";
+                                //$("#veriID").append(divItem1);
+                            } else {
+                                if (Status === 'MISSING') {
+                                    var divItem = "<tr class='scanedAssets danger'><td><a id='" + AssetNumber + "' href='#' class='missingBarcode'>" + AssetNumber + "</a></td><td>" + AssetDescription + "</td><td>" + Status + "</td><td><input id='chkSelect' class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "'></td></tr>";
+                                    $("#veriID").append(divItem);
+                                } else {
+                                    var divItem = "<tr class='scanedAssets'><td>" + AssetNumber + "</td><td>" + AssetDescription + "</td><td>" + Status + "</td><td><input id='chkSelect' class='chk' name='asset[]' type='checkbox' value='" + AssetNumber + "' checked ></td></tr>";
+                                    $("#veriID").append(divItem);
+                                }
+                            }
+                        }
+
+                        $('.newDescription').unbind().click(function () {
+                            $('#DescriptionModal').modal('toggle');
+                            var Locations = $('#Location').val();
+                            var formData = {
+                                type: "post",
+                                data: { 'L1LocCode': Locations }
+                            };
+                            getL1Category(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetGroupList").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                                });
+                                $("#AssetGroupList").unbind().change(function () {
+                                    var gid = $(this).val();
+                                    if (gid != "null") {
+                                        $('#AssetCategoryList').find('option').remove().end().append('<option value="">Asset Category</option>');
+                                        var form = { "L1CatCode": gid, "L1LocCode": Locations };
+                                        var formData = { type: "POST", data: form };
+                                        getL2CategoryOnly(formData, function (response) {
+                                            $.each(response.data, function (key, value) {
+                                                $("#AssetCategoryList").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                                            });
+                                        });
+                                    }
+                                });
+                            });
+                        });
+
+                        $('#newL3Category').unbind().click(function (e) {
+                            $('#L3CategoryFrom').unbind().submit(function (e) {
+                                e.preventDefault();
+                                var Location1 = $("#Location").find(':selected').val();
+                                var form = $(this);
+                                var USERID = $('#userid').val();
+                                var formData = {
+                                    type: form.attr('method'),
+                                    data: form.serialize() + "&L1LocCode=" + Location1 + "&UserID=" + USERID
+                                };
+                                L3CategoryAddition(formData, function (response) {
+                                });
+
+                            });
+                        });
+
+                        $('.missingBarcode').unbind().click(function () {
+                            var thisThat = $(this);
+                            console.log(thisThat);
+                            OldBarcode = $(this)[0]['innerHTML'];
+                            $('#OLDBARCODE').val(OldBarcode);
+
+                            var isDescriptionExsist = $('.adddescript').length;
+                            if (isDescriptionExsist) {
+                                $('#errormessage').text("Please Enter Description First");
+                                $('#alertfailedModal').toggle();
+                            } else {
+
+                                $('#ReplaceBarcode').toggle();
+                                $('#NEWBARCODE').unbind().on('keyup focusout', function () {
+                                    var Value = $(this).val();
+                                    if (Value != "") {
+                                        var formData = {
+                                            type: 'post',
+                                            data: { 'AssetNumber': Value, 'L1LocCode': $("#Location").val() }
+                                        };
+
+                                        IsBarcodeExsistRev(formData, function (response) {
+                                            console.log(response);
+                                            if (response.message == "Barcode does not Exist") {
+                                                $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'green');
+                                                $('#ReplaceButton').unbind().click(function (event) {
+                                                    event.preventDefault();
+                                                    var NewBarcode = $('#NEWBARCODE').val();
+                                                    var form = { "OldBarcode": OldBarcode, "NewBarcode": NewBarcode, "L1LocCode": $("#Location").val() };
+                                                    var formData = {
+                                                        type: "POST",
+                                                        data: form
+                                                    };
+                                                    $('#warning').text("Do you really want to replace the barcode?");
+                                                    $('#OkayModal').toggle();
+                                                    $('#Cancel').unbind().click(function () {
+                                                        $('#OkayModal').toggle();
+                                                        $('#ReplaceBarcode').toggle();
+                                                    });
+                                                    $('#Okay').unbind().click(function () {
+
+                                                        ReplaceBarcode(formData, function (response) {
+                                                            if (response.message === "Success") {
+                                                                var Description = $('#' + OldBarcode).closest('tr')[0]['childNodes'][1]['innerHTML'];
+                                                                $('#' + OldBarcode).closest('tr').replaceWith("<tr><td>" + NewBarcode
+                                                                    + "</td><td>" + Description
+                                                                    + "</td><td>VERIFIED BARCODE</td><td><input class='chk' name='asset[]' type='checkbox' value='" + NewBarcode + "' checked onclick='return false;'></td></tr>");
+                                                                $('#OkayModal').toggle();
+                                                                $('#ReplaceBarcode').toggle();
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            } else {
+                                                $('#length').html('Code already in use').css('color', 'red');
+                                            }
+                                        });
+                                    } else {
+                                        $('#length').html('<i class="fa fa-check-circle"></i>').css('color', 'red');
+                                    }
+                                });
+                            }
+                        });
+
+                        $('.adddescript').unbind().click(function () {
+                            var RowTo = $(this);
+                            var Barcode = $(this).closest('tr')[0].childNodes[0]['innerHTML'];
+                            var NewRow = $(this).closest('tr')[0].childNodes;
+                            $('#BARCODE').val(Barcode);
+                            var L1LocCode = $("#Location").val();
+                            var L2LocCode = $("#AssetSection").val();
+                            var L3LocCode = $("#AssetRoomNo").val();
+                            var L4LocCode = $("#TYPECODE").val();
+                            var L5LocCode = $("#TYPECODE").val() + $("#AssetFloor").val();
+                            $('#DataModal').toggle();
+                            var Location = $("#Location").find(':selected').val();
+                            var formData = {
+                                type: "POST",
+                                data: { 'L1LocCode': Location }
+                            };
+                            getL3Category(formData, function (response) {
+                                $.each(response.data, function (key, value) {
+                                    $("#AssetType").append($("<option></option>").val(value.L3CatCode).html(value.L3CatName));
+                                });
+                                $("#AssetType").select2();
+                            });
+
+                            $("#AssetType").unbind().change(function () {
+                                var gid = $(this).val();
+                                if (gid != "null") {
+                                    $('#AssetCategory').find('option').remove().end().append('<option value="">Asset Category</option>');
+                                    var form = { "L3CatCode": gid, "L1LocCode": Location };
+                                    var formData = { type: "POST", data: form };
+                                    getL1Category(formData, function (response) {
+                                        $('#AssetGroup').find('option').remove();
+                                        $.each(response.data, function (key, value) {
+                                            $("#AssetGroup").append($("<option></option>").val(value.L1CatCode).html(value.L1CatName));
+                                        });
+                                    });
+                                    getL2Category(formData, function (response) {
+                                        $('#AssetCategory').find('option').remove();
+                                        $.each(response.data, function (key, value) {
+                                            $("#AssetCategory").append($("<option></option>").val(value.L2CatCode).html(value.L2CatName));
+                                        });
+                                    });
+                                }
+
+                                $('#AddDescription').unbind().click(function (event) {
+                                    event.preventDefault();
+                                    $('#warning').text("Do you really want to add the description?");
+                                    $('#OkayModal').toggle();
+                                    $('#Cancel').unbind().click(function () {
+                                        $('#OkayModal').toggle();
+                                        $('#DataModal').toggle();
+                                    });
+                                    var L1CatCode = $("#AssetGroup").val();
+                                    var L2CatCode = $("#AssetCategory").val();
+                                    var L3CatCode = $("#AssetType").val();
+                                    $('#Okay').unbind().click(function () {
+                                        var formData = {
+                                            type: "POST",
+                                            data: form + "&L1LocCode=" + L1LocCode + "&L2LocCode=" + L2LocCode + "&L3LocCode=" + L3LocCode + "&L4LocCode=" + L4LocCode + "&L5LocCode=" + L5LocCode + "&AssetNumber=" + Barcode + "&L1CatCode=" + L1CatCode + "&L2CatCode=" + L2CatCode + "&L3CatCode=" + L3CatCode
+                                        };
+                                        console.log(formData);
+                                        AssetAdditionReverification(formData, function (response) {
+                                            var NBarcode = $('#BARCODE').val();
+                                            var NDescription = $('#AssetType').find(':selected').text();
+                                            $("<tr class='scanedAssets'><td class='" + NBarcode + "' style='padding:0px;'>" + NBarcode + "</td><td style='padding:0px;'>" + NDescription + "</td><td style='padding:0px;'>VERIFIED DESCP</td><td style='padding:0px;'><input class='chk' name='asset[]' type='checkbox' value='" + NBarcode + "' checked></td></tr>").insertAfter(RowTo.closest('tr'));
+                                            $('#' + Barcode).remove();
+                                            $('#DataModal').toggle();
+                                            $('#OkayModal').toggle();
+                                        });
+                                    });
+                                });
+                            });
+                        });
+
+
+                        $('#AcceptReverification').unbind().click(function () {
+                            var isDescriptionExsist = $('.adddescript').length;
+                            var AssetInfo = [];
+                            //if (isDescriptionExsist) {
+                            //    $('#errormessage').text("Please Enter Description");
+                            //    $('#alertfailedModal').toggle();
+                            //    //alert("Please Enter Description");
+                            //} else {
+                            var assetToBeVerified = $('.scanedAssets');
+                            console.log(assetToBeVerified);
+                            //if ($('.chk:checked').length != $('.chk').length) {
+                            //    $('#errormessage').text("Not all Barcodes are Checked");
+                            //    $('#alertfailedModal').toggle();
+                            //    //alert("Not all Barcodes are Checked");
+                            //} else {
+                            $('#warning').text("Are you sure you want to accept?");
+                            $('#OkayModal').toggle();
+                            $('#Cancel').unbind().click(function () {
+                                $('#OkayModal').toggle();
+                            });
+                            $('#Okay').unbind().click(function () {
+                                console.log("done");
+
+                                $.each(assetToBeVerified, function (key, value) {
+
+                                    $('.chk').each(function () {
+                                        if ($(this).is(':checked')) {
+                                            if ($(this).val() == value['cells'][3]['childNodes'][0]['value']) {
+                                                AssetInfo.push({
+                                                    AssetNumber: value['cells'][3]['childNodes'][0]['value'],
+                                                    VerificationStatus: value['cells'][2]['innerText'],
+                                                    Status: $(this).is(':checked')
+                                                });
+                                            }
+                                        }
+                                        else {
+                                            if ($(this).val() == value['cells'][3]['childNodes'][0]['value']) {
+                                                AssetInfo.push({
+                                                    AssetNumber: value['cells'][3]['childNodes'][0]['value'],
+                                                    VerificationStatus: value['cells'][2]['innerText'],
+                                                    Status: $(this).is(':checked')
+                                                });
+                                            }
+                                        }
+                                    });
+                                });
+                                //$.each(assetToBeVerified, function (key, value) {
+                                //    console.log(value['cells'][3]['childNodes'][0]['value']);
+
+                                //    AssetInfo.push({
+                                //        AssetNumber: value['cells'][3]['childNodes'][0]['value'],
+                                //        VerificationStatus: value['cells'][2]['innerText']
+                                //    });
+
+                                //});
+
+                                var form = {
+                                    L1LocCode: $("#Location").val(),
+                                    L2LocCode: $("#AssetSection").val(),
+                                    L3LocCode: $("#AssetRoomNo").val(),
+                                    L4LocCode: $("#TYPECODE").val(),
+                                    L5LocCode: $("#TYPECODE").val() + $("#AssetFloor").val(),
+                                    Assets: AssetInfo
+                                };
+
+                                var formData = {
+                                    type: "POST",
+                                    data: form
+                                };
+                                console.log(formData);
+                                ReverifiedAssets(formData, function (response) {
+                                    console.log(response);
+                                    $('#alertsuccessModal').toggle();
+                                    //location.reload();
+                                });
+                            });
+                            //}
+                            //}
+                        });
+                    });
+                });
+
+                $('.closed').unbind().click(function () {
+                    if ($('#AssetAdd').is(':visible') == true) {
+                        $('#AssetAdd').toggle();
+                    } else if ($('#DataModal').is(':visible') == true) {
+                        $('#DataModal').toggle();
+                    } else if ($('#ReplaceBarcode').is(':visible') == true) {
+                        $('#ReplaceBarcode').toggle();
+                    } else if ('#DescriptionModal'.is(':visible') == true) {
+                        $('#DescriptionModal').toggle();
+                    }
+                });
+            }
+            $('#Clear').unbind().click(function () {
+                location.reload();
+            });
+            $('#ClearReverification').unbind().click(function () {
+                location.reload();
+            });
+        </script>
+
+        <script>
+            var VerifiedOption = 0;
+            var MissingOption = 0;
+            var MovedOption = 0;
+
+            function ChangeCheckboxLabel(ckbx) {
+
+                if (ckbx.checked) {
+                    $(ckbx).closest('tr').find('.AssetStatus').text('VERIFIED');
+                }
+                else {
+                    $(ckbx).closest('tr').find('.AssetStatus').text($(ckbx).closest('tr').find('.AssetStatusHide').text());
+                }
+
+                return;
+            }
+        </script>
+
+    </div>
+</div>

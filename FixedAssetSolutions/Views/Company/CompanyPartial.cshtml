@@ -1,0 +1,219 @@
+﻿@using FAS.SharedModel
+@model FAS.SharedModel.CompanyViewModel
+
+@using (Html.BeginForm("CreateCompany", "Company", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+            <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Setup / Add Company</h4>
+        </div>
+        <div class="modal-body">
+            <div class="nav-tabs-custom">
+
+                <ul class="nav nav-tabs">
+                    @*<li class="active"><a href="#location" data-toggle="tab" aria-expanded="true" style="background: #f4f4f4;">Company Info</a></li>*@
+                    <!--<li><a href="#assets" data-toggle="tab" aria-expanded="false" style="background: #f4f4f4;">Assets</a></li>-->
+                </ul>
+
+
+                <div class="tab-content" style="background: #f4f4f4;">
+                    <div class="tab-pane active" id="location">
+                        <!-- /.tab-pane start -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-body">
+                                        <div class="col-md-12">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Company Name</label>
+                                                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Company Name</label>
+                                                    @Html.EditorFor(model => model.CompanyCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.CompanyCode, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="checkbox" style="margin-top: 30px;">
+                                                    <label>
+                                                        <input type="checkbox"> Multiple Divisions
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Number of Location</label>
+                                                    @Html.DropDownListFor(m => m.MultipleDivision, new SelectList(ViewBag.MultipleDivisions, "Value", "Text"), new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <div class="box-header" style="border-bottom: 1px solid #e5e5e5;">
+                                        <h3 class="box-title">Address</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Address</label>
+                                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Address 2</label>
+                                                    @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Address 3</label>
+                                                    @Html.EditorFor(model => model.Address3, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">City</label>
+                                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">State/Province</label>
+                                                    @Html.EditorFor(model => model.State_Province, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Zip/Postal Code</label>
+                                                    @Html.EditorFor(model => model.Zip_PostalCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Country</label>
+                                                    @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <div class="box-header" style="border-bottom: 1px solid #e5e5e5;">
+                                        <h3 class="box-title">Contact Info</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Contact Name</label>
+                                                    @Html.EditorFor(model => model.ContactName, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Contact Phone</label>
+                                                    @Html.EditorFor(model => model.ContactPhone, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Contact Fax</label>
+                                                    @Html.EditorFor(model => model.ContactFax, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Contact Email</label>
+                                                    @Html.EditorFor(model => model.ContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.ContactEmail, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <div class="box-header" style="border-bottom: 1px solid #e5e5e5;">
+                                        <h3 class="box-title">Logo</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <img id="blah" src="#" alt="your image" style="height: 74px;" />
+                                                <img class="img-responsive pad" id="blah1" style="height: 74px;" src="~/Content/img/Matrix-AMS-Logo.png" alt="Photo">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group margin">
+                                                    <input type="file" name="file" id="imgInp">
+                                                    @Html.HiddenFor(model => model.Logo)
+                                                    <img src="@(Model.Logo)" height="100" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- /.tab-pane end -->
+                    </div>
+                </div>
+                <!-- /.tab-content -->
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" value="create" class="btn btn-primary"><i class="fa fa-save"></i></button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+
+
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            $("#blah").hide();
+            $("#imgInp").change(function () {
+                $("#blah1").hide();
+                $("#blah").show();
+                readURL(this);
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#blah').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        });
+
+    </script>
+}
